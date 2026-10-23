@@ -20,3 +20,4 @@ docs/reports/
 docs/*.pdf
 /pkg/docs/
 /scripts/__pycache__/
+/docs/.quarto/
