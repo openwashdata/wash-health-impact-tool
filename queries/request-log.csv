@@ -855,3 +855,6 @@ timestamp,script,url,status,n_results,mode,note
 2026-10-23T12:02:24,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3637379/fullTextXML,200,0,keyed,europepmc xml 170948 bytes
 2026-10-23T12:02:25,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1257/app.3.1.91%22&format=json&resultType=lite,200,1,keyed,
 2026-10-23T12:02:27,07_fulltexts.py,http://www.aeaweb.org/aej/app/app/2010-0037_app.pdf,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T12:19:02,09_stage2_baselines.py,https://ghoapi.azureedge.net/api/WSH_SANITATION_OD?$filter=SpatialDim%20in%20%28%27BGD%27%2C%27KHM%27%2C%27GHA%27%2C%27IND%27%2C%27KEN%27%2C%27MDG%27%2C%27MWI%27%2C%27RWA%27%2C%27SEN%27%2C%27ZAF%27%2C%27UGA%27%29,200,0,keyed,gho stage2
+2026-10-23T12:19:03,09_stage2_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=HC_MEMB_H_MNM&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs stage2
+2026-10-23T12:19:04,09_stage2_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=HC_AGEG_P_004&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs stage2
