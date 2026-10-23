@@ -17,7 +17,8 @@ confidence label in front of each summary row.
 Bind the summaries of several estimates into one table
 }
 \examples{
-a <- estimate_output("P_POU_FILTER", 100, "Kenya", baseline_source = "unimproved", verified_use = 0.9)
+a <- estimate_output("P_POU_FILTER", 100, "Kenya",
+  baseline_source = "unimproved", verified_use = 0.9)
 b <- estimate_output("P_CONN_INST", 2, "Kenya", people_per_unit = 400)
 bind_estimates(a, b)
 }

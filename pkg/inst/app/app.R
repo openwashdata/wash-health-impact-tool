@@ -3,6 +3,13 @@
 # Shiny runs app.R with the app folder as working directory; otherwise use the installed copy.
 app_dir <- if (file.exists("_brand.yml")) "." else system.file("app", package = "washhealth")
 shiny::addResourcePath("owd-logos", file.path(app_dir, "logos"))
+# The brand needs the brand.yml package; without it the app runs on the plain Bootstrap theme.
+app_theme <- if (requireNamespace("brand.yml", quietly = TRUE)) {
+  bslib::bs_theme(version = 5, brand = file.path(app_dir, "_brand.yml"))
+} else {
+  message("Package brand.yml is not installed; the app runs without the openwashdata brand.")
+  bslib::bs_theme(version = 5)
+}
 # washhealth Shiny app: ex-ante scenarios and ex-post estimates from the same
 # factor tables. Launch with washhealth::run_app(). One file; every number
 # comes from the package functions.
@@ -86,7 +93,7 @@ ante_intro <- "Ex-ante: planned outputs and a target use rate give the expected 
 post_intro <- "Ex-post: verified outputs from the verifier's report give the estimated health outcomes achieved, in total and for the incentive-attributable share, for reporting."
 
 ui <- if (has_bslib) {
-  bslib::page_navbar(title = shiny::tags$span(shiny::tags$img(src = "owd-logos/OWD-logo-05.png", height = "32", alt = "openwashdata", style = "margin-right: 0.6em; vertical-align: middle;"), "washhealth: water and sanitation health impact estimates"), theme = bslib::bs_theme(version = 5, brand = file.path(app_dir, "_brand.yml")),
+  bslib::page_navbar(title = shiny::tags$span(shiny::tags$img(src = "owd-logos/OWD-logo-05.png", height = "32", alt = "openwashdata", style = "margin-right: 0.6em; vertical-align: middle;"), "washhealth: water and sanitation health impact estimates"), theme = app_theme,
                      bslib::nav_panel("Ex-ante (planning)", tab_body("ante", "ex-ante", ante_intro)),
                      bslib::nav_panel("Ex-post (reporting)", tab_body("post", "ex-post", post_intro)))
 } else {
