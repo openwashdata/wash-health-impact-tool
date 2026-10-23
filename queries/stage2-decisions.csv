@@ -1,0 +1,939 @@
+openalex_id,decision,category,reason
+W4379467249,include,burden,WHO-linked global WASH burden 2019 with service levels as counterfactual; primary burden source
+W4283761346,include,meta-analysis,primary diarrhoea effect source 2022 (Lancet); service level stratified
+W4283207078,include,meta-analysis,Cochrane 2022 WASH and STH; primary STH effect source
+W4211014524,include,meta-analysis,Cochrane 2021 handwashing promotion and diarrhoea with GRADE
+W2944592180,include,burden,WHO burden update 2016 data with exposure-response levels
+W2946739594,mapped,mhh,qualitative metasynthesis of menstruation experiences; no health effect estimate; informs MHH question
+W2960236837,include,interpretation,trial investigators' interpretation of WASH Benefits and SHINE; service level argument
+W2960401104,include,interpretation,WHO and Gates expert consensus on the three trials; transformative WASH
+W2947342604,include,review,narrative review of WASH and STH trial evidence and next steps
+W2785371307,include,trial-major,WASH Benefits Bangladesh
+W4239240204,include,trial-major,WASH Benefits Kenya (Aqua for All country)
+W2903935951,include,trial-major,SHINE Zimbabwe; stunting and diarrhoea (map only for stunting)
+W2791078272,include,meta-analysis,2018 meta-regression used by WHO for exposure-response relative risks
+W2620594344,include,meta-analysis,sanitation and diarrhoea STH trachoma nutrition 2017
+W2292933427,mapped,mhh,MHM prevalence meta-analysis India; absenteeism outcome; informs MHH question
+W2403229527,include,economic,knowledge base for SDG WASH targets incl. costs benefits and health
+W2531793289,include,review,latrine coverage and use meta-analysis; intermediate outcome for use adjustment
+W2057044056,include,meta-analysis,Cochrane 2015 water quality interventions and diarrhoea with GRADE
+W2110878250,include,burden,WHO burden 2012 data; 145 countries
+W2040633924,include,meta-analysis,WASH and STH 2014 observational pooled ORs
+W2168270561,include,review,faecal contamination by source type; baseline water quality conditions
+W1670816734,include,meta-analysis,handwashing prevalence and health effect 2014
+W2149966611,include,meta-analysis,water and sanitation meta-regression 2014
+W1886885898,include,meta-analysis,Cochrane 2013 WASH and nutritional status; stunting map only
+W2725909355,include,meta-analysis,3ie 2009 review; older pooled estimates
+W2055553384,include,economic,global costs and benefits of universal coverage; benefit-cost ratios
+W2120476202,include,interpretation,foundational commentary; no extraction
+W2152057480,include,meta-analysis,2010 IJE review deriving diarrhoea mortality effects for LiST
+W2117678428,include,meta-analysis,Cochrane 2010 excreta disposal; superseded by Wolf 2018 and Freeman 2017
+W2108091428,include,meta-analysis,2007 point-of-use chlorination; superseded by Clasen 2015 and Wolf 2022
+W2130779321,include,meta-analysis,2006 handwashing and respiratory infection; ARI map only; superseded by Ross 2023
+W2172098474,include,meta-analysis,2005 foundational review; superseded
+W1658021788,include,economic,WHO 2004 cost-benefit; foundational
+W2135962256,include,meta-analysis,2003 handwashing foundational; superseded
+W1774588359,include,meta-analysis,1991 foundational; superseded
+W7118186887,exclude,,high income (Europe) chemical contaminants
+W7157900121,exclude,,flooding and infections; not a WASH intervention effect
+W7125030000,include,meta-analysis,food hygiene interventions and child diarrhoea 2026; adjacent hygiene pathway
+W7152729658,mapped,primary,school water and hygiene cRCT Addis Ababa preschool; single programme
+W7160313309,include,meta-analysis,WASH practices and stunting 2026; stunting map only
+W7124585842,include,burden,GBD 2021 handwashing-attributable diarrhoea trends; secondary burden source
+W7124680567,exclude,,outcome trachoma out of scope
+W7140216878,include,burden,GBD 2021 unsafe water diarrhoea burden; secondary burden source
+W7147186848,exclude,,book chapter without abstract; no pooled estimate
+W7162139187,exclude,,theoretical cholera funding model; no effect estimate
+W7162445007,exclude,,pathogen dynamics in onsite systems; no health outcome
+W7171871190,exclude,,outcome schistosomiasis out of scope
+W7204549969,exclude,,cross-sectional single city
+W7214011280,exclude,,duplicate record of W4283761346 (repository copy)
+W7221352983,exclude,,narrative review of 16 publications; no pooled estimate
+W4407131849,include,meta-analysis,seasonal effect modification of WASH trials on diarrhoea 2025; baseline conditions
+W4408216376,include,trial-major,national community-driven WASH programme cRCT DRC 2025; diarrhoea and stunting
+W4408521979,exclude,,QMRA single site
+W4408018942,mapped,primary,India sanitation adoption cRCT; child health secondary
+W4408878574,exclude,,cross-sectional single community
+W4411689812,include,burden,GBD 2021 WaSH-attributable diarrhoea by country; secondary burden source
+W4415618307,mapped,primary,Nairobi slum quasi-experimental safe water delivery (Kenya)
+W4417102315,exclude,,viral respiratory pandemics adherence; not LMIC WASH service
+W4417362221,exclude,,country scoping review without pooled estimates
+W7124451317,exclude,,narrative gap review; no pooled estimate
+W4415700838,exclude,,conference paper Mexico predictive model
+W7125893387,exclude,,narrative review overlapping W7160313309
+W4394714246,include,trial-secondary,WASH Benefits reanalysis of weather effect modification; baseline conditions
+W4399969627,include,meta-analysis,rainfall and temperature with WASH effect modification 2024; baseline conditions
+W4392183652,include,review,IPD meta-analysis of environmental pathogen detection and child outcomes; mechanism
+W4401826600,include,burden,GBD 2019 WaSH burden 1990 to 2019; secondary burden source
+W4402134992,mapped,primary,school WASH cRCT Addis Ababa; attendance outcome
+W4402077531,exclude,,natural resource management; not WASH service
+W4400275734,include,trial-major,Uvira DRC piped water supply pragmatic trial; rare water supply evidence
+W4401304153,exclude,,cross-sectional MICS analysis
+W4392817415,mapped,primary,school WASH and STH quasi-experimental Ethiopia
+W4401212051,exclude,,protocol
+W4401611631,include,ecological,drinking water service levels vs under-five diarrhoea burden across 200 countries; service level evidence
+W4391947064,exclude,,outcome SAM relapse out of scope
+W4391529054,exclude,,chemical pollution Colombia
+W4393004014,include,trial-secondary,mediation of WASH Benefits sanitation effect by child faeces management
+W4398222990,exclude,,healthcare facility behaviour outcome
+W4400128794,include,meta-analysis,Lifestraw Family filter SR and MA 2024; point-of-use filter
+W4405550551,exclude,,outcome vaginal microbiome out of scope
+W4399264657,mapped,primary,quasi-experimental tribal India 4-week intervention
+W4401855361,exclude,,COVID transmission modelling
+W4400546576,include,meta-analysis,RCT-only WASH and nutrition interventions on infections and growth 2024; quality to check
+W4401691098,exclude,,protocol
+W4394677324,exclude,,preprint duplicate of W4402134992
+W4402694079,exclude,,single site case-control
+W4400585442,exclude,,preprint duplicate of W4408216376
+W4410507988,exclude,,single site case-control
+W4376133110,exclude,,animal agriculture biosecurity
+W4367172984,include,meta-analysis,handwashing with soap and ARI in LMICs 2023 (Lancet); ARI map only
+W4366463941,include,meta-analysis,WASH interventions and childhood mortality 2023 (PLoS Med); mortality
+W4386252099,exclude,,outcome typhoid out of scope
+W4320482073,exclude,,hand contamination prevalence; no health outcome
+W4389393005,include,burden,GBD 2019 unsafe water diarrhoea mapping; secondary burden source
+W4376868986,exclude,,high income (Appalachia)
+W4324131234,exclude,,preprint duplicate of W4366463941
+W4379874960,exclude,,protocol
+W4386270555,exclude,,treatment technology review; no health outcome
+W4323349116,mapped,primary,hygiene promotion cRCT in refugee camps Ethiopia
+W4362703886,exclude,,mass gathering pilot RCT; not LMIC WASH service
+W4382767096,exclude,,cross-sectional DHS analysis
+W4388648060,exclude,,preprint duplicate of W4400546576
+W4381050586,exclude,,high income settings
+W4283778331,exclude,,pandemic respiratory viruses hand hygiene
+W4308457673,mapped,primary,school WaSH cRCT Manila; malnutrition outcomes
+W4313503404,exclude,,descriptive national mortality analysis
+W4206062404,exclude,,bottled water China
+W4290667462,include,trial-secondary,WASH Benefits Bangladesh sanitation extended follow-up; sustained effect on diarrhoea and ARI
+W4319997202,include,meta-analysis,Kremer et al water treatment and child mortality MA and CEA (SSRN/NBER)
+W4310705100,include,method,transmission models to generalise RCT effects across contexts
+W4224139297,include,review,community-level interventions for waterborne diarrhoea; narrative; low priority
+W4280505009,exclude,,pandemic respiratory modelling
+W4312037059,exclude,,protocol; outcome out of scope
+W4311667833,include,method,scoping review of risk mitigation frameworks; low priority for tool design
+W4205413929,exclude,,single site case-control
+W4286602835,exclude,,preprint duplicate; outcome out of scope
+W4292622829,exclude,,preprint protocol
+W3145032972,include,trial-major,MapSan urban onsite sanitation Maputo; enteric infection diarrhoea STH
+W3120557810,exclude,,protocol
+W4200182852,exclude,,occupational outcomes of sanitation workers; note as adjacent for FSM enterprises
+W4200253327,exclude,,outcome trachoma out of scope
+W3118790393,mapped,primary,food handling cRCT The Gambia
+W3202870892,exclude,,outcome acute malnutrition out of scope
+W3136610904,mapped,primary,handwashing cRCT rural Ethiopia
+W3125104403,exclude,,QMRA soils
+W3118274859,mapped,primary,filter RCT Dominican Republic
+W3198564833,exclude,,cross-sectional China
+W3185645270,exclude,,environmental outcome (STH eggs in soil)
+W3160058112,mapped,primary,Mikono Safi school handwashing and STH cRCT Tanzania
+W3174274297,exclude,,scoping review; growth outcomes; no pooled estimate
+W3187167855,include,review,systematic review of sanitation cRCTs in rural LMICs 2021; narrative
+W3198809131,exclude,,outcome trachoma out of scope
+W3180504507,exclude,,qualitative case study
+W3198578351,exclude,,theoretical cholera model
+W3214851106,exclude,,high income (Spain)
+W3138954628,include,method,STH transmission model with water and sanitation in Kenya; low priority
+W3129136996,exclude,,protocol
+W3164372972,include,trial-major,Cambodia factorial nutrition and sanitation cRCT (preprint; find published version)
+W4206259150,mapped,primary,factorial chlorination and handwashing cRCT Dire Dawa
+W4231153337,exclude,,preprint protocol
+W3165122969,exclude,,single site case-control
+W3203072991,exclude,,viral respiratory infections community; pandemic context
+W3000361331,exclude,,guideline scoping review; no effect estimate
+W3000225819,exclude,,narrative review; undernutrition
+W3044675763,exclude,,outcome typhoid out of scope
+W3095149988,exclude,,outcome Entamoeba out of scope
+W3084224348,include,review,IPD meta-analysis of faecal contamination and child health 2020; exposure-response
+W3031926005,exclude,,high income; outcome out of scope
+W3040694627,include,meta-analysis,WASH alone and with nutrition on child growth 2020; stunting map only
+W2991414241,exclude,,cholera risk factor diagram; no intervention effect
+W3008310615,include,trial-secondary,WASH Benefits Bangladesh ARI outcomes; ARI map only
+W3015805446,mapped,primary,food hygiene and WASH before-after trial Malawi
+W3090712321,exclude,,cross-sectional
+W3033579323,mapped,primary,household chlorination cRCT Dire Dawa
+W3047943900,mapped,primary,CHoBI7 mHealth cRCT Bangladesh
+W3013124704,include,trial-secondary,WASH Benefits Kenya ARI outcomes; ARI map only
+W3111746378,include,meta-analysis,solar disinfection and childhood diarrhoea 2020
+W3016747460,exclude,,respiratory viruses; mostly high income trials
+W3112611169,exclude,,design and baseline paper
+W3026023717,exclude,,behaviour outcome in healthcare facilities
+W3108495929,include,method,modelling population intervention strategies and diarrhoea disparities Peru; low priority
+W3132179673,exclude,,disinfection technology review; no health outcome
+W3006922217,exclude,,protocol
+W3104608345,exclude,,descriptive correlation China
+W3091179293,exclude,,preprint; environmental outcome
+W3112928955,exclude,,preprint; parasite prevalence observational
+W4213123166,exclude,,protocol
+W3031151331,exclude,,cross-sectional
+W3093870858,exclude,,preprint duplicate of W3118274859
+W3156468931,exclude,,protocol
+W4298227700,exclude,,protocol repository copy
+W4299653235,exclude,,repository duplicate of W2110878250
+W2935825922,include,trial-secondary,SHINE enteric infection outcomes
+W2969044726,include,trial-major,double-blind cRCT of passive in-line chlorination at shared water points Bangladesh
+W2954085063,include,trial-secondary,WASH Benefits Kenya STH and Giardia outcomes
+W2948468021,include,trial-major,programmatic water filter and cookstove distribution cRCT Rwanda (Aqua for All country)
+W2964205148,mapped,primary,school WASH cRCT Laos
+W2909106252,include,trial-secondary,WASH Benefits Bangladesh STH outcomes
+W2961462897,exclude,,healthcare facility setting
+W2982261307,exclude,,Galapagos dual burden; observational
+W2940383514,exclude,,biomarker outcome
+W2910376764,mapped,primary,WASH for WORMS cRCT Timor-Leste STH
+W2995106439,exclude,,cross-sectional
+W2914621482,exclude,,environmental outcome
+W2984646962,exclude,,influenza outcome
+W2916315425,exclude,,observational risk factors
+W2906934891,mapped,primary,large handwashing promotion cRCT Bangladesh respiratory illness
+W2996131017,exclude,,protocol
+W2972577737,exclude,,yearbook summary duplicate of W2903935951
+W2922845890,exclude,,SAM treatment context
+W3005711570,exclude,,cross-sectional (Rwanda; note for baselines)
+W2264485534,exclude,,repository duplicate of W2166045868
+W2972059797,exclude,,travellers
+W2797307135,include,trial-secondary,WASH Benefits Bangladesh protozoa; low priority
+W2785243939,exclude,,outcome trachoma
+W2810482156,exclude,,cholera case-control exposures; no intervention effect
+W2883748497,include,review,systematic review of WASH on growth non-diarrhoeal morbidity and mortality 2018; check pooled estimates
+W2909884077,exclude,,anaemia outcome
+W2804925188,include,review,hygiene interventions and ARI in LMIC settings 2018; ARI map only
+W2785391025,exclude,,QMRA
+W2796019978,mapped,primary,ceramic filter RCT western Kenya
+W2789378460,exclude,,SAM programme context
+W2896724211,exclude,,high income (Korea)
+W2785353712,mapped,primary,UV disinfection compliance and cost-effectiveness Mexico; compliance framework
+W2807571566,exclude,,theoretical model
+W2621535145,include,burden,QMRA burden attributable to intermittent water supply; service quality
+W2767294195,include,meta-analysis,Darvesh 2017 WASH and childhood diarrhoea estimates for LiST
+W2604540445,include,review,school hand hygiene strategies diarrhoea and ARI; narrative
+W2622131491,include,meta-analysis,individual-level MA of community sanitation coverage on stunting anaemia diarrhoea (DHS MICS); herd effects
+W2609742677,mapped,primary,handwashing and WASH education cRCT Ethiopia
+W2771610818,exclude,,reproductive tract infection symptoms; out of scope
+W2752676182,include,meta-analysis,boiling drinking water and diarrhoea 2017
+W2603334898,exclude,,observational risk factors
+W2603793177,include,meta-analysis,neighbourhood and household sanitation on diarrhoea 2017
+W2609183578,exclude,,school well outbreaks China
+W2581715647,exclude,,gender prevalence differences; no intervention effect
+W2747161079,mapped,primary,sanitation cRCT Idiofa DRC
+W2753685376,mapped,primary,handwashing and chlorination added to cholera vaccination; hospitalisation outcome Dhaka
+W2751378495,exclude,,cardiovascular outcome
+W2568841432,exclude,,high income office workers
+W2596889426,exclude,,protocol
+W2540310182,exclude,,descriptive national trends Iran
+W3015060465,exclude,,table fragment of a DCP3 chapter
+W2319554767,exclude,,climate exposures; no intervention effect
+W2345868033,mapped,primary,GEMS multi-site case-control sanitation and hygiene risk factors incl. shared sanitation
+W2344281091,mapped,primary,school WASH matched-control Mali
+W2513011376,include,method,modelling reduced diarrhoea burden from water and sanitation access in India 2016
+W2294220580,exclude,,cross-sectional
+W2547996783,mapped,primary,integrated home environmental package cRCT Peru
+W2563894492,exclude,,healthcare water systems
+W2507678490,exclude,,observational risk factors
+W2317114420,exclude,,micronutrient trial
+W2548539616,include,economic,costs of not handwashing and benefits of programmes India and China 2016
+W2222021309,exclude,,behaviour outcome
+W2527683424,exclude,,laboratory chlorine study
+W2339256772,exclude,,protocol
+W2528343710,exclude,,behaviour observation
+W2286111767,exclude,,military deployment
+W2484402663,exclude,,vote-counting review
+W2121051375,include,trial-major,CLTS cRCT Mali 2015; diarrhoea and growth
+W1815121818,include,review,WASH interventions to control cholera 2015; narrative; low priority
+W1814167073,exclude,,outcome protozoa out of scope
+W1835489350,include,review,WASH in humanitarian crises 2015; narrative; low priority
+W2204562686,exclude,,observational risk factors
+W592723513,mapped,primary,handwashing and nail clipping factorial cRCT Ethiopia STH
+W2045604909,mapped,primary,tubewell water chlorination and storage RCT Bangladesh
+W1940086142,exclude,,protocol
+W2001644926,exclude,,high income (Netherlands)
+W1774935441,include,trial-major,improved water supply matched cRCT Volta Region Ghana (Aqua for All country); small
+W1992651714,exclude,,high income (Denmark)
+W2196647256,exclude,,humanitarian water quantity standard; no effect estimate
+W2009555133,exclude,,state-level PAF application Brazil
+W2009236519,exclude,,high income office
+W4230457360,exclude,,duplicate of W2484402663
+W2119427701,include,trial-major,Odisha rural sanitation cRCT 2014; null on diarrhoea and STH
+W1980524096,include,trial-major,Madhya Pradesh Total Sanitation Campaign cRCT 2014
+W2112225871,exclude,,outcome schistosomiasis
+W2081884177,exclude,,outcome trachoma
+W2013700872,include,review,coliform indicators and diarrhoeal risk 2014; baseline water quality
+W2021337515,include,review,shared sanitation versus individual latrines 2014; service level definition
+W1969367447,exclude,,maternal mortality out of scope; note as possible outcome
+W1978449036,exclude,,influenza
+W1980125603,include,method,evolving methods for WASH burden estimation 2014
+W1981753921,mapped,primary,handwashing RCT Mumbai
+W2056967388,include,interpretation,editorial on the elusive effect of water and sanitation in GBD
+W2132711427,mapped,primary,hollow fibre filter cRCT Bolivia
+W2317640517,exclude,,observational SEM
+W2120018338,exclude,,dissertation cross-sectional
+W2188412138,exclude,,duplicate of W1969367447
+W2284703368,exclude,,not retrievable; Korean journal record
+W2151506147,mapped,primary,school WASH and STH reinfection cRCT Kenya
+W2119579564,mapped,primary,school WASH and pupil diarrhoea cRCT Kenya
+W2041554090,mapped,primary,double-blind placebo chlorination RCT Orissa; null; key for blinding debate
+W2147398982,mapped,primary,chlorination cRCT Ethiopia
+W2101548987,mapped,primary,UV disinfection stepped wedge Mexico
+W2013542749,exclude,,conference abstract superseded by W2149966611
+W1975697334,exclude,,outbreak case-control
+W2099658345,include,method,static model of cholera cases averted by WASH coverage Haiti; non-linear coverage effects
+W2143156788,exclude,,high income design paper
+W2073453329,include,interpretation,editorial on GBD 2010 WASH risk; low priority
+W1969864987,include,meta-analysis,sanitation and STH 2012; superseded by Strunz 2014
+W1572873130,exclude,,influenza
+W2110315441,exclude,,China descriptive burden
+W2138939716,exclude,,design paper
+W2134725714,exclude,,high income
+W2158669638,mapped,primary,biosand filter RCT Honduras
+W2331414842,exclude,,observational SEM
+W1604940282,include,method,sanitation burden inequities and pro-poor targeting; low priority
+W117091708,exclude,,duplicate record of W2725909355
+W1979605138,mapped,mhh,Nepal RCT of sanitary products on school attendance; near-zero effect
+W1989236800,mapped,primary,SODIS Kenya dysentery
+W2035978416,mapped,primary,SODIS RCT Cambodia (Aqua for All country)
+W1549883310,mapped,mhh,systematic review of separate school toilets for girls and attendance
+W2067312370,exclude,,outcome trachoma
+W2028701699,exclude,,design paper
+W2169208260,mapped,primary,latrine promotion mortality secondary outcome Ethiopia
+W2048974446,exclude,,response letter
+W2159218216,include,meta-analysis,sewerage and diarrhoea 2010; sewered sanitation estimate
+W2171668678,include,meta-analysis,distance to water source and diarrhoea 2010; accessibility
+W1973505641,mapped,primary,water and hygiene RCT Afghanistan
+W2188791845,exclude,,dissertation
+W2109241058,mapped,primary,SODIS cRCT Bolivia; null
+W2166045868,mapped,primary,biosand filter RCT Dominican Republic
+W1598408666,mapped,primary,biosand filter RCT Kenya
+W1964701507,include,meta-analysis,Cochrane handwashing 2008; superseded by W4211014524
+W1493656672,exclude,,outcome trachoma
+W2164819406,mapped,primary,ceramic filter RCT Cambodia (Aqua for All country)
+W2145435173,mapped,primary,ceramic filter RCT South Africa and Zimbabwe
+W207571909,exclude,,protocol
+W2135576309,include,meta-analysis,water quality interventions 2007 BMJ; superseded by Clasen 2015
+W2117552883,include,economic,cost-effectiveness of water quality interventions by type 2007
+W2134243580,include,method,household transmission model balancing WASH pathways 2007
+W2165019518,exclude,,AIDS patients
+W2155775416,include,burden,South Africa WASH burden 2000 (Aqua for All country); WHO CRA scenarios
+W2023542882,exclude,,duplicate of the 2006 Cochrane water quality review; superseded
+W1584701487,mapped,primary,water treatment and handwashing cRCT Karachi
+W2170691595,mapped,primary,POU treatment in displacement camps Liberia
+W2112831031,include,economic,safe water system cost per DALY Uganda (Aqua for All country); low priority
+W2137593565,include,trial-major,Luby 2005 handwashing RCT Karachi; pneumonia and diarrhoea
+W2124292285,mapped,primary,flocculant-disinfectant cRCT Kenya with mortality
+W2143823760,mapped,primary,ceramic filter RCT Colombia
+W7127731603,include,review,umbrella review of unsafe drinking water outcomes and intervention effectiveness with GRADE 2026
+W7167237949,exclude,,access modelling; no health outcome
+W4412351878,mapped,primary,in-line chlorination implementation RCT rural Odisha 2026
+W7119486115,exclude,,water quality detection method
+W7124920286,include,review,sustainability of WASH behaviour change in South Asia; sustained use; low priority
+W7127973441,exclude,,descriptive trends Ghana (note for baselines)
+W7133353970,exclude,,narrative review of water quality and child growth
+W7148854561,include,economic,systematic review of cost-effectiveness and benefit-cost of handwashing promotion 2026
+W7154956702,exclude,,groundwater contamination distance
+W4405037278,include,method,transmission model of why WASH Benefits Kenya had limited impact; context and intervention factors
+W4415641468,exclude,,willingness to pay experiment; no health outcome
+W7128170082,exclude,,groundwater modelling
+W7129393045,exclude,,process evaluation methods
+W7138139570,include,review,scoping review of WASH intervention effectiveness in Anglophone sub-Saharan Africa 2026; low priority
+W7138938799,exclude,,behaviour outcome
+W7147234815,exclude,,system strengthening outcomes
+W7150757082,exclude,,behaviour outcome
+W7153341168,exclude,,preprint; nutritional status
+W7154040482,exclude,,scoping of open defecation interventions; no health outcome
+W7155211786,exclude,,book chapter without abstract
+W7157885258,exclude,,preprint subnational access estimates (note as possible baseline dataset)
+W7161170635,exclude,,filter chemistry
+W7163188046,exclude,,protocol
+W7165151536,exclude,,rainwater and energy
+W7165541648,exclude,,emerging contaminants
+W7166887778,exclude,,Malaysia KAP review
+W7167470493,exclude,,crowdsourcing
+W7170075874,exclude,,nexus synthesis
+W7203967812,exclude,,recreational bathing Hungary
+W7204157982,exclude,,vaccine and hygiene education
+W7204460510,exclude,,mental health
+W7207793871,exclude,,pharmaceuticals in water
+W7212301596,include,review,behaviour change and latrine construction and use in rural sub-Saharan Africa; intermediate outcome; low priority
+W7212325422,exclude,,Alaska
+W7213761983,exclude,,membrane technologies
+W7213785287,include,meta-analysis,preprint meta-regression of promotion visit frequency on handwashing and water treatment effectiveness; delivery intensity
+W7214656650,exclude,,protocol
+W4409106848,exclude,,contamination modelling
+W4412939923,exclude,,explainable AI
+W4408923838,exclude,,treatment technology performance (note: WHO GDWQ update)
+W4408865483,exclude,,household water treatment microbiological performance (note: log reduction evidence)
+W4410166189,include,review,scoping review of school WASH health education and gender outcomes 2025; attendance; MHH context
+W4406109873,exclude,,behaviour change scoping
+W4414304599,exclude,,qualitative barriers
+W4408397669,exclude,,preprint duplicate
+W4413346284,exclude,,guidance tools scoping
+W4406051417,exclude,,water quality prevalence Ethiopia
+W4408294094,exclude,,determinants of access Somalia
+W4414304634,exclude,,government measures hand hygiene
+W4414304640,exclude,,laboratory efficacy of hand hygiene methods
+W4408397491,exclude,,AI commentary
+W4414229598,exclude,,behaviour change techniques
+W4414229620,exclude,,minimum materials
+W4408403129,exclude,,preprint duplicate
+W4414774415,exclude,,conflict settings schools scoping
+W4415639773,exclude,,preprint; knowledge and behaviour outcomes
+W4406928371,exclude,,protocol
+W4408043091,exclude,,GIS review
+W4408389522,exclude,,preprint duplicate
+W4408389658,exclude,,preprint duplicate
+W4415166743,include,economic,cost-benefit of water safety plans Zimbabwe 2025; low priority
+W4416541680,exclude,,well contamination
+W4417457774,exclude,,child development outcome
+W4407095411,include,method,mechanistic model of sensitivity of WASH outcomes to context and intervention factors 2025
+W4408158330,exclude,,protocol
+W4408390167,exclude,,preprint duplicate
+W4411259904,exclude,,preprint; behaviour outcomes (Malawi CLTS; note)
+W4411857164,exclude,,filter engineering
+W4414413819,exclude,,school toileting systems model
+W4414698995,exclude,,preprint; coverage outcomes (Malawi CLTS; note)
+W4415499099,exclude,,protocol
+W4416751445,mapped,primary,WASH and childhood growth cRCT Ethiopia 2025; stunting
+W4417088487,exclude,,water contamination determinants
+W7117751677,exclude,,chemical contaminants Ghana
+W4408688787,exclude,,sewer connection behaviour scoping (note for sewered services)
+W4410226346,include,method,DALY trade-off model of boiling with solid fuels 2025; low priority
+W4411098502,include,review,pooled latrine utilisation prevalence East Africa 2025; baseline use rates; low priority
+W4413452233,exclude,,bottled water Nairobi
+W4414550364,exclude,,joint regression Namibia
+W4414702238,exclude,,handwashing prevalence Ethiopia
+W4415109527,exclude,,preprint duplicate of W7148854561
+W4416729803,exclude,,water contamination prevalence
+W4416753416,exclude,,preprint protocol
+W4417003899,mapped,mhh,cost-effectiveness of menstrual hygiene education with reusable pads tribal India; pre-post
+W4417419252,exclude,,repository duplicate of W4408865483
+W4417419257,exclude,,repository duplicate of W4408923838
+W4400123924,exclude,,slum access scoping
+W4401858962,exclude,,nature-based solutions
+W4403952929,exclude,,septic effluents
+W4391006302,exclude,,willingness to pay for FSM (note for FSM enterprise models)
+W4401394880,exclude,,risk factors Ghana river basin
+W4400767211,exclude,,health facility setting
+W4403112396,include,review,indicators for shared sanitation quality 2024; service level monitoring; low priority
+W4391349639,exclude,,United States
+W4391589804,exclude,,COVID behaviour
+W4392812066,exclude,,Finland day care
+W4394706000,include,method,reporting of context and implementation in WASH evaluations 2024; external validity
+W4405637512,include,method,counterfactual simulation to generalise WASH Benefits Bangladesh outcomes 2024
+W4401869265,exclude,,preprint scoping climate and disability
+W4402582096,exclude,,water bacteria prevalence Ethiopia
+W4391380471,exclude,,hand hygiene prevalence India
+W4395660620,exclude,,stress and epigenetic outcomes
+W4400973430,exclude,,outbreak scoping camps
+W4404541717,exclude,,urban piped water access approaches (note for water utility enterprises)
+W4405542488,exclude,,dental water
+W4391623602,exclude,,protocol
+W4392232943,exclude,,COVID outcome
+W4392883571,exclude,,Arab states hand hygiene scoping
+W4400230986,exclude,,behaviour outcome
+W4403052946,exclude,,solar pumping support
+W4396948927,exclude,,behaviour association
+W4401853378,include,economic,systematic review of economic analyses of urban sanitation interventions 2024; low priority
+W4404189700,include,economic,least-cost analysis criteria for citywide inclusive sanitation 2024; low priority
+W4390771910,exclude,,Nepal handwashing practices
+W4404457127,exclude,,poultry
+W4394723235,exclude,,food preparation hygiene prevalence
+W4400401674,include,method,financial incentives for sanitation take-up RCT Vietnam 2024; incentive design and additionality analogue
+W4400780250,exclude,,child faeces disposal determinants
+W4390725491,exclude,,water quality outcome of deep tubewells
+W4400389669,exclude,,cross-sectional schools Kenya
+W4401911074,exclude,,behaviour outcome
+W4403559702,exclude,,repository duplicate of W4403112396
+W4404674073,exclude,,protocol
+W4405364117,include,method,sensor-measured versus reported latrine use 2024; verification of use
+W4382753512,exclude,,antibiotic resistance outcome (note)
+W4378195405,exclude,,mental health
+W4366350992,exclude,,behaviour barriers
+W4381547613,exclude,,guidelines scoping
+W4323030586,exclude,,emptying practices review (note for FSM)
+W4388359994,exclude,,high income homeless
+W4327814814,exclude,,dental
+W4388020629,exclude,,Nigeria infrastructure
+W4318542904,include,review,adoption of point-of-use chlorination systematic review 2023; use rates for use adjustment
+W4367056227,exclude,,hydraulic modelling
+W4378839566,exclude,,COVID nudges
+W4323305621,include,review,IPD meta-analysis of WASH effects on environmental pathogens 2023; mechanism; low priority
+W4382310423,include,review,Swachh Bharat Mission effectiveness review 2023; India coverage; low priority
+W4313529154,exclude,,water contamination risk factors
+W4362511540,exclude,,behaviour outcome
+W4381245557,include,method,impact evaluation methods for large urban water and sewer investments (Jordan) 2023; attribution
+W4381884143,exclude,,protocol
+W4384936609,include,review,why low-cost POU technologies succeed or fail 2023; adoption; low priority
+W4379928573,exclude,,household water treatment prevalence
+W4322729454,exclude,,measurement review
+W4388706509,exclude,,protocol
+W4385896824,exclude,,high income schools
+W4389725824,exclude,,mental health
+W4388794436,exclude,,behaviour outcome
+W4323923890,include,trial-secondary,WASH Benefits sustained latrine and potty use 1 to 3.5 years; sustained use
+W4389431230,exclude,,hand hygiene practices review
+W4328051470,exclude,,food markets
+W4387580940,exclude,,behaviour outcome
+W4318475752,exclude,,protocol
+W4385218813,exclude,,knowledge and practice outcomes
+W4389979965,include,method,system dynamics of rural sanitation sustainability Uganda 2023; low priority
+W4390050888,exclude,,microbiota
+W4367596953,exclude,,measurement tool
+W4380629725,include,meta-analysis,ceramic filter water treatment and water-related disease 2023; quality to check
+W4366003385,exclude,,preprint duplicate
+W4387045176,exclude,,response letter
+W4281638009,exclude,,women's empowerment metasynthesis; no health effect
+W4220801482,exclude,,open defecation prevalence SSA (note for baselines)
+W4223637331,exclude,,climate impacts on urban sanitation systems
+W4220831076,exclude,,gender-based violence scoping
+W4309030312,exclude,,gender equity review
+W4220811060,exclude,,exposure simulation multiple sources
+W4211071874,exclude,,behaviour outcome (latrine use)
+W4226074080,mapped,primary,Andilaye demand-side sanitation and hygiene cRCT Ethiopia; health secondary
+W4288701865,exclude,,sanitation determinants review Ethiopia
+W4291014996,exclude,,COVID rapid review
+W4307366583,exclude,,handwashing facility prevalence SSA
+W4295880217,exclude,,acceptability measures review
+W4229379228,exclude,,adaptation concepts scoping
+W4280505766,exclude,,hand contamination outcome
+W4308525193,exclude,,kindergarten hand hygiene status
+W4302424869,exclude,,child faeces disposal interventions review; behaviour
+W4312947738,exclude,,COVID app trial
+W4295715689,mapped,primary,household filters added to Rwanda CBEHPP cRCT 2022 (Aqua for All country); diarrhoea outcome
+W4205319414,exclude,,protocol
+W4307166954,include,method,targeted latrine subsidies RCT rural Cambodia (iDE) 2022; sales and cost-effectiveness; enterprise relevant
+W4281699324,exclude,,qualitative
+W4309830335,exclude,,antimicrobial resistance outcome
+W4206117098,exclude,,preprint risk factors
+W4281683547,exclude,,preprint handwashing prevalence
+W4286111690,exclude,,COVID outcome
+W4297961872,exclude,,preprint guidelines scoping
+W4285159900,include,method,water-adjusted person years for cost-benefit analysis (preprint); valuation; low priority
+W4307001887,exclude,,preprint duplicate
+W3160632630,exclude,,narrative review
+W3156135845,include,review,multiple water source use in LMICs 2021; exposure misclassification; low priority
+W4200488677,exclude,,climate and water quality scoping
+W3172309255,exclude,,groundwater self-supply contamination
+W3126693641,include,method,faecal pathogen flow and health risk modelling for urban sanitation decisions Bangladesh 2021; low priority
+W3143568238,include,trial-major,sanitation financial incentives and health spillovers cRCT 2021; incentives and spillovers
+W3203433633,exclude,,water transport impacts review (note time savings)
+W3122303260,exclude,,handwashing frequency MA; mostly high income
+W3168695074,exclude,,behaviour change techniques
+W3134630464,exclude,,service transitions modelling
+W3214515577,exclude,,behaviour outcome (note: hardware versus promotion effects on handwashing)
+W3139343338,exclude,,hand hygiene technique trial
+W3160907743,include,trial-secondary,DRC community-driven WASH cRCT infrastructure and access outcomes 2021; companion of W4408216376
+W3131703002,exclude,,protocol
+W3165364795,exclude,,environmental contamination outcome
+W3187460255,exclude,,water quality outcome
+W3126011526,exclude,,filter manufacturing
+W3130140569,include,review,meta-analysis of sanitation interventions on latrine coverage from RCTs 2021; intermediate outcome; low priority
+W3157613932,exclude,,willingness to pay (note for sanitation enterprises)
+W3158853178,exclude,,protocol
+W3111469378,exclude,,equity of uptake
+W3170693205,exclude,,water quality outcome
+W3208948251,exclude,,trachoma-related behaviour trial
+W3158600071,exclude,,food security and nutrition review
+W3157534270,exclude,,psychosocial mediation
+W3144792541,exclude,,practice outcome
+W3162378626,exclude,,filter hydraulics
+W4220679997,exclude,,COVID modelling
+W3121694617,exclude,,product efficacy lab
+W3199784777,exclude,,SDG accelerators
+W3143457267,exclude,,qualitative CHW experiences
+W3183839491,exclude,,tubewell contamination
+W4210548093,exclude,,preschool scoping South Africa
+W4300886171,exclude,,people living with HIV population review
+W3187171406,exclude,,protocol
+W4200223719,exclude,,preprint protocol
+W3186961747,exclude,,preprint microbiota
+W3199838411,exclude,,hospital nudges
+W4384931751,exclude,,dissertation Bayesian networks
+W3013039395,exclude,,behaviour determinants
+W3082726928,exclude,,coping strategies review
+W3096843994,exclude,,ODF slippage review (note sustainability)
+W3107084667,exclude,,China review
+W3041273599,exclude,,conflict delivery review
+W3092857525,exclude,,ingestion pathways modelling
+W3082868039,include,trial-secondary,WASH Benefits Bangladesh enteropathogens at 14 months; low priority
+W3085116350,exclude,,water availability measurement review (note service level availability)
+W3088984193,exclude,,toxic metals
+W3107979228,exclude,,behaviour outcome
+W3097598737,exclude,,habit formation outcome
+W3040805899,exclude,,blood pressure outcome
+W3083545663,exclude,,economic evaluation of supply systems without health link (no abstract)
+W3113015426,exclude,,sanitary inspection forms
+W3088962996,exclude,,groundwater modelling
+W3080339144,exclude,,AMR modelling
+W3092565050,exclude,,water quality modelling
+W3019609702,exclude,,cardiometabolic outcome
+W3116241545,exclude,,protocol
+W3016817394,exclude,,child care centres; likely high income
+W3000901873,exclude,,process evaluation (note: Rwanda CBEHPP cRCT)
+W3102246803,exclude,,high income municipal POU
+W3040739095,exclude,,behaviour outcome
+W3088427915,exclude,,technology acceptance
+W3042666032,include,economic,trial-based ex post cost-benefit of CLTS Ethiopia 2020; averted mortality valuation
+W3113190780,exclude,,hospital nurses high income
+W2945530020,exclude,,digital technology scoping
+W3108949993,exclude,,behaviour outcome
+W3114183925,include,economic,cost-effectiveness of CLTS in Ethiopia and Ghana 2020 (Aqua for All country)
+W3043858566,exclude,,private sector school sanitation sustainability (note: enterprise delivery model Nairobi)
+W2999465179,exclude,,qualitative
+W3087465519,exclude,,behaviour outcome
+W3001927414,exclude,,product purchase and use (note: free-trial sales approach)
+W3095743468,exclude,,uptake outcome
+W4299545580,include,review,water and sanitation in schools health and educational outcomes (repository copy of Jasper et al.); low priority
+W3097769782,exclude,,SMS uptake
+W3198293368,include,economic,cost-benefit of faecal sludge treatment Ghana 2020; FSM; low priority
+W3109711693,exclude,,dissertation sanitation workers
+W4300509840,exclude,,indicator selection methods (note for monitoring)
+W4298132579,exclude,,packaged water quality
+W4298347753,include,review,global exposure to faecal contamination through drinking water (repository copy); baseline exposure by source type
+W4298409008,exclude,,Pacific Islands research trends
+W4299934675,exclude,,repository duplicate of W2168270561
+W4300901132,include,review,on-plot drinking water supplies and health systematic review (repository copy); water at home service level
+W2922380182,exclude,,open defecation impacts on women review (note gender)
+W2987985721,exclude,,rainwater potability
+W2955244794,include,meta-analysis,single and combined WASH interventions on nutritional status 2019; stunting map only
+W2990057599,exclude,,behaviour outcome
+W2999090998,include,review,review of 14 CLTS and rural sanitation RCTs 2019; policy implications; effect size discussion
+W2921868849,exclude,,external support programmes review (note sustainability)
+W2908995601,exclude,,hydration and cognition
+W2940664661,exclude,,behaviour outcome (quality of shared toilets)
+W2935949941,exclude,,protocol
+W2990703150,exclude,,behaviour outcome
+W2952370635,exclude,,protocol
+W2979096000,exclude,,social identification
+W2993791947,exclude,,behaviour outcome
+W2983415302,exclude,,behaviour outcome
+W2909728232,exclude,,groundwater leaching
+W2953699830,mapped,primary,riverbank filtration stepped wedge trial rural India
+W2952418030,exclude,,instruction complexity
+W2984739366,exclude,,flood adaptation
+W2956485074,exclude,,design paper
+W2956029382,exclude,,socioeconomic outcomes Nepal
+W2979924136,include,method,SEM of WASH pathways to height-for-age in a piped water and sanitation evaluation Odisha; low priority
+W2996530484,exclude,,book chapter cost comparison (note CHC costs)
+W2908024176,exclude,,knowledge and practice outcomes
+W2909272197,exclude,,measurement model
+W2792843465,include,review,CLTS mixed-methods systematic review 2018; evidence quality and coverage outcomes
+W2794170471,exclude,,contamination risk factors
+W2799725585,exclude,,healthcare facilities
+W2785656997,exclude,,child development outcome
+W2891026690,exclude,,mental well-being
+W4255282293,exclude,,child development outcome
+W2893251004,exclude,,environmental contamination
+W2874746798,include,trial-secondary,WASH Benefits Bangladesh uptake levels; use adjustment; low priority
+W2905864039,exclude,,homeless shelters
+W2897223655,exclude,,high income (Spain)
+W2791504582,exclude,,fidelity and behaviour
+W2892825173,exclude,,environmental contamination
+W2883114317,exclude,,latrine utilisation prevalence Ethiopia (note baseline use)
+W2906170939,exclude,,institutional care scoping
+W2808700979,exclude,,Canada
+W2836443710,exclude,,fidelity monitoring
+W2794529112,include,trial-secondary,WASH Benefits Bangladesh spillover trial 2018; herd effects and attribution
+W2835524482,exclude,,hand hygiene education
+W2886291146,exclude,,behaviour outcome
+W2818708525,exclude,,management structure
+W2886744152,exclude,,baseline paper
+W2797533873,exclude,,water quality information
+W2806579236,exclude,,non-household water quality
+W2803492939,include,meta-analysis,World Bank 2018 meta-analysis of 136 WASH impact evaluations; health and non-health outcomes
+W2890497042,include,method,water-health nexus pathway modelling 2018; low priority
+W2895440524,include,economic,trial-based cost-benefit of borehole drilling and rehabilitation Volta Region Ghana 2018
+W2957221667,exclude,,protocol
+W2754857998,exclude,,animal faeces exposure review
+W2735645633,mapped,mhh,menstrual hygiene management and school absence cross-sectional Bangladesh
+W2595092806,exclude,,behaviour outcome
+W2231048563,include,review,Campbell review of handwashing and sanitation behaviour change approaches 2017; intermediate outcomes
+W2767111477,include,trial-major,government-led handwashing and sanitation promotion cRCT rural Tanzania 2017; interaction effects and child health
+W2767699460,exclude,,behaviour outcome
+W2568217091,exclude,,psychosocial mediation
+W2768025744,exclude,,contextual factors review
+W2591238597,exclude,,Ebola hand cleaning efficacy
+W2733898522,include,review,sanitation and cognitive development and school absence 2017; attendance; low priority
+W2770019576,include,review,sustained adoption of WASH interventions 2017; sustained use
+W2624753543,exclude,,climate methods review
+W2618973562,exclude,,toilet cleanliness outcome
+W2735053517,exclude,,Pacific Islands
+W2615251575,exclude,,China boiling predictors
+W2765913014,include,review,sanitation marketing systematic review 2017; enterprise models; low priority
+W2767064914,exclude,,behaviour outcome
+W2606996763,exclude,,behaviour outcome
+W2620096461,exclude,,sanitation demand pricing (note willingness to pay for enterprises)
+W2738147775,include,trial-secondary,serologic outcomes of a water filter cRCT Rwanda; objective outcome; low priority
+W2608876684,exclude,,salinity and kidney health
+W3124250557,exclude,,preprint water testing information
+W2607971587,exclude,,NTD and NCD scoping
+W2607517205,exclude,,chlorination marketing RCT (note price elasticity for product sales)
+W2761187074,exclude,,telomere outcome
+W2898597560,exclude,,dissertation preschool handwashing
+W4389021282,exclude,,hepcidin
+W2557196844,exclude,,psychosocial scoping
+W2560473740,exclude,,coping with unreliable supply (note service reliability)
+W2529305140,exclude,,faecal exposure pathways review; mechanism
+W2555101851,include,method,microcredit and sanitation willingness to pay RCT Cambodia 2016; finance for uptake; low priority
+W2486519727,exclude,,behaviour outcome
+W2340383816,include,review,on-plot drinking water supplies and health 2016 (original of W4300901132); water at home
+W2297765299,exclude,,indicator selection methods (note monitoring)
+W2294229309,exclude,,hydration and cognition
+W2426230650,exclude,,contamination modelling
+W2562591995,exclude,,soapy water uptake
+W2482054378,exclude,,behaviour outcome
+W2490864665,exclude,,design paper
+W2508855716,exclude,,water use measurement
+W2291175703,exclude,,water quality field trial (note automated chlorinator)
+W2520352342,mapped,primary,decentralised membrane filtration quasi-experimental India
+W2558255570,exclude,,school sanitation delivery modality (note private sector delivery Nairobi)
+W2519376915,exclude,,protocol
+W3124993014,mapped,primary,piped water quasi-experimental Bangladesh (preprint)
+W2469727804,exclude,,water quality outcome
+W2522370178,exclude,,behaviour outcome
+W2341486097,exclude,,protocol
+W4389026232,exclude,,feeding practices
+W2953498805,exclude,,multiple-use water services evaluation without abstract
+W7147708916,exclude,,river contamination thesis
+W2078036854,include,method,sanitation investment subsidies and marketing cRCT Bangladesh (Science 2015); incentive design
+W2048843487,exclude,,seasonal contamination review
+W2311594836,exclude,,design paper
+W2177153842,exclude,,educational settings hand hygiene MA; mostly high income
+W1515395290,include,review,supply type and faecal contamination of source and stored water bivariate MA 2015; baseline conditions
+W1778998134,exclude,,lymphedema
+W1854018898,exclude,,packaged water
+W1510058412,exclude,,working paper duplicate of W2767111477
+W2107982711,include,review,household water quantity and health 2015; service level quantity
+W610695716,exclude,,influenza
+W2227783294,exclude,,protocol
+W2018424488,exclude,,water quality and adoption comparison (note passive chlorinator)
+W2081369496,exclude,,Malaysia perception
+W2174434704,exclude,,GIS methods
+W1806351979,exclude,,behaviour change rapid review (note achievable behaviour change levels)
+W1853962065,exclude,,HIV progression cost analysis
+W2610754490,exclude,,US army
+W2016803368,include,review,global exposure to faecal contamination through drinking water 2014 (original of W4298347753)
+W2170019583,exclude,,behaviour outcome (note SuperAmma)
+W2047375134,exclude,,exposure outcomes
+W2099300372,mapped,primary,school latrine cleaning and absence cRCT Kenya
+W2032689703,exclude,,survey of hygiene behaviour
+W2128286364,exclude,,process evaluation
+W2163140539,exclude,,hand cleaning efficacy
+W2035863804,exclude,,pilot uptake
+W2040003751,exclude,,filter use
+W2146098312,exclude,,Uzbekistan CBA low quality
+W2183667856,exclude,,treatment choice modelling
+W2104967878,exclude,,Spain
+W218016498,exclude,,dissertation
+W2046740816,mapped,mhh,systematic review of health and social effects of MHM 2013; key MHH evidence summary
+W2084155931,exclude,,groundwater review
+W2035142200,exclude,,behaviour model review
+W2103041356,exclude,,design paper
+W66778559,include,trial-major,at-scale sanitation marketing RCT East Java Indonesia (World Bank 2013); diarrhoea
+W2145795323,mapped,primary,school WASH spillover to younger siblings cRCT Kenya
+W2030162829,mapped,primary,school WASH enrolment cRCT Kenya
+W2020232230,exclude,,filter sustainability model
+W1886142486,include,trial-major,village sanitation and child height RCT Maharashtra 2013; externalities; stunting map
+W2326002130,exclude,,school service delivery
+W2115375542,exclude,,behaviour outcome
+W2140773417,exclude,,process evaluation UK
+W2120520186,include,trial-secondary,sustained handwashing 5 years after Karachi trial; sustained behaviour; low priority
+W2113284882,exclude,,working paper duplicate of W1980524096
+W127008837,exclude,,brief of a quasi-experimental water project evaluation India
+W2951407340,exclude,,conference abstract of ESI Vietnam
+W2183471743,exclude,,peer review copy duplicate
+W2222104851,exclude,,policy simulation water coverage
+W2948891823,exclude,,dissertation
+W2137160312,exclude,,arsenic
+W2066300663,include,review,water and sanitation in schools health and educational outcomes 2012 (original of W4299545580)
+W2117285256,exclude,,healthcare hand hygiene
+W2103205346,exclude,,UK healthcare
+W2328770276,exclude,,food handlers
+W2150544519,exclude,,hand contamination outcome
+W2127841077,exclude,,UK process evaluation
+W2161687306,mapped,primary,water filtration RCT households of HIV-positive mothers Zambia
+W2164792843,exclude,,willingness to pay (note)
+W2037487760,exclude,,access estimation methods
+W1570503188,exclude,,behaviour outcome at scale Vietnam
+W2597125709,exclude,,willingness to pay review
+W2318678268,exclude,,filter hydraulics
+W2073290745,exclude,,agent-based model
+W1546965570,exclude,,emergency evidence review without abstract
+W2048875269,include,economic,cost per life-year of water and sanitation investment and MDG 4 2012
+W2120012557,include,economic,cost-effectiveness and benefit-cost of water supply programmes Bauchi Nigeria; low priority
+W2189154315,exclude,,preprint behaviour review
+W2148635118,mapped,primary,school WASH and pupil absence cRCT Kenya
+W1910874260,exclude,,influenza Thailand
+W2030913158,exclude,,product use (note)
+W2040357155,exclude,,catchment water quality
+W2169383046,exclude,,hand foot mouth disease
+W2171607527,mapped,primary,plastic biosand filter cRCT Cambodia (Aqua for All country)
+W1689712557,exclude,,behaviour measurement review
+W2009315361,exclude,,web intervention UK
+W2009213895,exclude,,data dissemination review
+W2170976043,exclude,,H2S test
+W2171943919,exclude,,filter engineering
+W149953279,exclude,,duplicate chapter of W2128203383
+W1482031966,exclude,,healthcare workers
+W4249600109,exclude,,healthcare workers
+W2128203383,include,review,economics review of randomised evaluations of safe water 2010; subsidies take-up and cost per life-year
+W2101893457,mapped,primary,double-blind placebo filter RCT DRC; null
+W2104709431,mapped,primary,triple-blinded NaDCC tablets RCT periurban Ghana (Aqua for All country); null
+W1604913362,exclude,,behaviour outcome
+W2161768910,exclude,,water quality pilot
+W2003503488,exclude,,Australia
+W2044691357,include,meta-analysis,household water treatment meta-regression by intervention type 2009; blinding and heterogeneity
+W1579118092,exclude,,behaviour outcome
+W2131568410,exclude,,observational cohort
+W1988600756,mapped,primary,Lifestraw Personal RCT Ethiopia
+W2043007115,exclude,,United States
+W2039847814,exclude,,protocol
+W2150772415,include,economic,cost-effectiveness of hygiene promotion programmes 2009
+W2109881331,include,meta-analysis,hand hygiene and infectious disease in community settings 2008; mostly high income; ARI and GI map
+W2171706443,include,economic,global cost-benefit analysis of water supply and sanitation interventions 2007 (Hutton Haller Bartram)
+W2158346904,exclude,,China school absence
+W2130719426,exclude,,microbiological outcome
+W2130291996,exclude,,Brazil GIS
+W2183784671,exclude,,case study without abstract
+W2136438974,include,trial-major,spring protection randomised evaluation Kenya; source water quality and diarrhoea; valuation
+W2003957232,exclude,,flooded tube wells
+W2133291670,exclude,,United States
+W328890040,include,method,guide to water and sanitation sector impact evaluations 2006; low priority
+W2069487617,exclude,,community health clubs demand creation (note cost)
+W2028384738,exclude,,Germany bathing
+W2172017481,exclude,,United States
+W2089361073,exclude,,Jerusalem preschools
+W2136699957,exclude,,United States HIV
+W7163185966,include,ecological,safely managed drinking water use and child diarrhoea across 24 countries 2026; service level evidence
+W4407559250,include,review,water supply infrastructure interventions and diarrhoea burden in Latin America and Caribbean 2025; low priority
+W4412978115,mapped,primary,PAASIM urban water supply matched cohort Mozambique (preprint)
+W4415704535,mapped,primary,toilet usage and health impact of a nationwide sanitation programme India 2025
+W4408045012,include,burden,global deaths from unsafe rural sanitation (GBD based) 2025; low priority
+W4409647919,mapped,primary,propensity score matched household water treatment and diarrhoea
+W4417274087,mapped,primary,neighbourhood sanitation coverage and diarrhoea rural Bangladesh cohort; herd effects
+W4400136293,include,burden,infectious disease mortality attributed to unsafe WASH and other risks (GBD) 2024; low priority
+W4391971178,include,trial-secondary,WASH Benefits Bangladesh interventions and diarrhoea by climate and socioeconomic position 2024
+W4401634801,include,ecological,basic water and sanitation use and diarrhoea incidence in 200 countries 2024
+W4399354649,mapped,primary,pit latrine performance and herd protection cohort Ethiopia
+W4405739353,mapped,primary,home water treatment intervention study Tshopo DRC
+W4380789023,include,ecological,propensity score analysis of improved water and sanitation on rural under-five diarrhoea across LMICs 2023
+W4367180196,include,ecological,household WASH access and under-five mortality in sub-Saharan Africa 2023
+W4317935140,include,meta-analysis,Cochrane 2023 record on sanitation interventions for preventing diarrhoea; verify whether completed review or protocol
+W4367627722,mapped,primary,filter distribution Liberia
+W4381622514,mapped,primary,point-of-use filter Kibera Kenya
+W4385808156,exclude,,preprint duplicate of W4391971178
+W4282929442,include,review,critical review of passive in-line chlorination 2022; enterprise relevant technology; low priority
+W4294082330,mapped,primary,community sanitation coverage and density longitudinal cohort; herd effects
+W4229078548,include,ecological,sanitation and safe water on child mortality and life expectancy across 100 countries 2022; low priority
+W4280646573,include,interpretation,argument that WASH evaluations should not use diarrhoea as primary outcome 2022
+W4282925644,mapped,primary,integrated WASH health and nutrition interventions and diarrhoea epidemiology
+W4221066144,include,meta-analysis,Fischer Walker 2022 updated LiST assumptions on household WASH and diarrhoea morbidity
+W4289711360,include,review,solar water disinfection gains fact or wishful thinking 2022; low priority
+W4303696806,include,method,health impact assessment methodology for water supply and sanitation programmes Brazil 2022
+W3189689491,include,trial-major,urban water disinfection and mortality decline in lower-income countries (natural experiment Mexico) 2021
+W3209030885,include,method,contribution of WASH coverage change to diarrhoea and stunting decline Ethiopia 2021; low priority
+W3213145309,include,trial-major,water treatment and child mortality evidence from Kenya (NBER 2021; chlorine dispensers)
+W3012432579,include,economic,forecasts of mortality and economic losses from poor water and sanitation in SSA 2020; low priority
+W3080805381,mapped,primary,low-cost POU technologies on enteric infections and growth Limpopo South Africa
+W3093843657,include,interpretation,decreasing child death from diarrhoea requires focus on hygiene 2020; low priority
+W3115698057,mapped,primary,ceramic filters Sudan
+W3016218625,mapped,primary,hollow fibre ultrafilters rural Kenya
+W2904940862,include,ecological,water sanitation and child health subnational panel 59 countries 2019
+W2968581109,include,ecological,water carriage supply and sanitation with maternal and child health MICS 49 countries 2019; low priority
+W2966567495,include,trial-major,longer-term effectiveness of combined household piped water and sanitation Odisha (Gram Vikas) 2019; water at home
+W1543976550,include,meta-analysis,Cochrane 2019 child faeces disposal interventions; low priority
+W2969297406,mapped,primary,community WASH intervention and under-five diarrhoea
+W2997678778,include,interpretation,does basic sanitation prevent diarrhoea historical lens 2019
+W2942575694,include,interpretation,do WASH interventions prevent childhood diarrhoea commentary 2019; low priority
+W2943743832,exclude,,Cochrane protocol record 2019 (see W4317935140)
+W2950741076,exclude,,duplicate perspective of W2960236837
+W2902580193,include,method,faecal contamination index to interpret heterogeneous diarrhoea impacts 2018; baseline context
+W2902854501,include,method,predicted impact of deworming and WASH on STH transmission 2018
+W2796547202,mapped,primary,integrated chemotherapy CLTS and education on helminths
+W2802479142,include,ecological,improved sanitation and water sources and diarrhoea deaths under five 2018; low priority
+W2807271110,include,method,averted DALYs as performance indicator for water quality interventions review 2018; CRA versus QMRA
+W2765936082,include,review,tailoring WASH targets for STH and schistosomiasis control 2017; low priority
+W2604566428,mapped,primary,Fit for School longitudinal Cambodia Indonesia Lao
+W2615209472,mapped,primary,community sanitation coverage versus private toilet and child growth; herd effects
+W2594826899,mapped,primary,handwashing promotion targeted at children on diarrhoea and STH
+W2607945843,include,ecological,exposure-response relationship of neighbourhood sanitation and child diarrhoea 2017; coverage thresholds
+W2620951887,mapped,primary,household water filter matched cohort rural Rwanda (Aqua for All country)
+W2759355225,mapped,primary,boiling versus chlorination Indonesia
+W2951702479,exclude,,working paper duplicate of W3189689491
+W2601549319,exclude,,preprint duplicate of W3189689491
+W3145777763,exclude,,preprint duplicate of W3189689491
+W2592653498,include,interpretation,can sanitation and hygiene programmes be expected to achieve health impacts 2017
+W2396904246,include,review,can WASH help eliminate stunting 2016; stunting map only
+W2295795924,mapped,primary,herd protection from sanitation on child growth Ecuador
+W2463393523,include,review,thermotolerant coliforms in drinking water and diarrhoea individual-level data 2016; exposure-response
+W2543851953,include,ecological,non-linear effect of sanitation coverage on child health global panel 2016
+W2409433763,mapped,primary,school WASH and pupil health Kenya instrumental analysis
+W2496335160,exclude,,Cochrane protocol of W4283207078
+W2345361863,include,interpretation,interpreting GEMS findings on sanitation hygiene and diarrhoea 2016; low priority
+W2762556317,mapped,primary,SODIS through lady health workers Pakistan
+W1926055518,mapped,mhh,menstrual hygiene practices WASH access and urogenital infection Odisha 2015; MHH health outcome
+W2119987738,include,meta-analysis,Cochrane 2015 hand washing promotion; superseded by W4211014524
+W1837462516,include,trial-major,toilets can work: complementarities and externalities in water and sanitation (working paper)
+W2048988304,include,review,household water treatment and safe storage review 2015; low priority
+W2107145316,include,ecological,water supply interruptions and cholera incidence time series DRC 2015; service reliability
+W1554705232,include,ecological,neighbourhood sanitation and infant mortality (working paper); externalities
+W2143887555,include,interpretation,does poor water quality cause diarrhoeal disease 2015; low priority
+W2272460286,include,method,concerns with blinded trials and need for objective outcomes 2015
+W2074407964,mapped,primary,community water supply introduction western Kenya
+W2104045490,include,ecological,shared sanitation and diarrhoea in 51 countries 2014
+W2090634563,include,ecological,joint effects of water and sanitation on diarrhoea multicountry DHS 2014
+W3124374555,include,method,child health implications of privatising urban water supply in Africa 2014; low priority
+W4240804694,exclude,,Cochrane protocol of W1543976550
+W2315320947,mapped,primary,community-based water treatment systems Uganda (Aqua for All country)
+W2064193119,include,ecological,open defecation and childhood stunting India ecological 2013; stunting map
+W2139879439,include,review,WASH and enteric infections in children review 2013; low priority
+W1991129848,include,method,long-term dynamics of mortality benefits from improved water and sanitation 2013
+W2068155623,include,method,estimating effects of improved water and sanitation on cholera 2013; low priority
+W1996840718,include,ecological,freshwater availability and water fetching distance and child health SSA 2012; accessibility
+W2169242337,include,ecological,ecological quantification of water sanitation and infant child maternal mortality 2012; low priority
+W1970543817,include,method,joint effects of efficacy and compliance on household water treatment effectiveness 2012; use adjustment
+W2161963318,mapped,primary,extending piped water and sanitation in urban Yemen quasi-experimental
+W1967595572,mapped,primary,sustained health impact of household chlorination Haiti
+W2171963427,mapped,primary,community-scale water treatment refill kiosks and childhood diarrhoea Jakarta; water kiosk model
+W2080701336,mapped,primary,family hygiene promotion peri-urban Cape Town
+W1652183391,exclude,,preprint duplicate of W1525759184
+W2137068815,include,ecological,water and sanitation and child health DHS 1986 to 2007 (Gunther and Fink) 2011
+W2040555771,mapped,primary,interim evaluation of large-scale SHEWA-B programme Bangladesh
+W1500549482,include,economic,water and sanitation to reduce child mortality impact and cost 2011
+W2049544033,include,interpretation,child undernutrition tropical enteropathy toilets and handwashing hypothesis 2009
+W3123032931,include,ecological,piped water provision and infant mortality Brazil quantile panel 2009; low priority
+W2007695924,include,review,effectiveness and sustainability of WASH interventions in combating diarrhoea 2009 (3ie companion)
+W2129028163,include,economic,cost-benefit comparison of water supply and cholera vaccination 2009; low priority
+W2155473935,mapped,primary,POU water treatment infants of HIV-infected mothers
+W2017641992,include,interpretation,SODIS hype or hope 2009; low priority
+W1993496250,exclude,,duplicate summary of W1964701507
+W2053881094,exclude,,commentary duplicate of W1964701507
+W2172299905,exclude,,duplicate reference record of W1964701507
+W1998313988,mapped,primary,POU chlorination safe storage sanitation and rainwater Kenya
+W2087430657,mapped,primary,water disinfection and hygiene behaviour Kenyan slum
+W2142464152,exclude,,duplicate record of W1964701507
+W1578535405,exclude,,protocol duplicate
+W1849429639,mapped,primary,school safe water and hygiene Kenya
+W4236271789,exclude,,duplicate record of the 2006 Cochrane water quality review
+W2159731738,exclude,,duplicate record of the 2006 Cochrane water quality review
+W2051196720,mapped,primary,ceramic filters Bolivia
+W2110801665,mapped,primary,water and sanitation reconstruction after Hurricane Mitch
+W2081069019,mapped,primary,SODIS southern India
+W2147562479,mapped,primary,home chlorination among persons with HIV Uganda (Aqua for All country)
+W1487338114,include,review,WASH interventions and diarrhoea review 2005 (companion of W2172098474); low priority
+W2156189694,include,trial-major,city-wide sanitation programme Salvador Brazil two cohorts 2007; sewerage at scale
+W2121141048,include,trial-secondary,city-wide sanitation Salvador determinants 2008; low priority
+W2007127410,include,trial-secondary,city-wide sanitation Salvador intestinal parasites 2010; STH and sewerage
+W2033058796,mapped,primary,SODIS South Africa dysentery
+W2025490916,mapped,primary,SODIS Yaounde Cameroon
+W2059729018,mapped,primary,SODIS Sikkim India
+W1965300299,exclude,,Puerto Rico (United States territory)
+W2052596102,mapped,primary,water purification and sanitation infrastructure flood-prone population
+W1855250513,mapped,primary,water hygiene packages HIV-exposed infants Malawi (Aqua for All country)
+W1970558635,mapped,primary,new water source intervention Eritrea
+W2065197245,include,method,health impact of small-community water supply reliability 2010; low priority
+W1783322716,include,method,estimating health impacts of small scale drinking water interventions (chapter); low priority
+W1968152556,mapped,primary,POU water quality intervention PLHIV Lagos
+W1994733875,mapped,primary,household water purification mixture Matlab Bangladesh
+W2123583824,mapped,primary,sari cloth filtration and cholera Matlab
+W2155277895,mapped,primary,hygiene promotion and parasite reinfection Uzbekistan
+W1973903571,mapped,primary,continued use and health impact of biosand filter Bonao
+W2184732795,exclude,,duplicate record of W1973903571
+W2105459119,exclude,,SODIS technology review
