@@ -1,0 +1,311 @@
+---
+title: "Evidence review: what links water and sanitation outputs to health outcomes"
+subtitle: "Stage 1 of the scratch build of the Aqua for All health impact estimation tool, written up for water and sanitation professionals"
+date: 2026-10-23
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+bibliography:
+  - ../data/references.bib
+  - references-extra.bib
+link-citations: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr); library(tidyr); library(stringr) })
+opts <- options(knitr.kable.NA = "")
+rd <- function(f) read_csv(file.path("..", "data", f), show_col_types = FALSE, guess_max = 20000)
+log <- rd("screening-log.csv")
+cand <- rd("candidates.csv")
+inc <- rd("included-works.csv")
+seeds <- rd("seed-works.csv")
+authors <- rd("authors.csv")
+awork <- rd("author-works.csv")
+ft <- rd("fulltext-log.csv")
+es <- rd("effect-sizes.csv")
+eff <- rd("factors/effects.csv")
+tools <- rd("landscape-tools.csv")
+dsets <- rd("landscape-datasets.csv")
+bdis <- rd("factors/baseline-disease.csv")
+bexp <- rd("factors/baseline-exposure.csv")
+chain_json <- jsonlite::fromJSON(file.path("..", "queries", "03-citation-chain-summary.json"))
+n <- function(x) format(x, big.mark = " ", trim = TRUE)
+fmt <- function(x, d = 2) ifelse(is.na(x), "", formatC(x, digits = d, format = "f"))
+ci <- function(lo, hi, d = 2) ifelse(is.na(lo) | is.na(hi), "", paste0(fmt(lo, d), " to ", fmt(hi, d)))
+
+# counts for the flow
+src_count <- function(s) sum(str_detect(cand$source, fixed(s)))
+n_seed <- src_count("seed"); n_author <- src_count("author"); n_cited <- src_count("cited_by"); n_ref <- src_count("reference")
+n_cand <- nrow(cand)
+s1 <- filter(log, stage == "1-title")
+s2 <- filter(log, stage == "2-abstract")
+n_s1_excl <- nrow(s1)
+n_s2 <- nrow(s2)
+n_s2_rule <- sum(s2$decision == "exclude" & str_detect(s2$screener, "rule"))
+n_s2_manual_excl <- sum(s2$decision == "exclude" & !str_detect(s2$screener, "rule"))
+n_incl <- sum(s2$decision == "include")
+n_mapped <- sum(s2$decision == "mapped")
+n_ft_queued <- nrow(ft)
+n_ft_ok <- sum(ft$status == "ok")
+n_ft_missing <- sum(ft$status == "missing")
+n_es <- nrow(es)
+n_es_current <- sum(is.na(es$superseded_by))
+n_factors <- nrow(eff)
+s1_reason <- s1 %>% mutate(group = case_when(
+  str_detect(reason, "^language") ~ "not in English (title not screened)",
+  str_detect(reason, "^type") ~ "not a research output (editorial, letter, dataset, erratum, paratext, peer review)",
+  TRUE ~ reason)) %>% count(group, sort = TRUE)
+```
+
+::: {.callout-note}
+## Status of this document
+
+This is a write-up of stage 1 of a scratch build made on 2026-10-23 by an agent (Claude) for Lars Schöbitz. It was done in about three hours to test whether the three evidence questions in Aqua for All's terms of reference can be answered with a literature search. One reader screened everything in one pass; no second person has checked any screening decision, extracted number or sentence. Treat every statement as a draft for review, not as a finding. Every count in this document is computed from the files in `data/` when it renders, so the text and the tables cannot drift apart. The companion files are `docs/stage1-report.md` (the run log) and `data/effect-sizes.csv` (every extracted number with its source and locator).
+:::
+
+# Question and scope
+
+Aqua for All pays water and sanitation enterprises for verified outputs: households connected to piped water, filters sold and in use, toilets installed, hygiene products delivered. The terms of reference ask what evidence links such outputs to health outcomes, which outcomes a practical estimation tool could carry, and how the links vary by geography, population group, intervention type, service level and baseline conditions.
+
+The review covers published evidence from 2005 on, in English, with these decisions fixed before the search and not reopened:
+
+- Outcomes modelled by the tool: diarrhoeal disease (cases in children under five; deaths and disability-adjusted life years in all ages and under five) and soil-transmitted helminth (STH) infection as a secondary outcome. Respiratory infection and stunting are mapped (the evidence is summarised) but not modelled. Menstrual health and hygiene (MHH) is assessed for whether it fits the framework.
+- Geographies: the 11 countries of Aqua for All's ILF for WASH programme (Bangladesh, Cambodia, Ghana, India, Kenya, Madagascar, Malawi, Rwanda, Senegal, South Africa and Uganda). Effect sizes are pooled across low and middle income settings; only the baselines are country specific.
+- Sources: OpenAlex for bibliographic records, Europe PMC and publishers' open access copies for full texts, the WHO Global Health Observatory and the DHS Program indicator API for country baselines. No paywalled text was obtained.
+
+Three terms used throughout:
+
+- **Relative risk (RR).** The risk of the outcome in people who got the service divided by the risk in people who did not. An RR of 0.79 means 21 percent fewer cases. An **odds ratio (OR)** is a related measure that reviews of rare outcomes (deaths, infection prevalence) report instead.
+- **Confidence interval (CI).** The range inside which the true effect most likely lies, given the studies pooled. When the interval includes 1.0, the evidence cannot rule out that the service has no effect.
+- **Certainty (GRADE).** Systematic reviews rate how much to trust a pooled estimate as high, moderate, low or very low. This review carries the rating of the source review and does not re-grade.
+
+# Search strategy
+
+The search had three routes, run against OpenAlex on 2026-10-23 with every query logged in `queries/request-log.csv`.
+
+1. **Seeds.** `r nrow(seeds)` candidate works named in the brief (the pooled analyses and burden estimates the sector relies on, plus the WHO 2023 burden report and two errata). `r sum(!is.na(seeds$openalex_id) & seeds$openalex_id != "")` resolved in OpenAlex; the WHO report has no OpenAlex record and was kept by URL and downloaded from WHO IRIS.
+2. **Author pass.** `r nrow(authors)` authors of the seed works whose profiles resolved in OpenAlex. All of their works from 2010 on were pulled and filtered to water, sanitation or hygiene terms with a health term: `r n(nrow(awork))` author-work rows, `r n(n_distinct(awork$openalex_id))` unique works.
+3. **Citation chaining.** For the `r sum(seeds$chain == "yes")` seeds that are meta-analyses or burden papers, every work citing them (2005 on) and every work they cite (2005 on) was pulled: `r n(n_cited)` unique citing works and `r n(n_ref)` unique references.
+
+```{r seeds-table}
+seeds %>% filter(role != "erratum") %>%
+  transmute(Seed = author_year, Role = role, `Chained` = ifelse(chain == "yes", "yes", ""),
+            `Citing works (2005 on)` = sapply(seed_key, function(k) { x <- chain_json$per_seed[[k]]; if (is.null(x)) NA else x$citing }),
+            `References (2005 on)` = sapply(seed_key, function(k) { x <- chain_json$per_seed[[k]]; if (is.null(x)) NA else x$references_2005_on })) %>%
+  arrange(desc(Chained), Seed) %>%
+  kable(caption = "Seed works (data/seed-works.csv) and the citation chain counts (queries/03-citation-chain-summary.json). Works that were not chained are commentaries, trials and cost-benefit studies kept as seeds for their content.")
+```
+
+```{r authors-table}
+authors %>% transmute(Author = person, `Works in OpenAlex` = works_count, `Candidate works after the WASH and health filter` = n_candidates, Note = note) %>%
+  kable(caption = "Author pass (data/authors.csv). The candidate count is the number of this author's works that entered the union after the filter and deduplication against the other routes.")
+```
+
+The union of the three routes, deduplicated on the OpenAlex identifier, holds `r n(n_cand)` records. A record can arrive by more than one route (`r n(sum(str_detect(cand$source, ";")))` did).
+
+# Screening and the flow of records
+
+Screening had two stages. The title and venue screen was a set of written rules applied by a script (`scripts/04_screen_titles.py`): drop records whose type is not a research output, records not in English, records whose title has no water, sanitation or hygiene term, and records whose title names neither a health outcome nor a review, trial, burden or finance design. Every record that survived went to the abstract screen with a priority (high, medium, low) from the title rules. At the abstract screen, `r n(n_s2_rule)` low-priority records with a primary observational, laboratory or technology design were excluded by rule (`scripts/05b_apply_stage2.py`); the remaining `r n(n_s2 - n_s2_rule)` were read and decided one by one with a one-line reason each (`queries/stage2-decisions.csv`).
+
+```{r prisma, results='asis'}
+cat("```{mermaid}\n",
+    "%%| fig-cap: \"Flow of records, in the style of a PRISMA diagram. Every count is computed from data/candidates.csv and data/screening-log.csv when this document renders.\"\n",
+    "flowchart TD\n",
+    "  S[Seeds<br>", n(n_seed), " works] --> U\n",
+    "  A[Author pass<br>", n(n_author), " works] --> U\n",
+    "  C[Citing the chained seeds<br>", n(n_cited), " works] --> U\n",
+    "  R[Cited by the chained seeds<br>", n(n_ref), " works] --> U\n",
+    "  U[Union, deduplicated<br>", n(n_cand), " records] --> T{Title and venue screen<br>by rule}\n",
+    "  T -->|excluded ", n(n_s1_excl), "| X1[No WASH term, no health or design term,<br>not English, not a research output]\n",
+    "  T -->|passed ", n(n_s2), "| B{Abstract screen}\n",
+    "  B -->|excluded by rule ", n(n_s2_rule), "| X2[Low priority primary observational,<br>laboratory or technology studies]\n",
+    "  B -->|excluded on reading ", n(n_s2_manual_excl), "| X3[Protocols, duplicates, behaviour-only<br>or out-of-scope outcomes, single sites]\n",
+    "  B -->|included ", n(n_incl), "| I[Included works<br>reviews, burden, trials, economic,<br>ecological, method, interpretation]\n",
+    "  B -->|mapped only ", n(n_mapped), "| M[Mapped works<br>single-site primary studies<br>and MHH evidence]\n",
+    "  I --> F[Full texts sought<br>", n(n_ft_queued), " queued, ", n(n_ft_ok), " obtained, ", n(n_ft_missing), " not open]\n",
+    "  M --> F\n",
+    "  F --> E[Effect sizes extracted<br>", n(n_es), " rows, ", n(n_es_current), " current]\n",
+    "  E --> K[Conversion factors carried by the tool<br>", n(n_factors), " rows in data/factors/effects.csv]\n",
+    "```\n", sep = "")
+```
+
+```{r s1-reasons}
+s1_reason %>% rename(`Title screen exclusion reason` = group, Records = n) %>%
+  kable(caption = "Why records left at the title and venue screen (data/screening-log.csv, stage 1-title).")
+```
+
+```{r categories}
+inc %>% count(decision, category) %>%
+  mutate(decision = ifelse(decision == "include", "included", "mapped only")) %>%
+  pivot_wider(names_from = decision, values_from = n) %>%
+  arrange(desc(coalesce(included, 0L)), desc(coalesce(`mapped only`, 0L))) %>%
+  rename(Category = category) %>%
+  kable(caption = "Included and mapped works by category (data/included-works.csv). Mapped works were not read for effect sizes; they are listed so that a later reviewer can find them.")
+```
+
+What the categories mean: *meta-analysis* pools several studies and gives the numbers a tool can carry; *burden* estimates deaths and DALYs attributable to unsafe water, sanitation and hygiene; *trial-major* is a large randomised trial that shaped the field (WASH Benefits, SHINE, the Indian and Malian sanitation trials, the Bangladesh in-line chlorination trial); *trial-secondary* is a further analysis of one of those trials; *review* is a systematic review without a pooled number or on a side question (adoption, sustainability, school WASH); *economic* covers cost-benefit and cost-effectiveness work; *ecological* uses survey or national data rather than an intervention; *method* and *interpretation* are papers about how to measure and how to read the evidence; *primary* is a single-site study; *mhh* is menstrual health and hygiene evidence.
+
+# Full texts
+
+```{r fulltext}
+ft %>% left_join(select(inc, openalex_id, category), by = "openalex_id") %>%
+  mutate(category = ifelse(is.na(category), "seed (not in the included list)", category),
+         status = ifelse(status == "ok", "obtained", "not open")) %>%
+  count(category, status) %>% pivot_wider(names_from = status, values_from = n, values_fill = 0) %>%
+  arrange(desc(obtained + `not open`)) %>% rename(Category = category, Obtained = obtained, `Not open` = `not open`) %>%
+  kable(caption = "Full text retrieval by category (data/fulltext-log.csv). Obtained texts came from Europe PMC (XML) or an open access PDF listed by OpenAlex; nothing was fetched from behind a paywall.")
+```
+
+`r n(n_ft_ok)` full texts were read, plus the WHO 2023 burden report and its corrigendum. `r n(n_ft_missing)` works had no open copy, among them several of the older Cochrane reviews and the two reports behind the cost-benefit literature [@hutton2004; @hutton2012]. Where a work is cited below without a full text, the number came from its abstract or from how a later review reports it; `data/effect-sizes.csv` says which in its `extracted_from` column.
+
+# Effect sizes
+
+All `r n(n_es)` extracted rows are listed in the appendix tables of this section, grouped by outcome. A row is marked *superseded* when a newer pooled analysis in the set replaces it; the tool carries only current rows. The `r n_factors` rows the tool carries are in `data/factors/effects.csv` and are shown first.
+
+```{r factors-table}
+eff %>% transmute(`Factor row` = factor_id, `Exposure change` = paste(exposure_from, "to", exposure_to), Outcome = outcome,
+                  Estimate = paste(measure, fmt(central)), `95% CI` = ci(low, high), Studies = n_studies, Certainty = certainty, Source = source_citation) %>%
+  kable(caption = "Conversion factors carried by the tool (data/factors/effects.csv). Certainty is the source review's GRADE rating where it gave one; 'low' otherwise.")
+```
+
+## Diarrhoea in children under five
+
+The anchor is the Lancet meta-analysis of 124 studies by Wolf and colleagues [@wolf2022]. It is the newest pooled analysis, its exposure categories follow the WHO/UNICEF JMP service ladder, and WHO's 2023 burden estimates use its relative risks [@wolf2023; @who2023burden]. The candidate conversion factors, all for diarrhoea in children under five in low and middle income settings:
+
+1. **Point-of-use filtration** against untreated water from an unimproved source: RR 0.50 (0.41 to 0.60), 23 studies, moderate certainty. Against an improved source off premises: RR 0.61 (0.49 to 0.75) [@wolf2022]. The one long-run product estimate, Lifestraw Family filters followed for at least 12 months, is smaller: RR 0.69 (0.52 to 0.91), 6 studies [@kerr2024].
+2. **Point-of-use chlorination**: RR 0.66 (0.56 to 0.77), 25 studies, moderate; against an improved source RR 0.81 (0.68 to 0.95) [@wolf2022]. The 2015 Cochrane review gave RR 0.77 (0.65 to 0.91) for cluster trials [@clasen2015c].
+3. **Solar disinfection**: RR 0.63 (0.50 to 0.80), 13 studies, moderate [@wolf2022]; a 2020 meta-analysis gave RR 0.62 (0.53 to 0.72) [@soboksa2020].
+4. **Handwashing promotion** with or without soap provision: RR 0.70 (0.64 to 0.76), 41 studies, moderate [@wolf2022]. The 2021 Cochrane review gives an incidence rate ratio of 0.71 (0.62 to 0.81) for communities in low and middle income countries, with a larger effect where soap was provided [@ejemotnwadiaro2021]. The Lives Saved Tool update uses only a 17 percent reduction (7 to 27) [@walker2022].
+5. **Basic sanitation without a sewer connection** against unimproved or limited sanitation: RR 0.79 (0.61 to 1.03), 15 studies, moderate, but the interval includes no effect [@wolf2022]. The 2023 Cochrane sanitation review agrees: providing access to any facility RR 0.89 (0.73 to 1.08) in seven cluster trials; behaviour change messaging without hardware RR 0.82 (0.69 to 0.98) in children under five; non-randomised studies give larger effects, RR 0.61 (0.50 to 0.74) [@bauza2023]. The large recent randomised trials (WASH Benefits in Bangladesh and Kenya, SHINE in Zimbabwe, the Odisha and Madhya Pradesh sanitation trials, the Mali community-led total sanitation trial) found little or no diarrhoea effect of sanitation alone [@luby2018; @null2018; @humphrey2018; @clasen2014; @patil2014; @pickering2015].
+6. **Sewered sanitation** against unimproved: RR 0.53 (0.30 to 0.93), 5 non-randomised studies, very low certainty [@wolf2022]. The earlier sewerage review found RR 0.70 (0.61 to 0.79) overall and RR 0.41 (0.27 to 0.61) where baseline sanitation was very poor [@norman2010].
+7. **Water supply**: an improved source off premises RR 0.81 (0.70 to 0.94), very low; piped water on premises RR 0.79 (0.60 to 1.03), no extra gain over an improved source off premises (RR 0.97, 0.75 to 1.25); an improved supply on premises with higher water quality RR 0.48 (0.26 to 0.87), two studies only [@wolf2022]. WHO uses the last as the counterfactual for safely managed water.
+
+What this means for a factor table. Filtration, chlorination, solar disinfection and handwashing promotion have moderate-certainty pooled relative risks that can carry a conversion factor with a stated interval. Basic on-site sanitation can carry a factor only with the caveat that the interval includes no effect and that the newest randomised evidence is mostly null. Sewered sanitation and piped water at home carry factors of very low certainty from few studies. There is no pooled estimate for safely managed on-site sanitation or for faecal sludge management services; WHO states that this evidence does not exist [@who2023burden]. A tool has to treat such enterprises as basic sanitation with a use adjustment and say so in every output.
+
+Cases averted per household-year, the example quantity in the terms of reference, needs a baseline incidence as well as a relative risk. The DHS two-week prevalence of diarrhoea in children under five is the only survey-based morbidity baseline for the 11 countries (see the data gaps section); it is caregiver-reported with a two-week recall. The tool converts it to episodes per child-year with the mean episode duration of 4.3 days from the systematic review of diarrhoea duration [@lamberti2012]; the regional modelled incidence of 2010 [@fischerwalker2012] is the fallback.
+
+```{r es-diarrhoea}
+show_es <- function(d, cap) {
+  d %>% transmute(Row = effect_id, Intervention = intervention_category, Comparison = comparison, Outcome = outcome, Population = population,
+                  Estimate = paste(measure, fmt(estimate)), `95% CI` = ci(ci_low, ci_high), Studies = n_studies, Grade = evidence_grade,
+                  Source = ifelse(is.na(source_doi) | source_doi == "", source_openalex_id, source_doi),
+                  Status = ifelse(is.na(superseded_by), "current", paste("superseded by", superseded_by))) %>%
+    kable(caption = cap)
+}
+es %>% filter(str_detect(outcome, "^diarrhoea")) %>% show_es("Extracted effect sizes for diarrhoea (data/effect-sizes.csv). Superseded rows are older pooled estimates replaced by Wolf et al. 2022 or a newer Cochrane review.")
+```
+
+## Deaths and DALYs
+
+Two routes exist, and they disagree enough that a tool should show both.
+
+The **WHO route** multiplies a country's diarrhoea deaths and DALYs by a population attributable fraction (PAF) built from the relative risks above and the JMP exposure distribution [@wolf2023; @who2023burden]. The country PAFs for diarrhoea attributable to unsafe water, sanitation and hygiene in 2019 run from 0.61 (South Africa) to 0.76 (Ghana, Malawi) in the 11 countries, with separate water, sanitation and hygiene components in the WHO Global Health Observatory. This route gives scenario differences at population scale and is the method the sector already uses, for example in WHO's health impact study of India's Jal Jeevan Mission. The earlier burden estimates it replaces are in the set for comparison [@prssstn2014; @prssstn2019].
+
+The **direct route** uses pooled mortality effects from trials. Two reviews disagree on water treatment. Kremer and colleagues pooled 15 trials with mortality data obtained from the authors and found OR 0.72 (0.55 to 0.92) for all-cause under-five mortality, with an expected reduction of about 25 percent in a new setting and a cost of roughly USD 40 per DALY averted [@kremer2022]; their February 2026 revision (18 trials, OR 0.76, 0.63 to 0.93) was not read. Sharma Waddington and colleagues pooled 38 intervention estimates and found OR 0.83 (0.74 to 0.92) for all WASH interventions, OR 0.55 (0.35 to 0.84) for diarrhoea mortality, OR 0.66 (0.50 to 0.88) for water supply, OR 0.87 (0.75 to 1.00) for sanitation (OR 0.79 when community-wide, OR 1.07 when household-targeted), OR 0.85 (0.69 to 1.04) for hygiene, and only OR 0.93 for water treatment [@waddington2023]. The Kenya analysis behind the Kremer estimate is in the set as well [@haushofer2021]. A mortality factor is defensible for water treatment and water supply, with a wide stated range. The tool uses the WHO route for deaths and DALYs and shows the direct route as a sensitivity band.
+
+```{r es-mortality}
+es %>% filter(str_detect(outcome, "mortality|cost per DALY|benefit-cost|attributable deaths")) %>%
+  show_es("Extracted mortality, attributable burden and economic rows (data/effect-sizes.csv).")
+```
+
+## Soil-transmitted helminths
+
+The 2022 Cochrane review of 32 studies is the primary source [@garn2022]: any WASH intervention versus control gives OR 0.86 (0.74 to 1.01) in 14 randomised trials (moderate certainty) and OR 0.71 (0.54 to 0.94) in non-randomised studies (low). Most trials ran alongside mass drug administration in both arms, so the effect is additional to deworming. Subgroups by water, sanitation or hygiene did not separate. Observational associations are larger: sanitation access OR 0.66 (0.57 to 0.76), treated water OR 0.46 (0.36 to 0.60), soap availability OR 0.53 (0.29 to 0.98) [@strunz2014], building on the earlier sanitation-only review [@ziegelbauer2012]. WHO attributes 100 percent of the STH burden to unsafe WASH by assumption, not through an exposure-response relationship [@wolf2023].
+
+An STH conversion factor can be stated as "about 14 percent lower odds of infection with WASH, interval including no effect" from randomised evidence. No country prevalence was pulled (the WHO PCT databank and ESPEN hold school-age estimates). The tool carries STH as a secondary outcome with the Cochrane estimate and computes infections averted only when the user supplies a local prevalence, converting the odds ratio to a relative risk at that prevalence [@zhang1998].
+
+```{r es-sth}
+es %>% filter(str_detect(outcome, "STH")) %>% show_es("Extracted STH rows (data/effect-sizes.csv).")
+```
+
+## Mapped only: respiratory infection and stunting
+
+Handwashing with soap reduces acute respiratory infection in low and middle income countries: RR 0.83 (0.76 to 0.90), 27 comparisons, moderate certainty [@ross2023], the value WHO uses for its respiratory infection PAF of 14 percent [@wolf2023]. More frequent promotion visits raise the effect [@ross2026b]. Stunting: WASH alone gives a mean height-for-age difference of 0.04 (0.01 to 0.08) in trials run over 18 to 60 months and no effect in randomised trials overall [@bekele2020]; the WASH Benefits and SHINE trials found no effect on linear growth [@luby2018; @null2018; @humphrey2018; @pickering2019c; @cumming2019]; observational associations are larger [@wijayanto2026]. Both outcomes stay out of the modelled factors, as decided before the search.
+
+```{r es-mapped}
+es %>% filter(str_detect(outcome, "ARI|stunting|undernutrition")) %>% show_es("Extracted respiratory infection and growth rows (data/effect-sizes.csv).")
+```
+
+# Service levels and baseline conditions
+
+The third question in the terms of reference asks how the relationships vary. The literature answers along a few axes, and coarsely.
+
+- **Water quality matters more than distance.** Piping water to the premises adds no measurable diarrhoea reduction unless quality or continuity improves [@wolf2022], because piped supplies in these settings are often intermittent and recontaminated. Water on premises still brings time, quantity and wellbeing benefits that a health factor does not capture [@overbo2016; @stelmach2015; @pickering2012].
+- **Gains shrink when the source is already improved.** Chlorination RR 0.66 against an unimproved source and 0.81 against an improved one; filtration 0.50 against 0.61 [@wolf2022]. A tool must take the customers' baseline source as an input.
+- **Sanitation effects depend on the neighbours.** Child mortality falls by 21 percent with community-wide sanitation and not at all with household-targeted sanitation where most neighbours lack it [@waddington2023]; children in communities with full sanitation coverage have lower odds of diarrhoea even when their own household already has a toilet [@larsen2017]; neighbourhood sanitation conditions matter as much as household sanitation [@jung2017]. The WASH Benefits spillover study [@benjaminchung2018] and the Maharashtra sanitation incentive trial [@cameron2021] show the externalities. This is the main argument for a coverage rule in an additionality method.
+- **Hygiene effects depend on water.** Hygiene promotion had no mortality effect without an improved water supply and a 29 percent reduction with it [@waddington2023]; the Cochrane review found larger effects where soap was provided [@ejemotnwadiaro2021].
+- **Use and adherence drive effectiveness.** Unblinded household water treatment trials show large effects, but the blinded trials found none [@boisson2013; @jain2010; @boisson2010; @clasen2015]; compliance explains much of the heterogeneity [@hunter2009; @enger2012; @crider2023]. Enterprise data on continued use (filter maintenance, active connections) is exactly the input a use adjustment needs.
+- **Effects fade with time.** Sanitation interventions followed for 24 months or more show smaller reductions [@wolf2022]; the long-run Lifestraw estimate is smaller than the pooled filter estimate [@kerr2024]; sustained adoption is the exception rather than the rule [@martin2017].
+- **Season.** WASH interventions reduced diarrhoea by 33 percent in dry seasons and 18 percent in rainy seasons; sanitation showed no seasonal difference [@hubbard2025].
+- **Baseline contamination.** A faecal contamination index explains part of the difference between trials [@wolf2018; @goddard2020]; improved sources are less often contaminated than unimproved ones but far from always [@bain2014; @shields2015].
+- **Reporting bias.** Caregiver-reported diarrhoea overstates effects when households know they got an intervention [@wang2010; @schmidt2014]; objective outcomes such as enteric infection show smaller effects [@mertens2023].
+
+Geography enters only through country baselines, not through region-specific effects; "population group" in the pooled evidence means children under five; the pathogen mix, confounding and reporting bias stay unresolved.
+
+# Menstrual health and hygiene
+
+The terms of reference ask whether MHH business models can be incorporated into the framework, need a separate outcome pathway, or should stay outside the core method. The evidence found: a systematic review of the health and social effects of menstrual hygiene management found 14 health studies, mostly on reproductive tract infections, of low quality, and a pooled odds ratio of 1.07 (0.52 to 2.24) for bacterial vaginosis, which is no association [@sumpter2013]; a meta-analysis of 138 Indian studies found that about one in four girls miss school during menstruation but measured no health effect of products or services [@eijk2016]; the one randomised trial of sanitary product provision found that menstruation costs girls 0.4 school days a year and that products did not change attendance [@oster2011]; a cross-sectional study in Odisha associated unhygienic practices with urogenital infections [@das2015]; the qualitative synthesis describes pathways to health, education and participation without effect sizes [@hennegan2019]; the 2025 scoping review maps school WASH outcomes including menstrual health [@bick2025].
+
+Recommendation: MHH should be a separate outcome pathway outside the core health conversion. There is no pooled effect of menstrual products or services on a health outcome that could carry a factor, and the school attendance effect is contested. The framework can still count MHH enterprise outputs (girls and women reached, products or services delivered, school facilities meeting standards) and report them next to the health estimates, with attendance as an outcome where the enterprise measures it directly. This matches the second option in the terms of reference.
+
+# Landscape of tools, methods and datasets
+
+```{r tools-table}
+tools %>% transmute(Id = tool_id, Tool = name, Owner = owner, Year = year, `What it converts` = what_it_converts, Platform = platform, Licence = licence, `Relevance to the Aqua for All tool` = relevance_to_afa_tool) %>%
+  kable(caption = "Tools and methods mapped (data/landscape-tools.csv). Each row holds the URL, inputs, outputs, strengths and limits in the file.")
+```
+
+The main findings from the mapping:
+
+- No existing tool converts verified enterprise outputs into health outcomes at transaction level. The closest is WHO's WASH-related disease burden estimation workbook (2023), which turns exposure distributions into attributable deaths and DALYs for diarrhoea, respiratory infection, undernutrition and STH and compares two scenarios. Its logic (PAFs from the Wolf 2022 relative risks and JMP exposure shares) is the core to adapt. The workbook is under WHO copyright, so the method has to be re-implemented from the published description, not redistributed.
+- Mortality models exist (the Lives Saved Tool, GiveWell's chlorination model, the Bayesian analysis of Kremer and colleagues) and work at programme or national scale.
+- Investor frameworks carry no health conversion: IRIS+ WASH metrics stop at service levels; the e-MFP and Aqua for All WASH Action Group framework names "reduction in infectious diseases / improved health" as an indicator but gives no method, which is the gap the terms of reference describe. Roots of Impact's design principles define impact additionality without a quantitative method.
+- Outcome-based precedents (SIINC for KWSH and Aqua Clara Kenya, the Cambodia sanitation development impact bond, the UK WASH Results Programme) pay on verified outputs and coverage with third-party verification. These metrics define the input side of a tool.
+- Economic conversions exist at global level [@hutton2016; @ross2026] and can supply a valuation step later.
+
+```{r datasets-table}
+dsets %>% transmute(Id = dataset_id, Dataset = name, Owner = owner, Access = access, Licence = licence, `What was pulled` = what_was_pulled) %>%
+  kable(caption = "Datasets mapped (data/landscape-datasets.csv).")
+```
+
+# Data gaps for the Aqua for All countries
+
+```{r baselines-gaps}
+prev <- bdis %>% filter(indicator == "diarr_prev2w_u5", !str_detect(country, "^Region|^Global")) %>% select(country, prev = value, prev_year = year)
+hh <- bdis %>% filter(indicator == "household_size", !str_detect(country, "^Region|^Global")) %>% select(country, hh = value, hh_year = year)
+paf <- bdis %>% filter(indicator == "paf_diarr_wash", population_group == "all ages", !str_detect(country, "^Region|^Global")) %>% select(country, paf = value, paf_year = year)
+miss <- bexp %>% filter(!is.na(flag) & str_detect(flag, "^missing")) %>% group_by(country) %>% summarise(missing = paste(unique(paste(service, level)), collapse = "; "), .groups = "drop")
+sth <- bdis %>% filter(indicator == "sth_prevalence", !str_detect(country, "^Region|^Global")) %>% transmute(country, sth = ifelse(is.na(value), "not pulled", fmt(value, 1)))
+prev %>% left_join(hh, by = "country") %>% left_join(paf, by = "country") %>% left_join(miss, by = "country") %>% left_join(sth, by = "country") %>%
+  transmute(Country = country, `Diarrhoea 2-week prevalence, under five (%)` = fmt(prev, 1), `DHS year` = prev_year, `Household size` = fmt(hh, 1),
+            `WASH-attributable diarrhoea PAF` = fmt(paf, 2), `PAF year` = paf_year, `JMP level without an estimate` = coalesce(missing, ""), `STH prevalence` = sth) %>%
+  kable(caption = "What the baseline tables hold per country (data/factors/baseline-disease.csv and baseline-exposure.csv). The PAF year is WHO's 2019 update; JMP coverage is the 2024 release.")
+```
+
+- Safely managed drinking water has no JMP estimate for Kenya and Rwanda, and safely managed sanitation none for Rwanda.
+- The DHS diarrhoea prevalence is from 2016 for South Africa and Uganda; the newest surveys elsewhere are 2020 to 2025. Two-week caregiver recall only.
+- WASH-attributable burden is for 2019 only (WHO); no later update yet. GBD 2021 values exist but need a login and use different counterfactuals.
+- No point-of-use water quality series outside the MICS water quality modules; no continuity or intermittency series; no data on the share of sewered households whose sewage is treated.
+- No country STH prevalence pulled (the WHO PCT databank and ESPEN hold school-age estimates).
+- No subnational or enterprise catchment baselines; the DHS API offers subnational breakdowns that were not pulled.
+- No pooled effect for safely managed on-site sanitation or FSM services, the business model of several Aqua for All enterprises.
+- No pooled effect for water kiosks, refill stations or in-line chlorination as a service model; single trials exist [@pickering2019; @sima2012; @lowe2026].
+
+# Limitations
+
+- **One screener, one pass, no calibration.** The `r n(n_s2)` abstract-level decisions were made by one reader (the agent) with no second screener. A human should sample them before this review is cited. The stage 3 report suggests the sample; its size is an open question.
+- **Full texts not obtained for `r n(n_ft_missing)` works.** Numbers from those works come from abstracts or from later reviews that cite them. The older Cochrane reviews and the cost-benefit reports are among them.
+- **Agent-run extraction.** Every effect size row was read and typed by the agent. Transcription errors are possible; each row carries a locator (table, figure or section) so that a reviewer can check it against the source in minutes.
+- **Search bounded by the seeds.** Citation chaining from 23 seeds and an author pass over 13 authors reach the pooled literature well but can miss primary studies outside that citation network, and all records not in English were dropped at the title screen.
+- **Not a GRADE assessment.** The review carries the certainty ratings of the source reviews and does not rate anything itself.
+- **No valuation evidence extracted beyond two rows**, and no health economics for the 11 countries.
+- **The four references not in the OpenAlex set** (the WHO 2023 report, the two 2012 BMC Public Health reviews on diarrhoea duration and incidence, and the odds ratio conversion note) were typed by hand into `docs/references-extra.bib`.
+
+# References
