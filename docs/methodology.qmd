@@ -1,0 +1,245 @@
+---
+title: "Methodology: from verified water and sanitation outputs to estimated health outcomes"
+subtitle: "Stage 2 draft of the Aqua for All health impact estimation tool (scratch reproduction)"
+date: 2026-10-23
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr); library(tidyr) })
+root <- normalizePath(file.path(getwd(), ".."))
+source(file.path(root, "R", "estimate.R"))
+tables <- load_factors(file.path(root, "data", "factors"))
+fmt <- function(x, d = 2) ifelse(is.na(x), "", formatC(x, digits = d, format = "f"))
+```
+
+::: {.callout-note}
+This is a working draft produced by an agent for Lars Schöbitz on 2026-10-23. Nothing in it has been reviewed by a person. The factor tables it describes are versioned CSV files under `data/factors/`. The licence of this document and of the tables is CC BY 4.0; the code is MIT.
+:::
+
+# Purpose and scope
+
+Aqua for All pays enterprises for verified outputs: households connected to piped water, filters sold and in use, toilets installed, hygiene products delivered. Funders want to know what these outputs mean for health. Measuring health directly at the level of one transaction is costly and slow. This method estimates health outcomes from the verified outputs instead, using published evidence, and says how much to trust each estimate.
+
+The method covers:
+
+- drinking water outputs: household connections, community water points and kiosks, household treatment products (filters, chlorine, solar disinfection), in-line chlorination;
+- sanitation outputs: toilet installations, sewer connections, container-based toilets with a collection service, emptying services;
+- hygiene outputs: soap or handwashing stations delivered with promotion;
+- menstrual health and hygiene outputs, reported as reach without a health conversion.
+
+The health outcomes are diarrhoeal disease (cases in children under five, deaths and disability-adjusted life years in all ages and under five) and, as a secondary outcome, soil-transmitted helminth infection. Respiratory infection and stunting were mapped in stage 1 and are not modelled.
+
+The geographies are the 11 countries of the ILF for WASH programme: Bangladesh, Cambodia, Ghana, India, Kenya, Madagascar, Malawi, Rwanda, Senegal, South Africa and Uganda. Other countries fall back to values for their WHO region, and every output then says so.
+
+Two words used throughout:
+
+- **Relative risk (RR).** The risk of diarrhoea in people who got the service divided by the risk in people who did not. An RR of 0.79 means 21 percent fewer cases.
+- **Confidence interval (CI).** The range inside which the true effect most likely lies. When the interval includes 1.0, the evidence cannot rule out that the service has no effect.
+
+# From output to outcome
+
+```{mermaid}
+%%| fig-cap: "The estimation chain. Boxes with a solid border are verified by the enterprise or its verifier; dashed boxes are retrieved from the factor tables; the rest is arithmetic."
+flowchart LR
+  A[Verified output<br>units, country, setting,<br>baseline source, use] --> B[People reached<br>units x household size]
+  B --> C[Exposure change<br>from level to level]
+  C --> D[Risk reduction<br>1 - RR, adjusted for use<br>and follow-up time]
+  D --> E[Cases averted<br>children x incidence x reduction]
+  D --> F[Deaths and DALYs averted<br>PAF route]
+  F --> G[Sensitivity band<br>direct mortality odds ratios]
+  E --> H[Confidence label<br>and factor ledger]
+  F --> H
+  T1[(effects.csv)] -.-> D
+  T2[(baseline-disease.csv)] -.-> E
+  T2 -.-> F
+  T3[(adjustments.csv)] -.-> D
+  T4[(pathways.csv)] -.-> C
+```
+
+The chain follows one rule: **retrieve, do not compute.** Every number that enters a calculation is a row in a versioned table with its source, its locator in the source, an evidence grade and a date. The code only does arithmetic on retrieved rows. Where no evidence exists, the row says so and the pathway is labelled "not estimable" or carries an evidence gap flag.
+
+# The evidence base and how factors were selected
+
+Stage 1 (see `docs/stage1-report.md`) screened 10 577 records and extracted 77 effect size rows into `data/effect-sizes.csv`. Stage 2 selected one row per intervention type and outcome into `data/factors/effects.csv`. The selection rules were:
+
+1. Prefer the newest pooled analysis whose exposure categories follow the JMP service ladder. This is Wolf et al. 2022 (Lancet, 124 studies), which WHO's 2023 burden estimates also use.
+2. Carry the review's own certainty rating (GRADE) as the row's certainty label. Where the source was not graded, the label is "low".
+3. Keep the confidence interval of every estimate; the tool reports low, central and high values from it.
+4. Where the evidence for a transaction type does not exist (safely managed on-site sanitation, emptying services, water kiosks, in-line chlorination, institutional connections), either use the nearest pooled estimate as a proxy with an evidence gap flag, or report reach only.
+
+```{r effects-table}
+tables$effects %>%
+  filter(outcome == "diarrhoea") %>%
+  transmute(`Factor row` = factor_id, From = exposure_from, To = exposure_to, RR = fmt(central), `95% CI` = paste0(fmt(low), " to ", fmt(high)),
+            Certainty = certainty, Source = source_citation) %>%
+  kable(caption = "Diarrhoea conversion factors carried by the tool (data/factors/effects.csv).")
+```
+
+The mortality odds ratios used for the sensitivity band and the soil-transmitted helminth row are in the same file.
+
+# The estimation chain step by step
+
+The chain is implemented in `R/estimate.R` (`estimate_output()`). For one enterprise output it runs these steps.
+
+## Step 1: people reached
+
+$$\text{people} = \text{units} \times \text{persons per unit}$$
+
+Persons per unit is the enterprise's own figure when it reports one, otherwise the mean household size of the country from the latest DHS survey. Children under five are people multiplied by the DHS share of the population aged 0 to 4.
+
+## Step 2: exposure change and effect row
+
+The pathway table names the service level the customer moves from and to. The user states the baseline source of the customers (unimproved or surface water, or an improved source off premises) because the gain from treating or piping water is smaller when the source is already improved. The effect row is chosen by the pathway's rule, for example a household filter against an unimproved source uses RR 0.50 (0.41 to 0.60) and against an improved source RR 0.61 (0.49 to 0.75).
+
+## Step 3: risk reduction with adjustments
+
+$$\text{reduction} = (1 - RR) \times m_{\text{use}} \times w_{\text{years}}$$
+
+- $m_{\text{use}}$ is the use multiplier: the verified share of units in use divided by the adherence typical in the pooled trials (the `ADJ_USE_*` rows), capped at 1. Dividing by the trial adherence avoids counting non-use twice, because the pooled RR already reflects partial use in trials. When use is not verified the multiplier is 1 and the confidence label drops one step.
+- $w_{\text{years}}$ sums the yearly effect over the reporting period: year 1 counts in full, every later year counts with the decay factor (the `ADJ_DECAY_*` rows). For point-of-use products the decay is 0.62, derived from the long-run filter estimate; for connections there is no decay (the connection must be active each year); for sanitation and hygiene no numeric value exists and later years are flagged.
+- Low and high values come from the confidence interval of the effect row: the low estimate uses the upper bound of the RR, the high estimate the lower bound. Where the interval includes no effect, the low estimate is shown as zero.
+
+## Step 4: diarrhoea cases averted (children under five)
+
+$$\text{cases averted} = \text{children} \times \text{incidence} \times \text{reduction}$$
+
+Incidence is episodes per child-year. The country value comes from the DHS two-week prevalence (caregiver-reported, children under five) converted with the mean episode duration of 4.3 days (Lamberti et al. 2012):
+
+$$\text{incidence} = \text{prevalence}_{2wk} \times \frac{365}{14 + 4.3}$$
+
+Where a country has no DHS value the chain uses the regional modelled incidence of Fischer Walker et al. 2012 (Africa 3.3, South-East Asia 2.4, Western Pacific 2.3 episodes per child-year in 2010) and flags it. The ToR's example quantity, cases averted per household-year, is household size times the under-five share times incidence times reduction.
+
+## Step 5: deaths and DALYs averted (PAF route)
+
+WHO estimates the share of diarrhoea deaths that unsafe water, sanitation or hygiene causes in each country (the population attributable fraction, PAF). The tool re-implements WHO's logic for one group of customers. WHO's model says the average risk in a country is the risk at the worst level times a weighted average of the relative risks of all levels:
+
+$$\bar{r} = r_0 \sum_j p_j RR_j, \qquad \text{PAF} = 1 - \frac{RR_{cf}}{\sum_j p_j RR_j}$$
+
+where $p_j$ is the share of people at level $j$ and $RR_{cf}$ is the relative risk of the counterfactual level (0.48 for safely managed water, 0.53 for sewered sanitation, 0.70 for handwashing). From the published PAF the weighted average follows directly, $\sum_j p_j RR_j = RR_{cf} / (1 - \text{PAF})$, so for one person moved from level $a$ to level $b$:
+
+$$\text{deaths averted per person-year} = \frac{\text{death rate}}{\sum_j p_j RR_j} \times RR_a \times (1 - RR_{b|a}) \times m_{\text{use}}$$
+
+The death rate is the country's diarrhoea deaths (WHO 2019, attributable deaths divided by the PAF) per person; $RR_a$ is the absolute risk of the customer's starting level (1 for unimproved, 0.81 for an improved source off premises); $RR_{b|a}$ is the effect row. The same formula with the DALY rate gives DALYs averted. The chain runs it for all ages and for children under five with the matching rates. WHO applies the under-five relative risks to all ages; this tool does the same and says so.
+
+Low and high values again come from the effect row's interval; the uncertainty of the PAF and of the counterfactual RR is not propagated (a known simplification, see limitations).
+
+## Step 6: the WHO scenario comparison
+
+`estimate_scenario_difference()` repeats WHO's own calculation at country scale: it takes the JMP service ladder shares of the country (national, rural or urban), moves the enterprise's customers from one level to another, recomputes the weighted average and reports the change in attributable deaths and DALYs. It also returns the PAF as re-implemented here next to WHO's published value as a check.
+
+```{r paf-check}
+chk <- lapply(c("Bangladesh", "Cambodia", "Ghana", "India", "Kenya", "Madagascar", "Malawi", "Rwanda", "Senegal", "South Africa", "Uganda"), function(cty) {
+  out <- lapply(c("water", "sanitation", "hygiene"), function(s) {
+    d <- tryCatch(exposure_distribution(tables, cty, s, "national"), error = function(e) NULL)
+    if (is.null(d)) return(tibble(country = cty, service = s, reimplemented = NA_real_, who = NA_real_))
+    cf <- get_adjustment(tables, paste0("ADJ_PAF_CF_", c(water = "WATER", sanitation = "SAN", hygiene = "HYG")[[s]]))$value
+    tibble(country = cty, service = s, reimplemented = 1 - cf / d$sum_p_rr, who = get_baseline(tables, cty, paste0("paf_diarr_", s))$value)
+  })
+  bind_rows(out)
+})
+bind_rows(chk) %>% mutate(across(c(reimplemented, who), ~ fmt(.x))) %>%
+  pivot_wider(names_from = service, values_from = c(reimplemented, who)) %>%
+  select(country, reimplemented_water, who_water, reimplemented_sanitation, who_sanitation, reimplemented_hygiene, who_hygiene) %>%
+  kable(col.names = c("Country", "Water (this tool)", "Water (WHO)", "Sanitation (this tool)", "Sanitation (WHO)", "Hygiene (this tool)", "Hygiene (WHO)"),
+        caption = "Attributable fractions re-implemented from the JMP ladder next to WHO's published 2019 values. Differences come from WHO's finer exposure categories (point-of-use treatment shares, piped water on premises, sewer connections, handwashing practice) that the public ladder does not separate.")
+```
+
+## Step 7: direct mortality sensitivity band
+
+Two reviews pooled child deaths from trials: Kremer et al. 2023 (water treatment, OR 0.72, 0.55 to 0.92) and Sharma Waddington et al. 2023 (water supply OR 0.66, community-wide sanitation OR 0.79, hygiene OR 0.85, water treatment OR 0.93, diarrhoea deaths from any WASH OR 0.55). `estimate_mortality_band()` applies these to the children reached:
+
+$$\text{deaths averted} = \text{children} \times \frac{U5MR}{1000} \times 0.2 \times (1 - OR)$$
+
+The under-five mortality rate (deaths per 1000 live births) is turned into an annual rate per child-year by the factor 0.2, an approximation for a stable population. Odds ratios are treated as relative risks because the annual death risk is small. The band is for sensitivity only and never stands alone in a report.
+
+## Step 8: confidence label and ledger
+
+Every result carries a label (high, moderate, low, very low, not estimable), the list of flags that produced it, and a ledger of every row used with its citation. See the adjustments section and `label_confidence()`.
+
+# Country baselines and their sources
+
+```{r baselines-table}
+b <- tables$baselines %>% filter(!grepl("^Region|^Global", country))
+b %>% filter(indicator %in% c("diarr_prev2w_u5", "household_size", "u5_share", "paf_diarr_water", "paf_diarr_sanitation", "paf_diarr_hygiene", "diarr_death_rate", "diarr_daly_rate"),
+             population_group %in% c("all ages", "under five")) %>%
+  mutate(key = case_when(indicator == "diarr_prev2w_u5" ~ "Diarrhoea 2-week prevalence, under five (%)",
+                         indicator == "household_size" ~ "Household size",
+                         indicator == "u5_share" ~ "Share aged 0 to 4 (%)",
+                         indicator == "paf_diarr_water" ~ "PAF water",
+                         indicator == "paf_diarr_sanitation" ~ "PAF sanitation",
+                         indicator == "paf_diarr_hygiene" ~ "PAF hygiene",
+                         indicator == "diarr_death_rate" & population_group == "all ages" ~ "Diarrhoea deaths per 100 000 (all ages)",
+                         indicator == "diarr_death_rate" ~ "Diarrhoea deaths per 100 000 (under five)",
+                         indicator == "diarr_daly_rate" & population_group == "all ages" ~ "Diarrhoea DALYs per 100 000 (all ages)",
+                         TRUE ~ "Diarrhoea DALYs per 100 000 (under five)")) %>%
+  mutate(v = ifelse(indicator %in% c("household_size"), fmt(value, 1), ifelse(grepl("PAF", key), fmt(value, 2), fmt(value, 1)))) %>%
+  select(country, key, v) %>% pivot_wider(names_from = key, values_from = v) %>%
+  kable(caption = "Country baselines (data/factors/baseline-disease.csv). WHO values refer to 2019; DHS values to the latest survey (2016 for South Africa and the Uganda diarrhoea value).")
+```
+
+Sources and rules:
+
+- **WHO Global Health Observatory** (open API): WASH-attributable diarrhoea deaths and DALYs for 2019, all ages and under five; attributable fractions for water, sanitation, hygiene and the cluster; SDG 3.9.2 deaths and mortality rate (from which the 2019 population is derived); under-five mortality rate. Total diarrhoea deaths are attributable deaths divided by the PAF.
+- **DHS Program indicator API** (open): two-week diarrhoea prevalence in children under five, mean household size, share of the population aged 0 to 4. DHS aggregates only; no microdata.
+- **WHO/UNICEF JMP** via the openwashdata `jmpdata` package (2025 release, CC BY 4.0) for the water ladder, and the GHO JMP series for sanitation and hygiene (national, urban, rural) in `baseline-exposure.csv`.
+- **Regional fallback rows** typed in from the WHO 2023 burden report Annexes 3 to 5 (PAFs, population, all diarrhoea deaths and DALYs by WHO region) and Fischer Walker et al. 2012 Table 2 (episodes per child-year). A country outside the 11 uses these with a flag on every output.
+- **Missing values** stay missing: no STH prevalence was pulled for any country; safely managed water has no JMP estimate for Kenya and Rwanda, safely managed sanitation none for Rwanda. The rows say so.
+
+# Adjustments
+
+```{r adjustments-table}
+tables$adjustments %>% transmute(Row = adjustment_id, Type = adjustment_type, `Applies to` = applies_to, Value = fmt(value), Grade = evidence_grade, Rule = use_rule) %>%
+  kable(caption = "Adjustment rows (data/factors/adjustments.csv).")
+```
+
+The reporting bias flag: the diarrhoea trials behind the factors used caregiver-reported outcomes, which overstate effects when households know they received an intervention. By decision, this is a flag on every cases estimate and not a numeric discount.
+
+The sanitation coverage threshold: the health effect of a toilet depends on the neighbours. The mortality review found a 21 percent reduction where sanitation was improved community-wide and no effect where single households were targeted while most neighbours lacked improved sanitation. The tool therefore asks for the share of households in the service area with at least basic sanitation after the installations. Below 50 percent (the review's "majority"), the household-targeted rows apply (RR 0.98 for cases, OR 1.07 for mortality) and the label is very low. No study estimates the threshold value; 50 percent is a judgement call written into the row.
+
+# Confidence labels
+
+The label starts at the certainty of the effect row (moderate for point-of-use products and handwashing promotion, moderate for basic sanitation, very low for water supply and sewerage, low for the household-targeted sanitation row). It drops one step for each of these: use not verified; a regional substitute in any baseline; decay applied as a proxy or missing for a multi-year estimate; an evidence gap flag on the pathway; sanitation coverage below the threshold; baseline source assumed rather than stated; no confidence interval on the effect. It cannot drop below very low. Two flags are shown but do not change the label: the reporting bias flag and "interval includes no effect".
+
+# Soil-transmitted helminths
+
+The Cochrane 2022 review found 14 percent lower odds of any STH infection with WASH interventions (OR 0.86, 0.74 to 1.01, randomised trials, additional to deworming). The interval includes no effect and the subgroups by water, sanitation or hygiene did not separate, so the outcome is secondary and labelled low confidence. No country prevalence was pulled. The chain estimates STH infections averted only when the user supplies a local prevalence (for example from ESPEN or an enterprise survey), converting the odds ratio to a relative risk at that prevalence. Otherwise the output states that STH was not estimated and why.
+
+# Menstrual health and hygiene
+
+No pooled estimate links menstrual products or services to a health outcome, and the school attendance effect is contested (stage 1 section 4). MHH is a separate pathway without a health conversion factor. The tool reports girls and women reached, products or services delivered and school facilities meeting standards, and reports attendance only where the enterprise measures it directly.
+
+# Limitations and evidence gaps
+
+- **No pooled effect for faecal sludge management services or safely managed on-site sanitation.** Container-based toilets are modelled as basic sanitation with the coverage rule and carry an evidence gap flag; emptying services for existing toilets are reported as reach only.
+- **No pooled effect for water kiosks, refill stations or in-line chlorination as service models.** Kiosks use the improved-source-off-premises row; in-line chlorination uses the household chlorination row as a proxy. Both carry the flag.
+- **Safely managed water** has only two studies behind its relative risk and no JMP estimate for Kenya and Rwanda.
+- **Institutional connections** (schools, clinics) have no household-based effect row; reach only.
+- **Uncertainty propagation** uses the effect interval only; the PAF, the counterfactual RR, the incidence and the household size enter as point values.
+- **Baselines are dated**: WHO burden values are for 2019; the Uganda and South Africa diarrhoea prevalence values are from 2016.
+- **Self-reported diarrhoea** in the source trials (reporting bias flag).
+- **One effect for all ages**: the relative risks come from children under five and are applied to all ages for deaths and DALYs, as WHO does.
+- **Seasonality** (dry-season effects are larger) and **water quantity, time and dignity benefits** are not modelled.
+- **No subnational baselines**: the DHS API offers them but they were not pulled.
+
+# Versioning and update rules for the factor tables
+
+1. Every table row has a `valid_from` date. A changed value gets a new row with a new date; the old row keeps its date and gets a note naming the new row. Nothing is deleted.
+2. Each release of the tables is tagged in git (`factors-vYYYY.MM`) and the tool prints the tag with every result.
+3. Sources to check at each update: WHO GHO WSH series (burden update beyond 2019), JMP annual release (ladder shares), new DHS surveys, Cochrane and Lancet updates of the pooled estimates (Wolf 2022, Cochrane sanitation 2023, Garn 2022), the Kremer et al. revision (18 trials, OR 0.76).
+4. A new effect row needs: the source DOI, the table or section it was read from, the review's GRADE rating or "not graded", the confidence interval and a use rule in plain words.
+5. Derived rows (rates, regional shares) state their arithmetic in the `derivation` column and are rebuilt by `scripts/10_build_baseline_tables.R`, never edited by hand.
+6. The WHO workbook is not redistributed; the method is re-implemented from the published description and cited.
+
+# Licences
+
+Methodology, factor tables and documents: Creative Commons Attribution 4.0 International (CC BY 4.0). Code: MIT. Source data keep their own terms: WHO GHO (open use with attribution), DHS indicator data (free to use with citation; aggregates only), JMP via jmpdata (CC BY 4.0), the WHO 2023 report (CC BY-NC-SA 3.0 IGO; values cited, workbook not redistributed).

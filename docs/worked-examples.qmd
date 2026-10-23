@@ -1,0 +1,306 @@
+---
+title: "Worked examples: four enterprise cases through the estimation chain"
+subtitle: "Stage 2 draft (scratch reproduction)"
+date: 2026-10-23
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr); library(tidyr) })
+root <- normalizePath(file.path(getwd(), ".."))
+source(file.path(root, "R", "estimate.R"))
+tables <- load_factors(file.path(root, "data", "factors"))
+nice <- function(x) ifelse(is.na(x), "", ifelse(x == 0, "0", ifelse(abs(x) >= 100, format(round(x), big.mark = " ", trim = TRUE), ifelse(abs(x) >= 1, sprintf("%.1f", x), sprintf("%.3f", x)))))
+show_summary <- function(est) {
+  est$summary %>% mutate(across(c(low, central, high), nice)) %>%
+    select(Outcome = outcome, Group = population_group, Low = low, Central = central, High = high, Unit = unit, Route = route) %>% kable()
+}
+show_ledger <- function(est) {
+  est$factors_used %>% transmute(Table = table, Row = id, What = what, Value = signif(value, 4), Low = signif(low, 3), High = signif(high, 3), Source = citation, Flag = flag) %>% kable()
+}
+show_inputs <- function(est) {
+  i <- est$inputs
+  tibble(Input = names(i), Value = sapply(i, function(v) if (is.null(v) || length(v) == 0) "" else as.character(v))) %>% kable()
+}
+arith <- function(est) {
+  x <- est$exposure_change
+  inc <- est$factors_used %>% filter(grepl("diarr_prev2w_u5|diarr_incidence_u5", what))
+  prev <- est$factors_used %>% filter(grepl("diarr_prev2w_u5", what))
+  dur <- est$factors_used %>% filter(id == "ADJ_EPISODE_DURATION_U5")
+  u5 <- est$factors_used %>% filter(grepl("u5_share", what))
+  hh <- est$inputs$people_per_unit
+  paf <- est$factors_used %>% filter(grepl("paf_diarr", what))
+  cf <- est$factors_used %>% filter(grepl("ADJ_PAF_CF", id))
+  rate <- est$factors_used %>% filter(grepl("diarr_death_rate \\(all ages", what))
+  incidence <- if (nrow(prev) == 1) prev$value / 100 * 365 / (14 + dur$value) else inc$value[1]
+  lines <- c(
+    sprintf("People reached = %s units x %s persons = %s", est$inputs$units, hh, round(est$people)),
+    sprintf("Children under five = %s x %s / 100 = %s", round(est$people), u5$value, round(est$children_under_five)),
+    if (nrow(prev) == 1) sprintf("Incidence = %s / 100 x 365 / (14 + %s) = %s episodes per child-year", prev$value, dur$value, round(incidence, 2)) else sprintf("Incidence = %s episodes per child-year (regional value)", incidence),
+    sprintf("Risk reduction = 1 - %s = %s; use multiplier %s; year weight %s", x$relative_risk, round(x$risk_reduction, 3), round(x$use_multiplier, 3), round(x$year_weight, 3)),
+    sprintf("Cases averted (central) = %s x %s x %s x %s x %s = %s", round(est$children_under_five), round(incidence, 2), round(x$risk_reduction, 3), round(x$use_multiplier, 3), round(x$year_weight, 3),
+            round(est$summary$central[est$summary$outcome == "diarrhoea cases averted"])),
+    sprintf("PAF route: sum of p x RR = %s / (1 - %s) = %s", cf$value, paf$value, round(cf$value / (1 - paf$value), 3)),
+    sprintf("Deaths averted per person-year (all ages, central) = %s / 100000 / %s x %s x %s = %s", round(rate$value, 2), round(cf$value / (1 - paf$value), 3),
+            round(x$risk_reduction, 3), round(x$use_multiplier, 3), signif(rate$value / 1e5 / (cf$value / (1 - paf$value)) * x$risk_reduction * x$use_multiplier, 3))
+  )
+  cat(paste0("- ", lines), sep = "\n")
+}
+```
+
+::: {.callout-note}
+Working draft produced by an agent on 2026-10-23, not reviewed. Inputs come from the public ILF for WASH knowledge report (results to end 2025) where it gives numbers; where it does not, the input is marked illustrative. The chain, the factor rows and the arithmetic are shown for each case. All health numbers are estimates with ranges, never verified outcomes.
+:::
+
+# Reading the examples
+
+Each example shows four things: the inputs as given to `estimate_output()`, every retrieved factor row with its source, the arithmetic in one line per step, and the results with low, central and high values and the confidence label. The low estimate uses the upper bound of the relative risk's confidence interval and is shown as zero where that interval includes no effect.
+
+The baseline source of the customers is the input that matters most. The ILF report says Tap Effect customers "rely on ponds or rainwater", which is surface or unimproved water. For KWSH and Aqua Clara the report does not say; the examples assume an unimproved source and show the improved-source alternative beside it, because the right answer is an enterprise sign-up question.
+
+# KWSH, Cambodia: piped household connections
+
+The report: connection rates in the licence areas rose from 60 percent to an average of 72 percent, "corresponding to ca. 2 500 additional households (approx. 10 000 people) reached". Inputs: 2 500 connections, Cambodia, rural, baseline source assumed unimproved, connections assumed active (the 72 percent is a coverage rate; the share of connections billed is not reported), water quality at the tap not verified, one year of service.
+
+```r
+estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural",
+                baseline_source = "unimproved", verified_use = 1, years = 1)
+```
+
+```{r kwsh}
+kwsh <- estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1, years = 1)
+```
+
+Inputs:
+
+```{r}
+show_inputs(kwsh)
+```
+
+Factor rows retrieved:
+
+```{r}
+show_ledger(kwsh)
+```
+
+Arithmetic:
+
+```{r, results='asis'}
+arith(kwsh)
+```
+
+Results (confidence label: **`r kwsh$confidence`**; flags: `r paste(kwsh$flags, collapse = ", ")`):
+
+```{r}
+show_summary(kwsh)
+```
+
+Per household-year: `r round(kwsh$per_household_year$central, 3)` cases averted (range `r round(kwsh$per_household_year$low, 3)` to `r round(kwsh$per_household_year$high, 3)`) in children under five.
+
+Notes from the chain:
+
+```{r, results='asis'}
+cat(paste0("- ", kwsh$notes), sep = "\n")
+```
+
+What changes if the customers already used an improved source off premises (a shared well or standpipe): the effect row becomes RR 0.97 (0.75 to 1.25), which is no measurable diarrhoea effect.
+
+```{r kwsh-alt}
+kwsh_alt <- estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "improved_not_on_premises", verified_use = 1)
+show_summary(kwsh_alt)
+```
+
+And if the utility verifies water quality at the tap (free of E. coli on a sampling plan), the higher-quality row applies (RR 0.48, 0.26 to 0.87, two studies):
+
+```{r kwsh-hq}
+kwsh_hq <- estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1, water_quality_verified = TRUE)
+show_summary(kwsh_hq)
+```
+
+Direct mortality sensitivity band for the main case:
+
+```{r kwsh-band}
+band <- estimate_mortality_band(tables, "P_CONN_HH", units = 2500, country = "Cambodia")
+band$band %>% mutate(across(c(low, central, high), nice)) %>% select(`Band row` = band_row, Outcome = outcome, Low = low, Central = central, High = high, Certainty = certainty) %>% kable()
+```
+
+WHO scenario comparison (moving the same people from unimproved to an improved source on premises in the rural Cambodia ladder):
+
+```{r kwsh-scenario}
+sc <- estimate_scenario_difference(tables, "Cambodia", "water", "unimproved", "basic (not safely managed)", people = kwsh$people, residence = "rural", to_rr = get_effect(tables, "F_WAT_PREM_FROM_UNIMP")$central)
+sc$result %>% mutate(across(c(deaths_averted, dalys_averted), nice)) %>% kable(col.names = c("Group", "Deaths averted", "DALYs averted"))
+```
+
+The PAF route gave `r round(kwsh$summary$central[kwsh$summary$outcome == "diarrhoea deaths averted" & kwsh$summary$population_group == "all ages"], 2)` deaths averted (all ages, central) and the scenario route `r round(sc$result$deaths_averted[1], 2)`; the re-implemented water PAF for Cambodia is `r round(sc$paf_reimplemented, 2)` against WHO's `r round(sc$paf_who, 2)`.
+
+# Tap Effect, Cambodia: household connections, bathroom connections and institutions
+
+The report: the rate of connection rose to 41.12 percent, "reaching 1 475 new households"; the bathroom connection rate reached 21.08 percent, "679 new connections and 30 ID Poor customers"; each system covers about 10 000 people including schools, clinics and businesses. Customers "rely on ponds or rainwater", so the baseline source is unimproved or surface water. Tap Effect operates the systems through remote metering, so active connections are monitored; the example assumes all 1 475 are active in the year.
+
+```r
+estimate_output(tables, "P_CONN_HH", units = 1475, country = "Cambodia", residence = "rural",
+                baseline_source = "unimproved", verified_use = 1, years = 1)
+```
+
+```{r tap}
+tap <- estimate_output(tables, "P_CONN_HH", units = 1475, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1, years = 1)
+```
+
+Factor rows retrieved (the same rows as KWSH, with the Cambodia baselines):
+
+```{r}
+show_ledger(tap)
+```
+
+Arithmetic:
+
+```{r, results='asis'}
+arith(tap)
+```
+
+Results (confidence label: **`r tap$confidence`**):
+
+```{r}
+show_summary(tap)
+```
+
+Bathroom connections (679): a bathroom tap brings water to the place where hands and bodies are washed. The evidence base has no row for "bathroom connection" and the handwashing row needs promotion contact, so the chain carries these as a quality metric of the same households, not as extra people. Had Tap Effect delivered a handwashing promotion with the bathroom connections, the hygiene pathway would apply to those 679 households:
+
+```{r tap-hyg}
+tap_hyg <- estimate_output(tables, "P_HYG_PRODUCT", units = 679, country = "Cambodia", residence = "rural", promotion_contact = TRUE)
+show_summary(tap_hyg)
+```
+
+School and clinic connections: the report gives no count per institution. With an illustrative 3 institutions of 400 users each, the chain reports reach only:
+
+```{r tap-inst}
+tap_inst <- estimate_output(tables, "P_CONN_INST", units = 3, country = "Cambodia", people_per_unit = 400)
+show_summary(tap_inst)
+```
+
+Notes: `r paste(tap_inst$notes, collapse = " ")`
+
+# Aqua Clara Kenya: water hubs in schools and household filters
+
+The report: 11 new hubs reaching 8 600 pupils with free water, and the share of households washing their filter weekly rose from 63 percent to 93 percent. The number of household filters linked to the hubs is not given; the example uses an illustrative 1 000 filters. The weekly washing share (93 percent) is the verified use input; the reference adherence for filters is 0.90, so the use multiplier is 1. Kenya, rural, baseline source assumed unimproved.
+
+```r
+estimate_output(tables, "P_POU_FILTER", units = 1000, country = "Kenya", residence = "rural",
+                baseline_source = "unimproved", verified_use = 0.93, years = 1)
+```
+
+```{r ack}
+ack <- estimate_output(tables, "P_POU_FILTER", units = 1000, country = "Kenya", residence = "rural", baseline_source = "unimproved", verified_use = 0.93, years = 1)
+```
+
+Factor rows retrieved:
+
+```{r}
+show_ledger(ack)
+```
+
+Arithmetic:
+
+```{r, results='asis'}
+arith(ack)
+```
+
+Results (confidence label: **`r ack$confidence`**; flags: `r paste(ack$flags, collapse = ", ")`):
+
+```{r}
+show_summary(ack)
+```
+
+Per household-year: `r round(ack$per_household_year$central, 2)` cases averted (range `r round(ack$per_household_year$low, 2)` to `r round(ack$per_household_year$high, 2)`) in children under five.
+
+Three years of service, with the decay row (0.62 of the year-one reduction from month 13):
+
+```{r ack-3y}
+ack3 <- estimate_output(tables, "P_POU_FILTER", units = 1000, country = "Kenya", residence = "rural", baseline_source = "unimproved", verified_use = 0.93, years = 3)
+show_summary(ack3)
+```
+
+Year weight `r round(ack3$exposure_change$year_weight, 2)` instead of 3; label `r ack3$confidence`.
+
+Before the incentive (63 percent washing weekly), the use multiplier would have been `r round(min(1, 0.63 / 0.90), 2)`; the incentive's part of the use metric is the difference between the two runs:
+
+```{r ack-use}
+ack_before <- estimate_output(tables, "P_POU_FILTER", units = 1000, country = "Kenya", residence = "rural", baseline_source = "unimproved", verified_use = 0.63, years = 1)
+bind_rows(
+  tibble(run = "Use 93 percent (after)", ack$summary %>% filter(outcome == "diarrhoea cases averted") %>% select(low, central, high)),
+  tibble(run = "Use 63 percent (before)", ack_before$summary %>% filter(outcome == "diarrhoea cases averted") %>% select(low, central, high))
+) %>% mutate(across(c(low, central, high), ~ round(.x))) %>% kable(col.names = c("Run", "Low", "Central", "High"))
+```
+
+The school hubs (8 600 pupils) are institutional reach: the chain reports them as people reached without a health conversion, and the sensitivity band for the filters is:
+
+```{r ack-band}
+estimate_mortality_band(tables, "P_POU_FILTER", units = 1000, country = "Kenya")$band %>%
+  mutate(across(c(low, central, high), nice)) %>% select(`Band row` = band_row, Outcome = outcome, Low = low, Central = central, High = high) %>% kable()
+```
+
+# Sanitation case (illustrative): ATEC Cambodia toilet connections
+
+The report: ATEC's share of customers with a toilet connected to the biodigester rose from 1 percent to about 7.8 percent; the number of customers is not given. The example is therefore illustrative: 500 toilet connections in rural Cambodia. A biodigester toilet is an on-site system with treatment, which the evidence base cannot distinguish from basic sanitation, so the container-based or on-site pathway with the coverage rule applies and the evidence gap flag is printed. Community coverage after the installations is taken from the JMP rural value for Cambodia (at least basic sanitation `r get_exposure(tables, "Cambodia", "sanitation", "at least basic", "rural")` percent in `r tables$exposure %>% filter(country == "Cambodia", service == "sanitation", level == "at least basic", residence == "rural") %>% pull(year)`), which is above the 50 percent threshold. Use verified at 90 percent (illustrative).
+
+```r
+estimate_output(tables, "P_CBS", units = 500, country = "Cambodia", residence = "rural",
+                community_coverage_after = 0.80, verified_use = 0.9, years = 1)
+```
+
+```{r atec}
+cov <- get_exposure(tables, "Cambodia", "sanitation", "at least basic", "rural") / 100
+atec <- estimate_output(tables, "P_CBS", units = 500, country = "Cambodia", residence = "rural", community_coverage_after = cov, verified_use = 0.9, years = 1)
+```
+
+Factor rows retrieved:
+
+```{r}
+show_ledger(atec)
+```
+
+Arithmetic:
+
+```{r, results='asis'}
+arith(atec)
+```
+
+Results (confidence label: **`r atec$confidence`**; flags: `r paste(atec$flags, collapse = ", ")`):
+
+```{r}
+show_summary(atec)
+```
+
+Notes:
+
+```{r, results='asis'}
+cat(paste0("- ", atec$notes), sep = "\n")
+```
+
+If the service area had coverage below the threshold (say 30 percent), the household-targeted row would apply:
+
+```{r atec-low}
+atec_low <- estimate_output(tables, "P_CBS", units = 500, country = "Cambodia", residence = "rural", community_coverage_after = 0.30, verified_use = 0.9)
+show_summary(atec_low)
+```
+
+Label: `r atec_low$confidence`.
+
+# The three ILF cases in one table
+
+```{r all-table}
+bind_estimates(kwsh, tap, ack) %>% filter(outcome %in% c("people reached", "diarrhoea cases averted", "diarrhoea DALYs averted", "diarrhoea deaths averted"), population_group %in% c("all ages", "under five")) %>%
+  filter(!(outcome == "people reached" & population_group != "all ages")) %>%
+  mutate(across(c(low, central, high), nice)) %>%
+  select(Pathway = pathway, Country = country, Units = units, Outcome = outcome, Group = population_group, Low = low, Central = central, High = high, Label = confidence) %>% kable()
+```
+
+How to read this: the two Cambodia connection cases carry a very low label because the water supply evidence is very low (the interval includes no effect, so the low estimate is zero). The Kenya filter case carries a moderate label because the pooled filter evidence is moderate and use was verified. Deaths averted per transaction-year are fractions of a death and should not be reported alone (communication rule 5).

@@ -1,0 +1,155 @@
+---
+title: "Health additionality guidance for SIINC and other outcome-based finance"
+subtitle: "Stage 2 draft (scratch reproduction)"
+date: 2026-10-23
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr) })
+root <- normalizePath(file.path(getwd(), ".."))
+source(file.path(root, "R", "estimate.R"))
+tables <- load_factors(file.path(root, "data", "factors"))
+```
+
+::: {.callout-note}
+Working draft produced by an agent on 2026-10-23, not reviewed. It applies the estimation chain of `docs/methodology.qmd` to the question the ToR asks: how much of an estimated health outcome can be credited to the incentive, and how should that be said in public.
+:::
+
+# Definitions as the ToR frames them
+
+- **Evidence strength.** How strong the evidence is that a type of water or sanitation output leads to a health outcome. In this method it is the certainty label of the effect row (moderate, low, very low) as rated by the source review.
+- **Attribution.** To what extent the estimated health outcome can reasonably be linked to the enterprise's outputs. In this method attribution is handled by the exposure change: only customers who moved from a worse service level to a better one count, only while the service is in use, and with the effect of the matching evidence row. People who already had an equal service do not count.
+- **Additionality.** To what extent the incentive (the SIINC payment or the loan discount) produced reach, quality or sustained use that would not have happened without it. In this method additionality is a share of the verified outputs: the outputs above the baseline trajectory.
+- **Verification feasibility.** What can be directly monitored and what has to be modelled. The table in the section on monitored and modelled inputs lists each input of the chain.
+
+The four are separate questions. A filter sold to a household that drank from a pond has strong attribution and moderate evidence strength. Whether that sale was additional depends on what the enterprise would have sold anyway. Whether the health estimate is credible depends on all four.
+
+# The baseline trajectory
+
+The incentive-attributable output is:
+
+$$\text{units}_{\text{attributable}} = \text{units}_{\text{verified}} - \text{units}_{\text{baseline trajectory}}$$
+
+The baseline trajectory is what the enterprise would have delivered in the period without the incentive. It must be set before the period starts (ex-ante) and written into the transaction. Two acceptable ways, and one that is acceptable only with a reason:
+
+## Pre-incentive trend
+
+Take the enterprise's own verified outputs for at least the two years before the transaction, fit a straight line (or take the average yearly growth), and extend it over the incentive period. This is the KWSH pattern in the ILF report: connection rates in the licence areas rose from 60 percent to 72 percent against a stated starting point. Use the trend when the enterprise has at least two years of comparable data and no major change in its market.
+
+Rules: use the same output definition before and after; do not let a one-off year (a grant-funded campaign, a drought) set the slope; state the data and the fitted line in the transaction snapshot.
+
+## Comparable-enterprise benchmark
+
+Take the growth of comparable enterprises without an incentive over the same period: same product, same country or market segment, similar size. Apply that growth to the enterprise's pre-incentive level. Use the benchmark when the enterprise is young, when its own history is not comparable, or when the market changed for everyone (a subsidy programme, a new regulation).
+
+Rules: name the comparators and the data source; use at least three comparators or a sector series (for example a utility regulator's connection statistics, the DHS or JMP trend for the service level in the area); state why they are comparable.
+
+## Contract target as baseline (with a reason)
+
+Some transactions set the baseline as the business plan the enterprise submitted to its investors. This is acceptable only when the plan predates the incentive discussions and was used for a real financing decision, because a plan written for the incentive can be set low. Record the date of the plan.
+
+## Which outputs the trajectory applies to
+
+Additionality is about more than reach. The ILF metrics also reward depth (low-income or ID Poor customers), quality (water quality, bathroom connections) and sustained use (filter cleaning, retention). Each metric needs its own baseline trajectory, because each enters the chain differently:
+
+| Metric type | Enters the chain as | Baseline trajectory of |
+| --- | --- | --- |
+| Reach (households connected, filters sold) | units | units per year |
+| Depth (low-income share) | units in the target group; the health factor does not change but the baseline source often does | share of units in the target group |
+| Quality (water free of E. coli at the tap, residual chlorine) | switches the effect row (verified quality) or sets the use multiplier | share of samples passing |
+| Sustained use (filters cleaned weekly, active connections) | use multiplier and years counted | share in use per year |
+
+# How the incentive-attributable share enters the chain
+
+Run `estimate_output()` twice with the same country, setting, baseline source and use inputs: once with the verified units and once with the baseline trajectory units. The incentive-attributable health outcome is the difference. Because the chain is linear in units, this equals running it once with the attributable units. Report both the total (all verified outputs) and the attributable part, each with its low, central and high values:
+
+```{r example-additionality}
+tot <- estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
+base <- estimate_output(tables, "P_CONN_HH", units = 1000, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
+pick <- function(x, o, g) x$summary %>% filter(outcome == o, population_group == g)
+rows <- bind_rows(
+  tibble(what = "Verified outputs (2500 connections)", pick(tot, "diarrhoea cases averted", "under five")[, c("low", "central", "high")]),
+  tibble(what = "Baseline trajectory (1000 connections, illustrative)", pick(base, "diarrhoea cases averted", "under five")[, c("low", "central", "high")])
+)
+rows <- bind_rows(rows, tibble(what = "Incentive-attributable (difference)", low = rows$low[1] - rows$low[2], central = rows$central[1] - rows$central[2], high = rows$high[1] - rows$high[2]))
+rows %>% mutate(across(c(low, central, high), ~ round(.x))) %>%
+  kable(col.names = c("", "Low", "Central", "High"), caption = paste0("Illustration with the Cambodia household connection pathway, diarrhoea cases averted in children under five per year. Confidence label: ", tot$confidence, ". The baseline trajectory figure is made up for the illustration."))
+```
+
+The attributable share of use and quality metrics works the same way: the use multiplier with and without the incentive gives two estimates, and the difference is the incentive's part.
+
+# What is directly monitored and what is modelled
+
+```{r monitored-table}
+tibble::tribble(
+  ~Input, ~`Directly monitored or modelled`, ~`Who provides it`, ~`Verification`,
+  "Units of output (connections, filters, toilets)", "Monitored", "Enterprise", "Third-party verifier: records, sample visits",
+  "Units active or in use (connection billed, filter cleaned, toilet used)", "Monitored", "Enterprise", "Verifier: unannounced sample, residual chlorine test, observation",
+  "Baseline source of the customers (unimproved, improved off premises)", "Monitored at sign-up or modelled from the JMP area value", "Enterprise or tool", "Customer survey at sign-up; else flagged as assumed",
+  "Water quality at the tap (free of E. coli)", "Monitored", "Enterprise or utility", "Laboratory results on a sampling plan",
+  "Community sanitation coverage after installations", "Monitored (service-area survey) or modelled (JMP rural or urban value)", "Enterprise or tool", "Survey; else flagged",
+  "Persons per household", "Modelled (DHS) unless the enterprise records it", "Tool", "DHS citation",
+  "Share of children under five", "Modelled (DHS)", "Tool", "DHS citation",
+  "Baseline diarrhoea incidence", "Modelled (DHS prevalence and episode duration; regional value as fallback)", "Tool", "Citations in the ledger",
+  "Relative risk of the exposure change", "Modelled (pooled trials)", "Tool", "Effect row with DOI and GRADE",
+  "Use reference and decay", "Modelled", "Tool", "Adjustment row with source",
+  "Deaths and DALYs (PAF route)", "Modelled (WHO 2019 burden, re-implemented method)", "Tool", "Baseline rows with WHO citations",
+  "Baseline trajectory", "Set ex-ante from monitored history or benchmark", "Funder and enterprise", "Written into the transaction before the period"
+) %>% kable(caption = "Inputs of the chain by verification feasibility.")
+```
+
+In short: the enterprise and the verifier own the left side of the chain (outputs, use, customer baseline, quality); the tool owns the right side (people per household, incidence, relative risks, burden rates). Everything on the right is a cited row that the funder can inspect.
+
+# The confidence label scheme
+
+```{r labels}
+tibble::tribble(
+  ~Label, ~Meaning, ~`Typical case`,
+  "moderate", "Pooled randomised evidence with a GRADE rating of moderate; use verified; country baseline; year one", "Household filter against an unimproved source, use verified by spot checks",
+  "low", "One step down from moderate, or a source rated low", "Same filter without verified use; a toilet installation with coverage above the threshold but a regional baseline",
+  "very low", "Evidence rated very low, or two or more downgrades, or an evidence gap flag", "Household connections (water supply evidence is very low); kiosks; container-based sanitation; any pathway with a regional substitute and unverified use",
+  "not estimable", "No conversion factor exists; reach is reported", "School connections, emptying services, MHH products, hygiene products without promotion"
+) %>% kable(caption = "Confidence labels as produced by label_confidence().")
+```
+
+Downgrade flags: use not verified; regional substitute; decay proxy or missing (multi-year); evidence gap; coverage below threshold; baseline source assumed; interval not available. Shown but not downgrading: reporting bias; interval includes no effect.
+
+# Rules for communicating estimates
+
+1. Every health number is "estimated" or "modelled"; outputs are "verified". Never write "the enterprise prevented 353 cases of diarrhoea". Write "the verified connections are estimated to avert about 350 cases of diarrhoea in children under five per year (range 0 to 670)".
+2. Always show the range. A single point value never appears in public reporting; internally the central value may be used for target-setting with the range beside it.
+3. Always show the confidence label next to the number, and the flags in a footnote.
+4. Say what the number rests on: the baseline source of the customers, whether use was verified, which year of service, and whether any baseline was a regional substitute.
+5. Deaths and DALYs are reported only at portfolio or multi-year scale, where they are not fractions of a death, and always with the PAF route as the headline and the direct mortality band as a sensitivity check. For one transaction in one year the deaths figure is usually below one; report the cases and DALYs and say that deaths are too few to state.
+6. Reach is reported as such, in the same table, for every pathway that has no health conversion (institutional connections, emptying services, MHH). Reach is not a health outcome and is not added to health outcomes.
+7. Evidence gap flags are printed in every output where they apply (FSM, kiosks, in-line chlorination, safely managed on-site sanitation).
+8. Additionality statements name the baseline trajectory method and its data.
+9. Keep the factor table tag (for example `factors-v2026.10`) in every published number so that it can be reproduced.
+
+# Ex-ante procedure
+
+1. Define the outputs the transaction will pay for, their unit, and how use will be verified.
+2. Set the baseline trajectory for each metric (pre-incentive trend or comparable-enterprise benchmark) and write it into the transaction.
+3. Record the customer baseline source and the setting (rural or urban, country) from the enterprise's market data.
+4. Run the chain on the target outputs and on the baseline trajectory outputs; the difference is the expected incentive-attributable health outcome, with low, central and high values and a label.
+5. If the label is very low or not estimable, decide whether the transaction should pay on outputs and use metrics only (the current SIINC practice) and report health as context, or whether a quality metric (verified water quality, coverage survey) can raise the label.
+6. Set the monitoring plan so that the inputs marked "monitored" above are collected: baseline source at sign-up, use spot checks, water quality sampling, coverage survey where sanitation is involved.
+7. Store the run: inputs, factor table tag, results.
+
+# Ex-post procedure
+
+1. Take the verified outputs from the verifier's report, by year.
+2. Take the verified use share, water quality results and coverage survey from the same report; where any is missing, run the chain with the input empty and accept the downgrade.
+3. Run the chain for each year of service with the matching year count, so that decay applies.
+4. Subtract the baseline trajectory set ex-ante; do not re-estimate the baseline after the fact unless the transaction says so.
+5. Report in the format of the communication rules: verified outputs, estimated outcomes with ranges and labels, reach for pathways without a factor, flags, factor table tag.
+6. Compare with the ex-ante run and record the reasons for differences (fewer outputs, lower use, different baseline source); this is the learning record the ToR asks for.
