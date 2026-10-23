@@ -444,7 +444,8 @@ summarise_portfolio <- function(x, by = c("scope", "outcome", "population_group"
 #'   missing-value marker without an id) and `citation_matches`.
 #' @export
 #' @examples
-#' est <- estimate_output("P_POU_FILTER", 100, "Kenya", baseline_source = "unimproved", verified_use = 0.9)
+#' est <- estimate_output("P_POU_FILTER", 100, "Kenya",
+#'   baseline_source = "unimproved", verified_use = 0.9)
 #' chk <- check_ledger(est)
 #' all(chk$found & chk$citation_matches, na.rm = TRUE)
 check_ledger <- function(x, tables = factor_tables()) {

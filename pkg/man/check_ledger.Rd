@@ -23,7 +23,8 @@ citation. Use it before publishing numbers, and after a factor table update
 to see which past results touch changed rows.
 }
 \examples{
-est <- estimate_output("P_POU_FILTER", 100, "Kenya", baseline_source = "unimproved", verified_use = 0.9)
+est <- estimate_output("P_POU_FILTER", 100, "Kenya",
+  baseline_source = "unimproved", verified_use = 0.9)
 chk <- check_ledger(est)
 all(chk$found & chk$citation_matches, na.rm = TRUE)
 }

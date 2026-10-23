@@ -67,6 +67,8 @@ The governance document (`docs/factor-table-governance.md`, section 5) has the c
 
 ## 9. pkgdown site
 
+- [x] Brand wired (2026-10-23): `washr::use_brand()` placed `_brand.yml` and the logos in `pkg/` and wired `_pkgdown.yml` through bslib; `docs/` carries the same brand file, logos and the quarto-owd extension; the Shiny app reads the bundled `_brand.yml`. Refresh with `washr::use_brand()` when openwashdata/brand releases a new version.
+
 - [ ] The site was built locally into `pkg/docs/` during stage 4 (see `docs/stage4-report.md` for the result and size). `pkg/docs/` is ignored. If the repository goes public, either commit the folder and serve it with GitHub Pages from `pkg/docs/`, or build it in a GitHub Action onto `gh-pages` (the usethis `use_pkgdown_github_pages()` pattern). The package has no `_pkgdown.yml`; add one with a reference index grouped by task (inputs, estimation, labels, exports, report and app, tables) before publishing the site.
 - [ ] The package is installed from the repository, not from CRAN or r-universe. If an r-universe home is wanted later, the openwashdata universe already exists.
 
