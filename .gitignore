@@ -7,3 +7,6 @@ data-raw/
 .Rhistory
 _site/
 *_files/
+
+# rendered documents
+docs/*.html

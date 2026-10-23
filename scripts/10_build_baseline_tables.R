@@ -172,7 +172,13 @@ regional <- tibble::tribble(
 # regional rates derived from the regional totals
 reg_wide <- regional %>% filter(indicator %in% c("population", "diarr_deaths_total", "diarr_dalys_total")) %>%
   select(iso3, indicator, population_group, value) %>% pivot_wider(names_from = indicator, values_from = value)
+reg_u5 <- regional %>% filter(indicator == "population") %>% select(iso3, population_group, value) %>%
+  pivot_wider(names_from = population_group, values_from = value) %>%
+  transmute(iso3, indicator = "u5_share", population_group = "all ages", value = `under five` / `all ages` * 100, low = NA_real_, high = NA_real_,
+            unit = "percent", year = 2019L, source = paste(who_report, "(derived)"), url = who_url,
+            flag = "regional substitute; derived", derivation = "population (under five) / population (all ages) x 100 (Annex 4)")
 regional_rates <- bind_rows(
+  reg_u5,
   reg_wide %>% transmute(iso3, indicator = "diarr_death_rate", population_group, value = diarr_deaths_total / population * 1e5, low = NA_real_, high = NA_real_,
                          unit = "per 100 000 per year", year = 2019L, source = paste(who_report, "(derived)"), url = who_url,
                          flag = "regional substitute; derived", derivation = "diarr_deaths_total / population x 100000 (Annex 4)"),
