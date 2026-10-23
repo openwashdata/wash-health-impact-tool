@@ -422,3 +422,245 @@ timestamp,script,url,status,n_results,mode,note
 2026-10-23T11:34:36,05_stage2_prepare.py,"https://api.openalex.org/works?filter=openalex_id:W3040071463|W4376868986|W2067196243|W3016817394|W4319997202|W4384936609|W1987010709|W2601549319|W2911542781|W3042449652|W4322729454|W2993791947|W2983415302|W328890040|W4293582551|W1604940282|W2065296441|W3124993014|W4362633990|W4391349639|W4391589804|W3138519825|W1965901123|W2286111767|W1806351979|W2115660283|W2952261732|W4385812667|W4388794436|W4401018831|W4413507217|W1546965570|W2048875269|W2890497042|W149953279|W2500546686|W4223984940|W4233158919|W4361207177|W4398132951|W2896069183|W2968987898|W3118188225|W341481908|W4311821008|W4388728320|W1911482405|W1964266980|W2136119921|W2183784671&select=id,abstract_inverted_index&per_page=50&page=1",200,50,keyed,count=50
 2026-10-23T11:34:37,05_stage2_prepare.py,"https://api.openalex.org/works?filter=openalex_id:W2324789270|W2972059797|W3093843657|W4392883571|W1854932198|W3022753132|W3212873975|W4231153337|W4409054321|W4412978115|W2189154315|W2562676102|W3145777763|W3183839491|W3198293368|W4385381595|W7127143857|W162275686|W207571909|W2370087126|W2731407230|W2921301240|W3200593436|W4213123166|W4249697324|W4400401674|W4410442285|W4411126846|W4415704535|W4416751445|W4416912693|W7119486115|W7163900621|W117091708|W1514372518|W2183471743|W2953498805|W2982361789|W3015060465|W3137279606|W3156468931|W3200837403|W3203072991|W4206086549|W4285159900|W4297880226|W4315881673|W4387045176|W4400585442|W4403559702&select=id,abstract_inverted_index&per_page=50&page=1",200,50,keyed,count=50
 2026-10-23T11:34:37,05_stage2_prepare.py,"https://api.openalex.org/works?filter=openalex_id:W4404562026|W4405364117|W4407741106|W4413090193|W4413230420|W4413860243|W4414442495|W4414550364|W4415700838|W4416393014|W4417274087|W7128427037|W7139922335|W7141633858|W7147186848|W7155154914|W7155211786|W7157885258|W7162445007|W7163690535|W7165736340|W7167470493|W7206164626|W7213761983|W7213785287|W7214011280|W7214298255|W7214488899&select=id,abstract_inverted_index&per_page=50&page=1",200,28,keyed,count=28
+2026-10-23T11:49:54,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136/bmjgh-2025-018958%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:49:55,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=CH_DIAR_C_DIA&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:49:55,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12820825/fullTextXML,200,0,keyed,europepmc xml 148372 bytes
+2026-10-23T11:49:56,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s12889-026-27639-z%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:49:56,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=CH_DIAT_C_ORT&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:49:56,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13312774/fullTextXML,200,0,keyed,europepmc xml 116744 bytes
+2026-10-23T11:49:57,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=WS_SRCE_H_IMP&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:49:57,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.21203/rs.3.rs-11084659/v1%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:49:58,07_fulltexts.py,https://www.researchsquare.com/article/rs-11084659/latest.pdf,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:49:58,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1289/ehp14502%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:49:59,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=WS_TLET_H_IMP&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:49:59,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11793162/fullTextXML,200,0,keyed,europepmc xml 187014 bytes
+2026-10-23T11:50:00,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3390/ijerph21070823%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:00,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=WS_HNDW_H_SWT&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:50:00,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11276699/fullTextXML,200,0,keyed,europepmc xml 179736 bytes
+2026-10-23T11:50:01,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.7189/jogh.14.04018%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:01,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=CN_NUTS_C_HA2&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:50:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11215800/fullTextXML,200,0,keyed,europepmc xml 117958 bytes
+2026-10-23T11:50:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/washdev.2024.203%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:03,07_fulltexts.py,https://iwaponline.com/washdev/article-pdf/doi/10.2166/washdev.2024.203/1446399/washdev2024203.pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:50:03,06b_dhs_baselines.py,https://api.dhsprogram.com/rest/dhs/data?indicatorIds=CM_ECMR_C_U5M&countryIds=BD%2CKH%2CGH%2CIA%2CKE%2CMD%2CMW%2CRW%2CSN%2CZA%2CUG&breakdown=national&perpage=1000&f=json,200,0,keyed,dhs
+2026-10-23T11:50:04,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s0140-6736%2823%2900021-1%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:04,07_fulltexts.py,http://www.thelancet.com/article/S0140673623000211/pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:50:05,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1004215%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:06,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10118100/fullTextXML,200,0,keyed,europepmc xml 222273 bytes
+2026-10-23T11:50:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/14651858.cd013328.pub2%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9969045/fullTextXML,200,0,keyed,europepmc xml 732450 bytes
+2026-10-23T11:50:08,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.11648/j.jher.20230901.11%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:09,07_fulltexts.py,https://article.sciencepublishinggroup.com/pdf/10.11648.j.jher.20230901.11.pdf,200,0,keyed,pdf download 200 text/plain;charset=UTF-8
+2026-10-23T11:50:10,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2139/ssrn.4071953%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:10,07_fulltexts.py,https://doi.org/10.2139/ssrn.4071953,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:50:12,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.7189/jogh.12.08003%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:22,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8910783/fullTextXML,200,0,keyed,europepmc xml 63520 bytes
+2026-10-23T11:50:23,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136/bmjopen-2019-034812%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:31,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7359184/fullTextXML,200,0,keyed,europepmc xml 145426 bytes
+2026-10-23T11:50:32,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136/bmjopen-2020-038255%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:43,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7735112/fullTextXML,200,0,keyed,europepmc xml 97677 bytes
+2026-10-23T11:50:44,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s13052-019-0666-2%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:45,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6610930/fullTextXML,200,0,keyed,europepmc xml 101420 bytes
+2026-10-23T11:50:46,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/14651858.cd011055.pub2%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:46,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6757260/fullTextXML,200,0,keyed,europepmc xml 1203884 bytes
+2026-10-23T11:50:47,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.13051%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:47,07_fulltexts.py,https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/tmi.13051,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:50:48,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1596/1813-9450-8444%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:50,07_fulltexts.py,https://doi.org/10.1596/1813-9450-8444,200,0,keyed,pdf download 200 text/html; charset=UTF-8
+2026-10-23T11:50:51,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.ijheh.2017.05.007%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:52,07_fulltexts.py,https://www.sciencedirect.com/science/article/pii/S1438463917301529/pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:50:53,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s12889-017-4746-1%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:50:54,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5688426/fullTextXML,200,0,keyed,europepmc xml 118106 bytes
+2026-10-23T11:50:54,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pntd.0005591%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5464528/fullTextXML,200,0,keyed,europepmc xml 116133 bytes
+2026-10-23T11:51:03,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.4269/ajtmh.17-0190%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:03,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5817760/fullTextXML,200,0,keyed,europepmc xml 264849 bytes
+2026-10-23T11:51:04,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pone.0173808%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5351971/fullTextXML,200,0,keyed,europepmc xml 156921 bytes
+2026-10-23T11:51:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/14651858.cd004265.pub3%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:18,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4563982/fullTextXML,200,0,keyed,europepmc xml 482047 bytes
+2026-10-23T11:51:19,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.12339%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:19,07_fulltexts.py,https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/tmi.12339,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:51:20,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/14651858.cd009382.pub2%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:21,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11608819/fullTextXML,error,0,keyed,HTTP Error 500: 
+2026-10-23T11:51:22,07_fulltexts.py,https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD009382.pub2/pdf/full,412,0,keyed,pdf download 412 text/html
+2026-10-23T11:51:23,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1001162%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:25,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3265535/fullTextXML,200,0,keyed,europepmc xml 207820 bytes
+2026-10-23T11:51:25,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.23846/sr0017%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:26,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/14651858.cd007180.pub2%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:27,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6532559/fullTextXML,error,0,keyed,HTTP Error 500: 
+2026-10-23T11:51:27,07_fulltexts.py,https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD007180.pub2/pdf/full,412,0,keyed,pdf download 412 text/html
+2026-10-23T11:51:29,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s1473-3099%2810%2970123-7%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:29,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.4269/ajtmh.2010.10-0215%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:30,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC2929055/fullTextXML,error,0,keyed,HTTP Error 500: 
+2026-10-23T11:51:31,07_fulltexts.py,https://www.ncbi.nlm.nih.gov/pmc/articles/2929055,200,0,keyed,pdf download 200 text/html; charset=utf-8
+2026-10-23T11:51:32,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1021/es9028217%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:33,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/ebch.373%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:33,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2105/ajph.2007.124610%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:34,07_fulltexts.py,https://www.ncbi.nlm.nih.gov/pmc/articles/2446461,200,0,keyed,pdf download 200 text/html; charset=utf-8
+2026-10-23T11:51:35,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136/bmj.39118.489931.be%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:36,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC1851994/fullTextXML,error,0,keyed,HTTP Error 500: 
+2026-10-23T11:51:36,07_fulltexts.py,https://www.bmj.com/content/bmj/334/7597/782.full.pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:51:37,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.4269/ajtmh.2007.76.354%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:38,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/j.1365-3156.2006.01568.x%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:39,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7169664/fullTextXML,error,0,keyed,HTTP Error 500: 
+2026-10-23T11:51:39,07_fulltexts.py,https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1365-3156.2006.01568.x,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:51:41,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s1473-3099%2804%2901253-8%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:41,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s1473-3099%2803%2900606-6%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:42,07_fulltexts.py,https://www.ncbi.nlm.nih.gov/pmc/articles/2393264,200,0,keyed,pdf download 200 text/html; charset=utf-8
+2026-10-23T11:51:43,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s41182-026-00903-z%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:50,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12829192/fullTextXML,200,0,keyed,europepmc xml 157457 bytes
+2026-10-23T11:51:50,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.48130/biocontam-0026-0002%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:52,07_fulltexts.py,https://doi.org/10.48130/biocontam-0026-0002,200,0,keyed,pdf download 200 text/html;charset=UTF-8
+2026-10-23T11:51:53,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1021/acsestwater.5c00195%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:53,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1021/envhealth.4c00246%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:51:58,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12186206/fullTextXML,200,0,keyed,europepmc xml 100110 bytes
+2026-10-23T11:51:59,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s41256-024-00366-x%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:00,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11212388/fullTextXML,200,0,keyed,europepmc xml 131014 bytes
+2026-10-23T11:52:01,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.7189/jogh.14.04162%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11342018/fullTextXML,200,0,keyed,europepmc xml 74769 bytes
+2026-10-23T11:52:03,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389/fpubh.2023.1302748%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:03,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10731288/fullTextXML,200,0,keyed,europepmc xml 82584 bytes
+2026-10-23T11:52:04,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1021/acs.est.7b01014%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:04,07_fulltexts.py,https://pubs.acs.org/doi/pdf/10.1021/acs.est.7b01014,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:52:06,07_fulltexts.py,https://researchonline.lshtm.ac.uk/id/eprint/8695/1/Estimating-the-burden-of-disease-attributable.pdf,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:52:06,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1004524%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11884671/fullTextXML,200,0,keyed,europepmc xml 180235 bytes
+2026-10-23T11:52:08,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pntd.0012265%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:14,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11251581/fullTextXML,200,0,keyed,europepmc xml 111019 bytes
+2026-10-23T11:52:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.7554/elife.62278%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:21,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8121544/fullTextXML,200,0,keyed,europepmc xml 570316 bytes
+2026-10-23T11:52:22,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.jhealeco.2021.102456%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:23,07_fulltexts.py,https://doi.org/10.1016/j.jhealeco.2021.102456,200,0,keyed,pdf download 200 text/html;charset=UTF-8
+2026-10-23T11:52:24,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1257/pol.20180764%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:24,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3386/w29447%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:26,07_fulltexts.py,https://doi.org/10.3386/w29447,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:52:26,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1101/2021.05.21.21257546%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:27,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2214-109x%2819%2930315-8%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:27,07_fulltexts.py,http://www.thelancet.com/article/S2214109X19303158/pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:52:28,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1002812%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:29,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6546207/fullTextXML,200,0,keyed,europepmc xml 184074 bytes
+2026-10-23T11:52:30,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1093/ije/dyz157%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:31,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6929523/fullTextXML,200,0,keyed,europepmc xml 117664 bytes
+2026-10-23T11:52:31,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pone.0186228%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:42,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5665426/fullTextXML,200,0,keyed,europepmc xml 147112 bytes
+2026-10-23T11:52:43,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2214-109x%2815%2900144-8%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:43,07_fulltexts.py,http://www.thelancet.com/article/S2214109X15001448/pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:52:45,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2139/ssrn.2654864%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:45,07_fulltexts.py,https://doi.org/10.2139/ssrn.2654864,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:52:46,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3390/ijerph121012127%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:47,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4626959/fullTextXML,200,0,keyed,europepmc xml 129774 bytes
+2026-10-23T11:52:48,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2214-109x%2814%2970307-9%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:49,07_fulltexts.py,https://doi.org/10.1016/s2214-109x(14)70307-9,200,0,keyed,pdf download 200 text/html;charset=UTF-8
+2026-10-23T11:52:50,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1001709%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:51,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4144850/fullTextXML,200,0,keyed,europepmc xml 207865 bytes
+2026-10-23T11:52:52,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1596/1813-9450-6360%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:52:53,07_fulltexts.py,https://doi.org/10.1596/1813-9450-6360,200,0,keyed,pdf download 200 text/html; charset=UTF-8
+2026-10-23T11:52:54,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1596/1813-9450-6580%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:10,07_fulltexts.py,http://crossasia-repository.ub.uni-heidelberg.de/3847/1/Maharashtra%20Village%20Sanitation.pdf,000,0,keyed,pdf download 000
+2026-10-23T11:54:11,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s0140-6736%2807%2961638-9%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:12,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC2212752/fullTextXML,200,0,keyed,europepmc xml 74105 bytes
+2026-10-23T11:54:16,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s0140-6736%2805%2966912-7%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:17,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pmed.1004982%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:33,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13065014/fullTextXML,200,0,keyed,europepmc xml 168955 bytes
+2026-10-23T11:54:33,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/washdev.2025.092%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:35,07_fulltexts.py,https://doi.org/10.2166/washdev.2025.092,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:54:36,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/washdev.2024.313%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:37,07_fulltexts.py,https://iwaponline.com/washdev/article-pdf/14/9/794/1484473/washdev2024313.pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:54:38,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/washdev.2024.209%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:38,07_fulltexts.py,https://iwaponline.com/washdev/article-pdf/14/12/1216/1509303/washdev2024209.pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:54:41,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pone.0227611%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:42,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7083270/fullTextXML,200,0,keyed,europepmc xml 147087 bytes
+2026-10-23T11:54:43,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3390/ijerph17145068%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:54:44,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7399893/fullTextXML,200,0,keyed,europepmc xml 180142 bytes
+2026-10-23T11:54:44,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.ijheh.2020.113682%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:01,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7873587/fullTextXML,200,0,keyed,europepmc xml 99586 bytes
+2026-10-23T11:55:01,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W7124585842|W7140216878|W4411689812|W4408045012|W4400136293|W4401826600|W4379467249|W4389393005|W2944592180|W2621535145|W2110878250|W2155775416|W7163185966|W4401611631|W4401634801|W4380789023|W4367180196|W4229078548|W2904940862|W2968581109|W2802479142|W2607945843|W2543851953|W2107145316|W1554705232|W2104045490|W2090634563|W2064193119|W1996840718|W2169242337|W2137068815|W3123032931|W7148854561|W4415166743|W4401853378|W4404189700|W3012432579|W3042666032|W3114183925|W3198293368|W2895440524|W2403229527|W2548539616|W2055553384|W2048875269|W2120012557|W1500549482|W2129028163|W2150772415|W2171706443&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:01,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1080/16549716.2018.1523303%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7011988/fullTextXML,200,0,keyed,europepmc xml 98650 bytes
+2026-10-23T11:55:03,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W2117552883|W2112831031|W1658021788|W4280646573|W3093843657|W2960236837|W2960401104|W2997678778|W2942575694|W2592653498|W2345361863|W2143887555|W2056967388|W2073453329|W2120476202|W2049544033|W2017641992|W7125030000|W7160313309|W7213785287|W4407131849|W4399969627|W4400128794|W4400546576|W4367172984|W4366463941|W4317935140|W4380629725|W4283761346|W4283207078|W4319997202|W4221066144|W4211014524|W3040694627|W3111746378|W2955244794|W1543976550|W2791078272|W2803492939|W2620594344|W2767294195|W2622131491|W2752676182|W2603793177|W2057044056|W2119987738|W2040633924|W1670816734|W2149966611|W1886885898&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:03,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W1969864987|W2725909355|W2152057480|W2117678428|W2159218216|W2171668678|W2044691357|W1964701507|W2109881331|W2135576309|W2108091428|W2130779321|W2172098474|W2135962256|W1774588359|W4405037278|W4407095411|W4410226346|W4394706000|W4405637512|W4400401674|W4405364117|W4381245557|W4389979965|W4310705100|W4307166954|W4311667833|W4303696806|W4285159900|W3126693641|W3209030885|W3138954628|W3108495929|W2979924136|W2902580193|W2902854501|W2890497042|W2807271110|W2555101851|W2513011376|W2078036854|W2272460286|W1980125603|W3124374555|W1991129848|W2099658345|W2068155623|W1970543817|W1604940282|W1783322716&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:05,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W2065197245|W2134243580|W328890040|W7127731603|W7124920286|W7138139570|W7212301596|W4410166189|W4407559250|W4411098502|W4392183652|W4403112396|W4318542904|W4323305621|W4382310423|W4384936609|W4282929442|W4224139297|W4289711360|W3156135845|W3187167855|W3130140569|W3084224348|W4299545580|W4298347753|W4300901132|W2947342604|W2999090998|W2792843465|W2883748497|W2804925188|W2604540445|W2231048563|W2765936082|W2733898522|W2770019576|W2765913014|W2396904246|W2531793289|W2340383816|W2463393523|W1815121818|W1835489350|W1515395290|W2048988304|W2107982711|W2168270561|W2016803368|W2013700872|W2021337515&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:05,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.12808%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:05,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W2139879439|W2066300663|W2128203383|W2007695924|W1487338114|W4408216376|W4400275734|W3145032972|W3143568238|W3189689491|W3213145309|W3164372972|W2969044726|W2948468021|W2966567495|W2785371307|W4239240204|W2903935951|W2767111477|W2121051375|W1837462516|W1774935441|W2119427701|W1980524096|W66778559|W1886142486|W2156189694|W2136438974|W2137593565|W4394714246|W4391971178|W4393004014|W4323923890|W4290667462|W3160907743|W3082868039|W3008310615|W3013124704|W2935825922|W2954085063|W2909106252|W2797307135|W2874746798|W2794529112|W2738147775|W2120520186|W2007127410|W2121141048|W4417003899|W2946739594&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:06,07_fulltexts.py,https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/tmi.12808,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:55:07,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W2735645633|W2292933427|W1926055518|W2046740816|W1979605138|W1549883310|W4412351878|W7152729658|W4412978115|W4408018942|W4415618307|W4415704535|W4416751445|W4409647919|W4417274087|W4402134992|W4392817415|W4399354649|W4399264657|W4405739353|W4323349116|W4367627722|W4381622514|W4308457673|W4294082330|W4226074080|W4282925644|W4295715689|W3118790393|W3136610904|W3118274859|W3160058112|W4206259150|W3015805446|W3033579323|W3047943900|W3080805381|W3016218625|W3115698057|W2964205148|W2910376764|W2969297406|W2906934891|W2953699830|W2796547202|W2796019978|W2785353712|W2604566428|W2615209472|W2609742677&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/wh.2012.105%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1057/ejdr.2012.24%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:08,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W2594826899|W2747161079|W2753685376|W2620951887|W2759355225|W2345868033|W2344281091|W2295795924|W2547996783|W2409433763|W2520352342|W3124993014|W2762556317|W592723513|W2045604909|W2074407964|W1981753921|W2099300372|W2132711427|W2315320947|W2151506147|W2119579564|W2041554090|W2147398982|W2145795323|W2030162829|W2101548987|W2161687306|W2161963318|W1967595572|W2158669638|W2171963427|W2080701336|W2148635118|W2040555771|W1989236800|W2035978416|W2171607527|W1973903571|W1968152556|W2169208260|W1994733875|W2101893457|W2123583824|W2033058796|W2104709431|W2025490916|W1973505641|W2059729018|W2052596102&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,50,keyed,count=50
+2026-10-23T11:55:08,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1080/19439342.2012.716075%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:08,08_references_bib.py,"https://api.openalex.org/works?filter=openalex_id:W1855250513|W1970558635|W2109241058|W2166045868|W1598408666|W1988600756|W2155473935|W2164819406|W1998313988|W2087430657|W2145435173|W2155277895|W1849429639|W1584701487|W2170691595|W2051196720|W2110801665|W2124292285|W2081069019|W2147562479|W2143823760|W4286510725|W4380854096&select=id,doi,title,publication_year,type,authorships,primary_location,biblio,open_access&per_page=50&page=1",200,23,keyed,count=23
+2026-10-23T11:55:11,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1596/1813-9450-5618%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:11,07_fulltexts.py,http://www-wds.worldbank.org/external/default/main?menuPK=64187510&pagePK=64193027&piPK=64187937&theSitePK=523679&menuPK=64187510&searchMenuPK=64187283&siteName=WDS&entityID=000158349_20110330154747,200,0,keyed,pdf download 200 text/html;charset=utf-8
+2026-10-23T11:55:14,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.vaccine.2009.02.104%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1093/heapol/czp036%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/wh.2007.009%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:16,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/wh.2007.010%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:18,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.4269/ajtmh.2006.74.884%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:18,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.xcrm.2026.102588%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:19,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12923958/fullTextXML,200,0,keyed,europepmc xml 210450 bytes
+2026-10-23T11:55:20,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1002/sd.70661%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:20,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1080/09603123.2026.2645408%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:21,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1177/17579759261459422%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:22,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1136/bmjgh-2024-018059%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:22,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12056636/fullTextXML,200,0,keyed,europepmc xml 176711 bytes
+2026-10-23T11:55:24,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1080/16549716.2025.2451610%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:25,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11834799/fullTextXML,200,0,keyed,europepmc xml 86523 bytes
+2026-10-23T11:55:25,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1177/11786302251339523%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:26,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12144351/fullTextXML,200,0,keyed,europepmc xml 119269 bytes
+2026-10-23T11:55:26,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2214-109x%2823%2900563-6%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:28,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10882208/fullTextXML,200,0,keyed,europepmc xml 133793 bytes
+2026-10-23T11:55:29,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1038/s41545-024-00386-7%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:30,07_fulltexts.py,https://www.nature.com/articles/s41545-024-00386-7.pdf,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:55:30,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1289/ehp10839%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:44,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9885856/fullTextXML,200,0,keyed,europepmc xml 242915 bytes
+2026-10-23T11:55:44,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2542-5196%2823%2900028-1%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:45,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10009758/fullTextXML,200,0,keyed,europepmc xml 143540 bytes
+2026-10-23T11:55:46,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3389/fenvs.2023.1141825%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:47,07_fulltexts.py,https://doi.org/10.3389/fenvs.2023.1141825,200,0,keyed,pdf download 200 text/html;charset=utf-8
+2026-10-23T11:55:48,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.jece.2023.110575%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:49,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1021/acs.est.1c08580%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:55:50,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9261193/fullTextXML,200,0,keyed,europepmc xml 251225 bytes
+2026-10-23T11:55:50,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s13643-022-01947-y%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:10,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9016942/fullTextXML,200,0,keyed,europepmc xml 170423 bytes
+2026-10-23T11:56:11,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.13807%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:11,07_fulltexts.py,https://doi.org/10.1111/tmi.13807,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:56:12,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.2166/wh.2021.205%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:13,07_fulltexts.py,https://doi.org/10.2166/wh.2021.205,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:56:14,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3390/ijerph18168313%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8392128/fullTextXML,200,0,keyed,europepmc xml 179261 bytes
+2026-10-23T11:56:16,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1186/s12199-021-00934-4%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:16,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7903680/fullTextXML,200,0,keyed,europepmc xml 99847 bytes
+2026-10-23T11:56:17,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/s2542-5196%2820%2930195-9%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:19,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7653404/fullTextXML,200,0,keyed,europepmc xml 124503 bytes
+2026-10-23T11:56:20,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.17615/ddxv-hs83%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:35,07_fulltexts.py,https://cdr.lib.unc.edu/downloads/h128nn11m,500,0,keyed,pdf download 500 text/html; charset=utf-8
+2026-10-23T11:56:36,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.17615/52n3-1r87%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:52,07_fulltexts.py,https://cdr.lib.unc.edu/downloads/tq57p052z,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:56:53,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.17615/1v40-4f84%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:54,07_fulltexts.py,https://doi.org/10.17615/1v40-4f84,503,0,keyed,pdf download 503 text/html; charset=UTF-8
+2026-10-23T11:56:55,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1093/oxrep/grz029%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:55,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1289/ehp1965%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:56:59,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6066338/fullTextXML,200,0,keyed,europepmc xml 250410 bytes
+2026-10-23T11:57:00,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1007/s13312-018-1279-3%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:02,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.13080%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:03,07_fulltexts.py,https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/tmi.13080,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:57:04,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.3390/ijerph14040371%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:05,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5409572/fullTextXML,200,0,keyed,europepmc xml 107900 bytes
+2026-10-23T11:57:05,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.4073/csr.2017.7%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:06,07_fulltexts.py,https://doi.org/10.4073/csr.2017.7,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:57:07,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.pt.2017.09.004%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:07,07_fulltexts.py,http://www.cell.com/article/S1471492217302398/pdf,403,0,keyed,pdf download 403 text/html; charset=UTF-8
+2026-10-23T11:57:09,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.ijheh.2017.06.010%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:09,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/tmi.13011%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:10,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.socscimed.2017.10.021%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:13,07_fulltexts.py,http://hdl.handle.net/10072/415142,200,0,keyed,pdf download 200 text/html; charset=UTF-8
+2026-10-23T11:57:14,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1111/mcn.12258%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5084825/fullTextXML,200,0,keyed,europepmc xml 175602 bytes
+2026-10-23T11:57:15,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016/j.ijheh.2016.04.008%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:16,07_fulltexts.py,https://ueaeprints.uea.ac.uk/id/eprint/58514/1/OverboEtAl_OnPlotWater_tables_and_figures.pdf,200,0,keyed,pdf download 200 application/pdf
+2026-10-23T11:57:17,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1289/ehp156%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:17,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5047765/fullTextXML,200,0,keyed,europepmc xml 111487 bytes
+2026-10-23T11:57:18,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pone.0135676%22&format=json&resultType=lite,200,1,keyed,
+2026-10-23T11:57:26,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4540465/fullTextXML,200,0,keyed,europepmc xml 130951 bytes
+2026-10-23T11:57:27,07_fulltexts.py,https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1371/journal.pone.0124688%22&format=json&resultType=lite,200,1,keyed,
