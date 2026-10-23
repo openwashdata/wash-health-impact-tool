@@ -1,0 +1,2 @@
+transaction_id,enterprise,country,output_type,period_start,period_end,quantity,unit,verified_by,verification_date,use_rate,baseline_source,incentive_share,notes,residence,community_coverage_after,water_quality_verified,people_per_unit,sth_prevalence,promotion_contact,who_region,baseline_quantity,baseline_method
+TX-0001,Example Water Co,Kenya,household water filter,2026-01-01,2026-12-31,1000,filters sold and in use,Verifier name,2027-01-15,0.93,unimproved,0.4,Example row; delete before use,rural,,,,,,,600,pre-incentive trend

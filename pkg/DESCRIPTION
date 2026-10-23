@@ -1,0 +1,34 @@
+Package: washhealth
+Title: Estimate Health Outcomes from Verified Water and Sanitation Outputs
+Version: 0.1.0
+Authors@R:
+    person("Lars", "Schöbitz", email = "lars@lse.de", role = c("aut", "cre", "cph"))
+Description: Turns verified water, sanitation and hygiene outputs of enterprises
+    (connections, filters, toilets, hygiene products) into estimated health
+    outcomes (diarrhoea cases, deaths and DALYs averted, people reached) for
+    outcome-based finance. Every number comes from a versioned factor table with
+    a citation; the package never invents a factor. Each result carries the
+    ledger of factor rows used, a low, central and high value and a confidence
+    label. Supports ex-ante scenarios (planned outputs and an incentive share)
+    and ex-post estimates from verified outputs, a Quarto transaction report, a
+    small Shiny app and flat factor exports for Airtable, mWater or Excel. The
+    code is MIT licensed; the factor tables carried in the package are CC BY 4.0.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en-GB
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 4.1.0)
+Imports:
+    stats,
+    tibble,
+    tools,
+    utils
+Suggests:
+    bslib,
+    shiny,
+    testthat (>= 3.0.0),
+    writexl
+Config/testthat/edition: 3
+LazyData: true
+Config/roxygen2/version: 8.0.0

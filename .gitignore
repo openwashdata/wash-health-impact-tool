@@ -10,3 +10,8 @@ _site/
 
 # rendered documents
 docs/*.html
+
+# rendered transaction reports and package check artefacts
+docs/reports/
+*.Rcheck/
+*.tar.gz

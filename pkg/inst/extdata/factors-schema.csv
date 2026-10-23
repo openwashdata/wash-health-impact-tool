@@ -1,0 +1,77 @@
+table,column,type,description
+effects,factor_id,text,Stable identifier of the conversion factor row used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R)
+effects,effect_id,text,Row in data/effect-sizes.csv the factor was selected from (stage 1 extraction)
+effects,intervention_category,text,Intervention category as named in the source review
+effects,exposure_from,text,Service level or situation the customer had before the output (the comparison group of the estimate)
+effects,exposure_to,text,Service level or situation after the output (the intervention group of the estimate)
+effects,outcome,text,Health outcome the estimate refers to
+effects,measure,text,RR (relative risk) or OR (odds ratio)
+effects,central,number,Point estimate
+effects,low,number,Lower bound of the 95 percent confidence interval; empty when not captured
+effects,high,number,Upper bound of the 95 percent confidence interval; empty when not captured
+effects,n_studies,text,Number of studies or comparisons behind the estimate as reported
+effects,population,text,Population the estimate was measured in
+effects,evidence_grade,text,Certainty rating given by the source review (GRADE) or not graded
+effects,certainty,text,Label the tool carries: high or moderate or low or very low
+effects,use_rule,text,When the row applies (plain words); the estimation chain follows this rule
+effects,source_citation,text,Citation of the source
+effects,source_doi,text,DOI of the source
+effects,locator,text,Table or section of the source the value was read from
+effects,valid_from,date,Date (YYYY-MM-DD) from which this row is the current value; superseded rows keep their date and get a note
+effects,notes,text,Caveats and judgement calls
+adjustments,adjustment_id,text,Stable identifier used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R)
+adjustments,adjustment_type,text,use or decay or coverage_threshold or episode_duration or mortality_rate_conversion or or_to_rr or paf_counterfactual or exposure_ladder
+adjustments,applies_to,text,Pathways or intervention categories the row applies to
+adjustments,parameter,text,What the value is
+adjustments,value,number,Value; empty when no evidence exists (the use_rule then says what the chain does)
+adjustments,low,number,Lower bound where one exists
+adjustments,high,number,Upper bound where one exists
+adjustments,unit,text,Unit of the value
+adjustments,use_rule,text,How the chain applies the row (plain words)
+adjustments,evidence_grade,text,high or moderate or low or very low or not applicable
+adjustments,source_citation,text,Citation of the source
+adjustments,source_doi_or_url,text,DOI or URL of the source
+adjustments,locator,text,Table or section of the source
+adjustments,valid_from,date,Date from which this row is the current value
+adjustments,notes,text,Caveats and judgement calls
+baseline-disease,baseline_id,text,Stable identifier
+baseline-disease,country,text,Country name or Region: name for regional fallback rows
+baseline-disease,iso3,text,ISO 3166-1 alpha-3 code; region code (AFR or SEAR or WPR or EMR or AMR or EUR) for regional rows
+baseline-disease,who_region,text,WHO region the country belongs to (used for the fallback)
+baseline-disease,indicator,text,Indicator identifier (see docs/methodology.qmd section on baselines)
+baseline-disease,population_group,text,all ages or under five
+baseline-disease,value,number,Value
+baseline-disease,low,number,Lower bound where the source gives one
+baseline-disease,high,number,Upper bound where the source gives one
+baseline-disease,unit,text,Unit
+baseline-disease,year,integer,Reference year of the value
+baseline-disease,source,text,Source name
+baseline-disease,url,text,URL of the source or API endpoint
+baseline-disease,flag,text,country value or regional substitute or derived or missing; plus dating and recall caveats
+baseline-disease,derivation,text,Arithmetic on retrieved rows that produced a derived value; empty for retrieved values
+baseline-exposure,exposure_id,text,Stable identifier
+baseline-exposure,country,text,Country name
+baseline-exposure,iso3,text,ISO 3166-1 alpha-3 code
+baseline-exposure,service,text,water or sanitation or hygiene
+baseline-exposure,level,text,JMP service ladder level or component
+baseline-exposure,residence,text,national or urban or rural
+baseline-exposure,value,number,Share of the population in percent
+baseline-exposure,unit,text,percent
+baseline-exposure,year,integer,Reference year
+baseline-exposure,source,text,Source name
+baseline-exposure,url,text,URL of the source
+baseline-exposure,flag,text,retrieved or derived or missing; plus caveats
+pathways,pathway_id,text,Stable identifier used by the estimation chain in the washhealth package (R/estimate.R)
+pathways,output_type,text,Enterprise output type as a funder would name it
+pathways,unit_of_output,text,What one unit of the output is
+pathways,description,text,Plain description
+pathways,exposure_from_input,text,Baseline situations the user can choose from (separated by a vertical bar)
+pathways,exposure_to,text,Situation after the output
+pathways,paf_component,text,water or sanitation or hygiene or none; selects the WHO attributable fraction used in the PAF route
+pathways,effect_rule,text,Which effect row applies under which input (plain words; implemented in the washhealth package (R/estimate.R))
+pathways,adjustment_ids,text,Adjustment rows the pathway applies (separated by semicolons); ADJ_HH_SIZE and ADJ_U5_SHARE point to the country rows in baseline-disease.csv
+pathways,outcomes_reported,text,Outputs the chain returns for this pathway
+pathways,people_per_unit_rule,text,How people reached are counted
+pathways,confidence_default,text,Starting confidence label before the downgrade rules in label_confidence()
+pathways,evidence_gap_flag,text,yes when the pathway rests on a proxy or has no pooled estimate; the flag is printed in every output
+pathways,notes,text,Caveats

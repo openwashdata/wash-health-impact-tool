@@ -1,0 +1,140 @@
+---
+title: "__WASHHEALTH_TITLE__"
+subtitle: "Estimated health outcomes from water and sanitation outputs"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    number-sections: false
+params:
+  transactions_file: "transactions.csv"
+  mode: "ex-post"
+  require_verification: true
+  methodology_url: ""
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+library(washhealth)
+library(knitr)
+tx <- read_transactions(params$transactions_file)
+mode <- params$mode
+res <- if (mode == "ex-post") estimate_transaction(tx, require_verification = isTRUE(params$require_verification)) else estimate_scenario(tx)
+nice <- format_number
+scope_total <- if (mode == "ex-post") "verified total" else "planned total"
+word_outputs <- if (mode == "ex-post") "verified" else "planned"
+show_results <- function(r) {
+  r <- r[!grepl("per household-year", r$outcome), ]
+  kable(data.frame(Scope = r$scope, Outcome = r$outcome, Group = r$population_group, Low = nice(r$low), Central = nice(r$central),
+                   High = nice(r$high), Unit = r$result_unit, Label = r$confidence, check.names = FALSE), align = "lllrrrll")
+}
+show_ledger <- function(lg) {
+  kable(data.frame(Table = lg$table, Row = lg$id, What = lg$what, Value = ifelse(is.na(lg$value), "", signif(lg$value, 4)),
+                   Low = ifelse(is.na(lg$low), "", signif(lg$low, 3)), High = ifelse(is.na(lg$high), "", signif(lg$high, 3)),
+                   Source = lg$citation, Locator = lg$locator, Flag = lg$flag, check.names = FALSE))
+}
+show_inputs <- function(r) {
+  i <- r[1, c("transaction_id", "enterprise", "country", "output_type", "period_start", "period_end", "quantity", "unit",
+              "verified_by", "verification_date", "use_rate", "baseline_source", "incentive_share", "residence",
+              "community_coverage_after", "water_quality_verified", "people_per_unit", "sth_prevalence", "promotion_contact",
+              "who_region", "baseline_quantity", "baseline_method", "notes")]
+  vals <- vapply(names(i), function(n) { v <- i[[n]]; if (is.null(v) || length(v) == 0 || is.na(v)) "" else as.character(v) }, character(1))
+  kable(data.frame(Input = names(i), Value = unname(vals)))
+}
+fl <- confidence_flags()
+pick <- function(r, outcome, group, scope) r[r$outcome == outcome & r$population_group == group & r$scope == scope, ]
+```
+
+::: {.callout-important}
+## How to read this report
+
+Outputs are `r word_outputs`; health outcomes are estimated from them with published evidence. Every health number below is an estimate and is shown as a range (low, central, high) with a confidence label. The numbers rest on the factor tables version `r res$factors_version` (washhealth `r res$package_version`); keep that stamp with any number taken from this report. Deaths and DALYs for one transaction in one year are usually fractions of one and should be reported only at portfolio or multi-year scale.
+:::
+
+# Summary
+
+```{r summary}
+port <- summarise_portfolio(res)
+port <- port[port$scope %in% c(scope_total, "incentive-attributable"), ]
+kable(data.frame(Scope = port$scope, Outcome = port$outcome, Group = port$population_group, Rows = port$n_outputs,
+                 Low = nice(port$low), Central = nice(port$central), High = nice(port$high), Unit = port$result_unit,
+                 Label = port$confidence, check.names = FALSE), align = "llllrrrll",
+      caption = paste0("Sums across the ", nrow(tx), " output row(s) in this report. The label of a sum is the worst label among its rows. Low and high values are summed as they are."))
+```
+
+```{r deaths-note, results='asis'}
+d <- port[port$outcome == "diarrhoea deaths averted" & port$scope == scope_total & port$population_group == "all ages", ]
+if (nrow(d) == 1 && !is.na(d$central) && d$central < 1) {
+  cat("The estimated number of deaths averted is below one (central ", nice(d$central), "); this report states cases and DALYs and treats deaths as too few to state at this scale (communication rule 5).\n", sep = "")
+}
+```
+
+```{r per-transaction, results='asis'}
+for (i in seq_len(nrow(tx))) {
+  r <- tx[i, ]
+  est <- res$estimates[[i]]
+  rr <- res$results[res$results$transaction_id == r$transaction_id & res$results$pathway_id == r$pathway_id &
+                      res$results$period_start == r$period_start, ]
+  lg <- res$ledger[res$ledger$transaction_id == r$transaction_id & res$ledger$output_type == est$pathway$output_type, ]
+  nt <- res$notes$note[res$notes$transaction_id == r$transaction_id & res$notes$output_type == est$pathway$output_type]
+  cat("\n\n# ", r$transaction_id, ": ", est$pathway$output_type, "\n\n", sep = "")
+  cat("**", r$enterprise, "**, ", r$country, " (", r$residence, "), ", format(r$period_start, "%Y-%m-%d"), " to ", format(r$period_end, "%Y-%m-%d"),
+      " (", r$service_years, if (r$service_years == 1) " year" else " years", " of service counted). ", nice(r$quantity), " ", r$unit, " ", word_outputs,
+      if (mode == "ex-post" && !is.na(r$verification_date)) paste0(" by ", r$verified_by, " on ", format(r$verification_date, "%Y-%m-%d")) else "", ".\n\n", sep = "")
+  cat("## Inputs as ", word_outputs, "\n\n", sep = "")
+  print(show_inputs(r))
+  cat("\n\n## Factor rows used\n\n")
+  cat("Every row the chain retrieved for this output, with its source. Nothing else enters the calculation.\n\n")
+  print(show_ledger(lg))
+  if (!is.null(est$exposure_change)) {
+    x <- est$exposure_change
+    cat("\n\nExposure change: from *", x$from, "* to *", x$to, "* (effect row ", x$effect_row, ", relative risk ", x$relative_risk,
+        ", risk reduction ", round(x$risk_reduction, 3), "); use multiplier ", round(x$use_multiplier, 3), "; year weight ", round(x$year_weight, 3), ".\n", sep = "")
+  }
+  cat("\n\n## Estimated outcomes\n\n")
+  cat("Confidence label: **", est$confidence, "**. Flags: ", if (length(est$flags)) paste(est$flags, collapse = ", ") else "none", ".\n\n", sep = "")
+  print(show_results(rr))
+  phy <- rr[grepl("per household-year", rr$outcome), ]
+  if (nrow(phy) == 1) cat("\n\nPer household-year (year one): ", nice(phy$central), " diarrhoea cases averted in children under five (range ", nice(phy$low), " to ", nice(phy$high), ").\n", sep = "")
+  cat("\n\n## Additionality\n\n")
+  if (is.na(r$incentive_share)) {
+    cat("No incentive-attributable share was set for this output. The attributable rows above are empty. Set the baseline trajectory (pre-incentive trend or comparable-enterprise benchmark) before the period and record it as `incentive_share` or `baseline_quantity`.\n")
+  } else {
+    base_txt <- if (!is.na(r$baseline_quantity)) paste0(" (baseline trajectory ", nice(r$baseline_quantity), " ", r$unit, ")") else ""
+    meth_txt <- if (!is.na(r$baseline_method) && nzchar(r$baseline_method)) paste0(" The baseline trajectory method recorded is: ", r$baseline_method, ".") else " No baseline trajectory method was recorded; add it to the transaction (communication rule 8)."
+    cases <- pick(rr, "diarrhoea cases averted", "under five", "incentive-attributable")
+    reach <- pick(rr, "people reached", "all ages", "incentive-attributable")
+    cat("Of the ", nice(r$quantity), " ", r$unit, ", a share of ", r$incentive_share, " is attributed to the incentive", base_txt, ".", meth_txt, sep = "")
+    if (nrow(reach) == 1) cat(" The incentive-attributable reach is estimated at ", nice(reach$central), " people.", sep = "")
+    if (nrow(cases) == 1) cat(" The incentive-attributable part of the estimated diarrhoea cases averted in children under five is about ", nice(cases$central), " per period (range ", nice(cases$low), " to ", nice(cases$high), "), label ", est$confidence, ".", sep = "")
+    cat("\n")
+  }
+  cat("\n\n## Reasons for the label and notes from the chain\n\n")
+  fr <- fl[fl$flag %in% est$flags, ]
+  if (nrow(fr)) for (j in seq_len(nrow(fr))) cat("- ", fr$flag[j], " (", fr$effect[j], "): ", fr$meaning[j], "\n", sep = "")
+  for (n in nt) cat("- ", n, "\n", sep = "")
+}
+```
+
+# Communication rules applied
+
+- Every health number in this report is an estimate; the outputs are `r word_outputs`. The wording "estimated" and "averted" is used throughout; no sentence presents a health number as a verified count.
+- Every health number is shown with its low and high value; no single point value stands alone.
+- The confidence label is printed next to every result table, and the flags behind it are listed with their meaning.
+- Each section says what the estimate rests on: the customers' baseline source, whether use was verified, the years of service counted, and whether any baseline came from a regional substitute (see the flags).
+- Deaths and DALYs are shown per transaction only for completeness; where the deaths figure is below one the summary says so, and portfolio-level reporting is the place for these outcomes.
+- Reach is reported as reach, in the same tables, for output types without a health conversion (institutional connections, emptying services, menstrual health products); it is never added to health outcomes.
+- Evidence gap flags are printed wherever a pathway rests on a proxy.
+- Additionality statements name the incentive-attributable share and the baseline trajectory method as recorded in the transaction.
+- The factor table version stamp (`r res$factors_version`) and the package version (`r res$package_version`) are printed so that every number can be reproduced.
+
+# Methods note
+
+The estimates follow the methodology document of the tool ("Methodology: from verified water and sanitation outputs to estimated health outcomes", `docs/methodology.qmd` in the tool repository`r if (nzchar(params$methodology_url)) paste0(", ", params$methodology_url) else ""`) and the additionality guidance (`docs/additionality-guidance.qmd`). In short: people reached are units times persons per unit; the exposure change selects a pooled relative risk from the effect table; the risk reduction is adjusted for verified use and years of service; cases averted apply it to the country's diarrhoea incidence in children under five (DHS two-week prevalence and the episode duration row); deaths and DALYs averted re-implement WHO's population attributable fraction method with WHO 2019 burden rates; the confidence label starts at the certainty of the effect row and drops one step for each downgrade flag. The factor tables (CC BY 4.0) and the code (MIT) are versioned; the rows used here are listed in each "Factor rows used" table.
+
+Generated on `r format(Sys.time(), "%Y-%m-%d %H:%M %Z")` with washhealth `r res$package_version`, factor tables `r res$factors_version`.
