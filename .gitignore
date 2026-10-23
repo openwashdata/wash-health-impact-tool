@@ -1,0 +1,9 @@
+# full texts, raw API dumps and secrets never enter git
+papers/
+data-raw/
+.env
+.Renviron
+.Rproj.user/
+.Rhistory
+_site/
+*_files/
