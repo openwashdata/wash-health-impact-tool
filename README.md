@@ -13,7 +13,8 @@ Decisions of 2026-10-23: outcomes modelled are diarrhoeal disease (cases, deaths
 - `papers/` open access full texts (ignored)
 - `pkg/` the `washhealth` R package: the estimation chain, the transaction input schema, ex-post and ex-ante runners, flat exports, the Quarto transaction report template and the Shiny app; carries a stamped copy of the factor tables
 - `scripts/` the data pulls and builds (Python 3 standard library and R); `09_stage2_baselines.py` and `10_build_baseline_tables.R` rebuild the baseline tables
-- `docs/` stage reports (`stage1-report.md`, `stage2-report.md`, `stage3-report.md`), `methodology.qmd`, `additionality-guidance.qmd`, `worked-examples.qmd`, `factor-table-governance.md`; rendered HTML and `docs/reports/` (rendered transaction reports) are ignored
+- `docs/` stage reports (`stage1-report.md` to `stage4-report.md`), `evidence-review.qmd`, `methodology.qmd`, `additionality-guidance.qmd`, `worked-examples.qmd`, `user-guide.qmd`, `factor-table-governance.md`, and the stage 4 demo kit: `demo-script.md`, `publication-checklist.md`, `draft-email-aqua-for-all.md`, `one-page-summary.qmd` (typst, A4); rendered HTML and PDF, `docs/reports/` (rendered transaction reports) and the local pkgdown site in `pkg/docs/` are ignored
+- `CITATION.cff` and `README-public.md` are drafts for a possible publication, with placeholders; nothing is published
 
 ## Running the tool
 
@@ -49,7 +50,7 @@ export_factors("factors-export")                      # or export_factors("facto
 run_app()
 ```
 
-Tests: `Rscript -e 'devtools::test("pkg")'`. Check: `Rscript -e 'devtools::check("pkg")'`. Documents: `quarto render docs/methodology.qmd` (same for the other two; they need the package installed).
+Tests: `Rscript -e 'devtools::test("pkg")'`. Check: `Rscript -e 'devtools::check("pkg")'`. Documents: `quarto render docs/methodology.qmd` (same for the other Quarto documents; they need the package installed; `one-page-summary.qmd` renders to PDF with typst).
 
 After a reviewed change to `data/factors/` (see `docs/factor-table-governance.md`), rebuild the package copy with `Rscript pkg/data-raw/factors.R` and reinstall.
 
@@ -58,4 +59,4 @@ After a reviewed change to `data/factors/` (see `docs/factor-table-governance.md
 1. Evidence and tool mapping
 2. Methodology and additionality guidance
 3. Tool: R package, Quarto template, Shiny app, flat factor export
-4. Write-up
+4. Write-up and demo kit: evidence review, user guide, demo script, publication checklist, email drafts, one-page summary (all four stages done on 2026-10-23; nothing reviewed, nothing published)
