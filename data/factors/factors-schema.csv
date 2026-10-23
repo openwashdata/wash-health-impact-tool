@@ -1,5 +1,5 @@
 table,column,type,description
-effects,factor_id,text,Stable identifier of the conversion factor row used by pathways.csv and R/estimate.R
+effects,factor_id,text,Stable identifier of the conversion factor row used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R)
 effects,effect_id,text,Row in data/effect-sizes.csv the factor was selected from (stage 1 extraction)
 effects,intervention_category,text,Intervention category as named in the source review
 effects,exposure_from,text,Service level or situation the customer had before the output (the comparison group of the estimate)
@@ -19,7 +19,7 @@ effects,source_doi,text,DOI of the source
 effects,locator,text,Table or section of the source the value was read from
 effects,valid_from,date,Date (YYYY-MM-DD) from which this row is the current value; superseded rows keep their date and get a note
 effects,notes,text,Caveats and judgement calls
-adjustments,adjustment_id,text,Stable identifier used by pathways.csv and R/estimate.R
+adjustments,adjustment_id,text,Stable identifier used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R)
 adjustments,adjustment_type,text,use or decay or coverage_threshold or episode_duration or mortality_rate_conversion or or_to_rr or paf_counterfactual or exposure_ladder
 adjustments,applies_to,text,Pathways or intervention categories the row applies to
 adjustments,parameter,text,What the value is
@@ -61,14 +61,14 @@ baseline-exposure,year,integer,Reference year
 baseline-exposure,source,text,Source name
 baseline-exposure,url,text,URL of the source
 baseline-exposure,flag,text,retrieved or derived or missing; plus caveats
-pathways,pathway_id,text,Stable identifier used by R/estimate.R
+pathways,pathway_id,text,Stable identifier used by the estimation chain in the washhealth package (R/estimate.R)
 pathways,output_type,text,Enterprise output type as a funder would name it
 pathways,unit_of_output,text,What one unit of the output is
 pathways,description,text,Plain description
 pathways,exposure_from_input,text,Baseline situations the user can choose from (separated by a vertical bar)
 pathways,exposure_to,text,Situation after the output
 pathways,paf_component,text,water or sanitation or hygiene or none; selects the WHO attributable fraction used in the PAF route
-pathways,effect_rule,text,Which effect row applies under which input (plain words; implemented in R/estimate.R)
+pathways,effect_rule,text,Which effect row applies under which input (plain words; implemented in the washhealth package (R/estimate.R))
 pathways,adjustment_ids,text,Adjustment rows the pathway applies (separated by semicolons); ADJ_HH_SIZE and ADJ_U5_SHARE point to the country rows in baseline-disease.csv
 pathways,outcomes_reported,text,Outputs the chain returns for this pathway
 pathways,people_per_unit_rule,text,How people reached are counted
