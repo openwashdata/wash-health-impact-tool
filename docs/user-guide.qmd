@@ -1,0 +1,284 @@
+---
+title: "User guide: estimating health outcomes from verified water and sanitation outputs"
+subtitle: "For an outcome funder's analyst using the washhealth package (scratch build, stage 4)"
+date: 2026-10-23
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(knitr) })
+library(washhealth)
+options(knitr.kable.NA = "")
+nice <- format_number
+tx <- example_transactions()
+kwsh <- tx[tx$enterprise == "KWSH", ]
+res <- estimate_transaction(kwsh)
+est <- res$estimates[[1]]
+```
+
+::: {.callout-note}
+## Status of this guide
+
+The tool described here is a scratch build made on 2026-10-23 by an agent (Claude) for Lars Schöbitz, in one afternoon, to test whether the questions in Aqua for All's terms of reference can be answered. No person has reviewed any factor row, test or document yet. Use it to see what such a tool would do; do not put its numbers in a report until the factor rows have been reviewed (see the section on updating the tables).
+:::
+
+# What the tool does
+
+You give it the outputs an enterprise delivered (or plans to deliver): how many household connections, filters, toilets or hygiene products, in which country, over which period, with what verified use. It returns an estimate of the health outcomes those outputs are expected to produce: people reached, diarrhoea cases averted in children under five, deaths and disability-adjusted life years (DALYs) averted, each with a low, central and high value, a confidence label and the list of every published number it used.
+
+The tool follows one rule: **retrieve, do not compute.** It never invents a factor. Every number that enters a calculation is a row in a versioned table with a citation. When no evidence exists for an output type, the tool says "not estimable" and reports reach only.
+
+Two uses:
+
+- **Ex-post** (reporting): verified outputs from the verifier's report, in a table, give the estimated outcomes achieved, in total and for the share attributable to the incentive.
+- **Ex-ante** (planning): planned outputs and a target use rate give the expected outcomes, for structuring a transaction and setting targets.
+
+What it does not do is listed at the end of this guide. Read that section before the first run.
+
+# Install
+
+The tool is an R package called `washhealth`. It lives in the `pkg/` folder of the tool repository. You need R 4.1 or newer. From a terminal in the repository root:
+
+```sh
+R CMD INSTALL pkg
+```
+
+Or from R, with the devtools package installed:
+
+```r
+devtools::install("pkg")
+```
+
+The package itself depends only on the `tibble` package. Three optional packages add features: `shiny` and `bslib` for the app, `writexl` for Excel exports. The transaction report needs [Quarto](https://quarto.org) (it comes bundled with RStudio; the package finds that copy on macOS by itself).
+
+Check the install and the version of the factor tables:
+
+```r
+library(washhealth)
+factors_version()
+#> "2026-10-23-55eb4cc"
+```
+
+The value is the date and the short git hash of the last commit that changed a factor table. Keep it with every number you take from the tool; it names the exact rows that produced the number.
+
+# Fill the transaction template
+
+The input is a table with one row per output type per reporting period. Get the empty template and open it in a spreadsheet:
+
+```r
+file.copy(transaction_template_path(), "transactions.csv")
+```
+
+The template holds one example row; delete it before use. The columns:
+
+```{r columns}
+transaction_columns() %>%
+  transmute(Column = column, Required = ifelse(required, "yes", "optional"), Type = type, Allowed = allowed, Meaning = description) %>%
+  kable(caption = "Columns of the transaction table (transaction_columns()). Shares are written as decimals between 0 and 1; dates as YYYY-MM-DD.")
+```
+
+Notes on the columns that cause most questions:
+
+- **output_type.** Write the label from the table below (or its pathway id). The unit column is free text; the table shows the unit the evidence refers to.
+- **use_rate.** The share of units verified to be in use: connections billed and active, filters cleaned on schedule, toilets in use. Leave it empty when nobody verified use; the label then drops one step. Ex-ante, it is the target.
+- **baseline_source.** What the customers drank before: `unimproved` (surface water, unprotected wells or springs) or `improved_not_on_premises` (a protected source, standpipe or kiosk away from the home). This input changes the effect row, because treating or piping water helps less when the source was already improved. Leave it empty only when the enterprise did not ask at sign-up; the tool then assumes unimproved and flags it.
+- **incentive_share** or **baseline_quantity.** The additionality input. Set the baseline trajectory before the period (what the enterprise would have delivered without the incentive), write the method in `baseline_method`, and give either the share of outputs above that trajectory or the trajectory itself as a quantity. The additionality guidance (`docs/additionality-guidance.qmd`) explains how to set it.
+- **residence.** `rural`, `urban` or `national`. It picks the JMP coverage values used for the sanitation coverage rule and the scenario comparison.
+- **community_coverage_after.** Sanitation outputs only: the share of households in the service area with at least basic sanitation after the installations. Below 50 percent the evidence says the household's own toilet does little for diarrhoea, and the tool uses the household-targeted rows. If you leave it empty the tool takes the JMP value for the country and residence, with a flag.
+- **people_per_unit.** Required for school or clinic connections, water points and MHH outputs, because there is no household size to multiply by.
+
+```{r output-types}
+output_types() %>% transmute(`Output type` = output_type, `Pathway id` = pathway_id, `Unit the evidence refers to` = unit_of_output) %>%
+  kable(caption = "Output types the tool accepts (output_types()).")
+```
+
+Read the table into R. Every problem (a country not in the table, a share above 1, an output type the tool does not know, a missing verifier) is reported in one message so that you can fix the file in one pass:
+
+```r
+tx <- read_transactions("transactions.csv")
+```
+
+For one planned output you can skip the file:
+
+```r
+plan <- new_transaction("PLAN-1", "Example Co", "Kenya", "household water filter", 2000,
+                        "2027-01-01", "2027-12-31", use_rate = 0.9, baseline_quantity = 1200)
+```
+
+# Run an estimate
+
+Ex-post, from verified outputs:
+
+```r
+res <- estimate_transaction(tx)
+```
+
+Ex-ante, from planned outputs:
+
+```r
+sc <- estimate_scenario(plan)
+```
+
+Both return the same kind of object with these parts:
+
+- `res$results`: one row per transaction, scope, outcome and population group, with low, central and high values, the unit, the route, the confidence label and the flags.
+- `res$ledger`: every factor row used for every output, with its value, its interval, its citation and its locator in the source.
+- `res$notes`: the sentences the chain wrote while running (what it assumed, what it could not estimate and why).
+- `res$transactions`: the input table as read, with the derived years of service.
+- `res$factors_version` and `res$package_version`: the stamps.
+
+Ex-post runs refuse a row without a verifier and a verification date. For an internal check before verification, pass `require_verification = FALSE`; the result then carries the flag `output_not_verified` and a lower label.
+
+# Read a result: the KWSH example
+
+The package ships the worked examples from the ILF for WASH knowledge report as a transaction table (`example_transactions()`). The KWSH row: 2 500 new piped household connections in rural Cambodia in 2025, all active, baseline source not reported, an illustrative incentive share of 0.5.
+
+```r
+tx <- example_transactions()
+kwsh <- tx[tx$enterprise == "KWSH", ]
+res <- estimate_transaction(kwsh)
+res$results
+```
+
+```{r kwsh-results}
+r <- res$results[!grepl("per household-year", res$results$outcome), ]
+data.frame(Scope = r$scope, Outcome = r$outcome, Group = r$population_group, Low = nice(r$low), Central = nice(r$central), High = nice(r$high),
+           Unit = r$result_unit, Route = r$route, Label = r$confidence, check.names = FALSE) %>%
+  kable(align = "lllrrrlll", caption = "res$results for the KWSH row (per household-year row left out).")
+```
+
+How to read it:
+
+- **Scope.** *Verified total* is the estimate for all verified outputs. *Incentive-attributable* is the part credited to the incentive, which is the total times the incentive share (or the difference against the baseline quantity). Attributable rows stay empty when no share was set.
+- **Outcome and group.** People reached (all ages) and children under five reached are counts, not health outcomes. Diarrhoea cases are estimated for children under five only, because the only incidence baseline is for that age group. Deaths and DALYs are estimated for all ages and for children under five.
+- **Low, central, high.** The central value uses the pooled relative risk; low and high use the ends of its 95 percent confidence interval. When the interval includes no effect, the low value is zero. Here the water supply evidence has an interval that includes 1.0, so the low estimate of every health outcome is 0.
+- **Route.** *Cases* come from the country incidence times the risk reduction. *Deaths and DALYs* come from WHO's attributable fraction method re-implemented for one group of customers (the methodology document, step 5).
+- **Label.** The confidence label starts at the certainty of the effect row and drops one step for each downgrade flag. KWSH is *very low* because the water supply effect itself is rated very low; nothing can bring it higher.
+- **Deaths.** `r nice(r$central[r$outcome == "diarrhoea deaths averted" & r$population_group == "all ages" & r$scope == "verified total"])` deaths averted is a fraction of a death. The communication rules say: report deaths and DALYs only at portfolio or multi-year scale; for one transaction in one year, report cases and DALYs and say that deaths are too few to state.
+
+The label and its reasons:
+
+```{r kwsh-label}
+fr <- confidence_flags()
+fr <- fr[fr$flag %in% est$flags, ]
+cat("Label:", est$confidence, "\n")
+cat("Starting point: certainty of effect row", est$exposure_change$effect_row, "\n")
+```
+
+```{r kwsh-flags}
+fr %>% transmute(Flag = flag, Effect = effect, Meaning = meaning) %>% kable(caption = "Flags on the KWSH estimate.")
+```
+
+```{r kwsh-notes, results='asis'}
+cat(paste0("- ", est$notes), sep = "\n")
+```
+
+The ledger, which is the part a reviewer checks:
+
+```r
+res$ledger
+```
+
+```{r kwsh-ledger}
+lg <- res$ledger
+data.frame(Table = lg$table, Row = lg$id, What = lg$what, Value = ifelse(is.na(lg$value), "", signif(lg$value, 4)),
+           Low = ifelse(is.na(lg$low), "", signif(lg$low, 3)), High = ifelse(is.na(lg$high), "", signif(lg$high, 3)),
+           Source = lg$citation, Locator = lg$locator, check.names = FALSE) %>%
+  kable(caption = "res$ledger for the KWSH row: every number the chain used, with its source. Nothing else enters the calculation.")
+```
+
+Per household-year, the quantity the terms of reference name as an example: `r nice(res$results$central[grepl("per household-year", res$results$outcome)])` diarrhoea cases averted in children under five (range `r nice(res$results$low[grepl("per household-year", res$results$outcome)])` to `r nice(res$results$high[grepl("per household-year", res$results$outcome)])`), for a household that moves from an unimproved source to a piped connection in rural Cambodia.
+
+What would change the result: if KWSH records at sign-up that customers already used a protected well or standpipe, the effect row becomes RR 0.97 (no measurable effect); if the utility verifies water quality at the tap (free of E. coli on a sampling plan), the higher-quality row applies (RR 0.48, two studies). The right answer is a sign-up question and a sampling plan, not a tool setting.
+
+All flags the tool can raise:
+
+```{r all-flags}
+confidence_flags() %>% transmute(Flag = flag, Effect = effect, Meaning = meaning) %>% kable(caption = "The flag dictionary (confidence_flags()). Downgrade flags lower the label one step each; note flags are shown but do not change it.")
+```
+
+# Add results up
+
+```r
+summarise_portfolio(res)
+summarise_portfolio(res, by = c("enterprise", "scope", "outcome", "population_group"))
+```
+
+The sum of several output rows carries the worst label among them. Low and high values are summed as they are (no narrowing from independence), which is the cautious choice.
+
+# Render a transaction report
+
+```r
+render_transaction_report(kwsh, output_dir = "reports")
+render_transaction_report(plan, output_dir = "reports", mode = "ex-ante")
+```
+
+The report is a self-contained HTML file named with the date and the transaction id. It holds, for each output row: the inputs as verified or planned, every factor row used with its citation, the exposure change and the arithmetic in one line, the estimated outcomes with ranges and labels, the additionality statement, the reasons for the label, and at the end the communication rules applied and a methods note with both version stamps. Give the report to the reader as it is; do not copy single numbers out of it without their range and label.
+
+# Export results and factor tables
+
+Results, for a database or a spreadsheet:
+
+```r
+export_results(res, "results-export")                  # a folder with results, ledger, notes, transactions, portfolio and run as CSV
+export_results(res, "results-export.xlsx", format = "xlsx")
+```
+
+The factor tables, for Airtable, mWater, Power BI or Excel:
+
+```r
+export_factors("factors-export")                       # ten CSV files
+export_factors("factors.xlsx", format = "xlsx")        # one workbook, one sheet per table
+```
+
+The export holds the five tables as they are, wide versions of the two baseline tables (one row per country), the **factor cards**, a data dictionary and a version sheet. A factor card is one row per output type and input case (baseline source, water quality verified, coverage above or below the threshold) with the effect row the chain would pick, its relative risk and interval, the starting label, the use reference, the decay value and the PAF counterfactual. With the cards and the wide baseline table, a spreadsheet or Airtable formula can reproduce the central estimate of the cases route. The label logic, the deaths and DALYs route and the ledger stay in R; a platform build should import results from R rather than re-implement those.
+
+```{r cards}
+factor_cards() %>% filter(pathway_id %in% c("P_CONN_HH", "P_POU_FILTER")) %>%
+  select(pathway_id, baseline_source, water_quality_verified, sanitation_coverage, effect_row, central, low, high, certainty, use_reference, decay_after_year_one, paf_counterfactual_rr) %>%
+  kable(caption = "Two output types from factor_cards(), as exported.")
+```
+
+# Run the app
+
+```r
+run_app()
+```
+
+The app opens in the browser with two tabs, *Ex-ante (planning)* and *Ex-post (reporting)*. Each tab has the inputs of one transaction row on the left (country, output type, quantity, setting, period, use rate, baseline source, incentive share, baseline method; a fold-out for coverage, water quality, persons per unit, STH prevalence and promotion contact) and on the right the estimated outcomes, the label with its reasons, the ledger and two download buttons (results and ledger as CSV). It runs one output at a time; for a whole transaction table use `estimate_transaction()` and the report. Start the app from an R console, not from inside a document that is rendering.
+
+# Updating the factor tables
+
+The tables the package uses are a stamped copy of `data/factors/` in the tool repository. Rules for changing a row are in `docs/factor-table-governance.md`. In short:
+
+1. No value is edited in place and no row is deleted. A changed value gets a new row with the same identifier and a new `valid_from` date; the old row gets `superseded_by` and stays for the record.
+2. A second person reviews every curated row against its source with the checklist in the governance document before it is merged. An agent may draft a change but may not merge it.
+3. After a merged change, the maintainer rebuilds the package copy (`Rscript pkg/data-raw/factors.R`), reinstalls, runs the tests and bumps the package version. The new `factors_version()` is printed in every later result.
+4. Reports already issued are not changed. Their stamp says which tables they used. `check_ledger()` on a stored result shows which rows a later change touched.
+
+As an analyst you do not edit tables. If a number looks wrong, open the ledger, follow the citation and locator to the source, and report the row id to the table owner.
+
+# What the tool does not do
+
+- **No factor for faecal sludge management, emptying services, water kiosks or safely managed on-site sanitation.** The pooled evidence has no estimate for these service models. Container-based and serviced on-site toilets are modelled as basic sanitation with the coverage rule and an evidence gap flag; emptying services for existing toilets and kiosks selling treated water are reported as reach only or with a proxy row and the flag.
+- **No valuation.** No cost per DALY, no benefit-cost ratio, no monetised outcome. The economic references are in the evidence review for a later step.
+- **No STH baselines.** STH infections averted are computed only when you supply a local prevalence; no country prevalence was pulled.
+- **No respiratory infection, stunting or MHH health outcomes.** Mapped in the evidence review, not modelled; MHH outputs are reported as reach.
+- **Cases for children under five only**, because no all-ages incidence baseline exists; deaths and DALYs apply under-five relative risks to all ages, as WHO does.
+- **Baselines for 11 countries.** Any other country falls back to WHO regional rows with a flag on every output.
+- **Uncertainty from the effect interval only.** The attributable fraction, the incidence and the household size enter as point values.
+- **No subnational baselines**, no seasonality, no water quantity, time or dignity benefits.
+- **No human review yet** of any row, test, document or report.
+
+# Help
+
+Every function has a help page with a runnable example: `?estimate_transaction`, `?estimate_output`, `?confidence_flags`, `?export_factors`. The methodology (`docs/methodology.qmd`), the additionality guidance (`docs/additionality-guidance.qmd`), the worked examples (`docs/worked-examples.qmd`) and the evidence review (`docs/evidence-review.qmd`) are in the repository.
