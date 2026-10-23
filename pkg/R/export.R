@@ -58,7 +58,7 @@ version_table <- function() {
 #' @examples
 #' factor_cards()[, c("pathway_id", "baseline_source", "effect_row", "central", "certainty")]
 factor_cards <- function(tables = factor_tables()) {
-  p <- tables$pathways
+  p <- current_rows(tables$pathways)
   thr <- get_adjustment("ADJ_COV_SAN_THRESHOLD", tables)$value
   rows <- list()
   for (i in seq_len(nrow(p))) {

@@ -18,11 +18,38 @@ test_that("the package copy of the tables matches the stamped CSV files", {
   expect_equal(as.numeric(csv$central), effects$central)
 })
 
+test_that("superseded rows are kept but never retrieved", {
+  tables <- factor_tables()
+  expect_true(all(c("superseded_by") %in% names(tables$effects)))
+  expect_equal(nrow(current_rows(tables$effects)), nrow(tables$effects)) # no superseded rows yet
+  # supersede the filter row: new value, same id, later valid_from; the old row points at the new date
+  e <- tables$effects
+  old <- e[e$factor_id == "F_POU_FILTER_FROM_UNIMP", ]
+  new <- old; new$central <- 0.55; new$valid_from <- "2027-01-01"; new$notes <- "test replacement"
+  e$superseded_by[e$factor_id == "F_POU_FILTER_FROM_UNIMP"] <- "2027-01-01"
+  tables$effects <- rbind(e, new)
+  expect_equal(get_effect("F_POU_FILTER_FROM_UNIMP", tables)$central, 0.55)
+  est <- estimate_output("P_POU_FILTER", 100, "Kenya", baseline_source = "unimproved", verified_use = 0.9, tables = tables)
+  expect_equal(est$exposure_change$relative_risk, 0.55)
+  # two current rows for one id is an error, and an id with only superseded rows is an error
+  tables$effects$superseded_by[tables$effects$factor_id == "F_POU_FILTER_FROM_UNIMP"] <- ""
+  expect_error(get_effect("F_POU_FILTER_FROM_UNIMP", tables), "2 current rows")
+  tables$effects$superseded_by[tables$effects$factor_id == "F_POU_FILTER_FROM_UNIMP"] <- "2028-01-01"
+  expect_error(get_effect("F_POU_FILTER_FROM_UNIMP", tables), "only as superseded rows")
+  tables$effects <- factor_tables()$effects # restore before the pathway part
+  p <- tables$pathways
+  p$superseded_by[p$pathway_id == "P_MHH"] <- "2027-01-01"
+  tables$pathways <- p
+  expect_false("P_MHH" %in% output_types(tables)$pathway_id)
+  expect_false("P_MHH" %in% factor_cards(tables)$pathway_id)
+  expect_equal(nrow(current_rows(data.frame(a = 1:2))), 2)
+})
+
 test_that("retrieval functions return rows or clear errors", {
   expect_equal(nrow(get_effect("F_POU_FILTER_FROM_UNIMP")), 1)
   expect_error(get_effect("F_NOPE"), "effect row not found")
   expect_error(get_adjustment("ADJ_NOPE"), "adjustment row not found")
-  expect_error(get_pathway("P_NOPE"), "pathway not found")
+  expect_error(get_pathway("P_NOPE"), "pathway row not found")
   b <- get_baseline("Kenya", "household_size")
   expect_false(b$fallback)
   expect_true(b$value > 1)

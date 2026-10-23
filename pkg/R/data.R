@@ -4,9 +4,9 @@
 #'
 #' One row per conversion factor (relative risk or odds ratio) selected in stage 2 from the stage 1 effect size extraction. The chain picks a row by the pathway rule and the user's inputs.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/effects.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/effects.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
-#' @format A tibble with 24 rows and 20 columns:
+#' @format A tibble with 24 rows and 21 columns:
 #' \describe{
 #'   \item{factor_id}{Stable identifier of the conversion factor row used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R) (text)}
 #'   \item{effect_id}{Row in data/effect-sizes.csv the factor was selected from (stage 1 extraction) (text)}
@@ -28,6 +28,7 @@
 #'   \item{locator}{Table or section of the source the value was read from (text)}
 #'   \item{valid_from}{Date (YYYY-MM-DD) from which this row is the current value; superseded rows keep their date and get a note (date)}
 #'   \item{notes}{Caveats and judgement calls (text)}
+#'   \item{superseded_by}{Empty for the current row. When a value is replaced the new row keeps the same identifier with a later valid_from and this field on the old row holds that date; superseded rows stay in the table for the record and are never retrieved (text)}
 #' }
 #' @source See the `source_citation`, `source` and `url` columns of each row.
 "effects"
@@ -36,9 +37,9 @@
 #'
 #' Use reference values, follow-up decay, the sanitation coverage threshold, the episode duration, the mortality rate conversion, the odds ratio to relative risk formula, the PAF counterfactual relative risks and the service ladder relative risks.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/adjustments.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/adjustments.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
-#' @format A tibble with 20 rows and 15 columns:
+#' @format A tibble with 20 rows and 16 columns:
 #' \describe{
 #'   \item{adjustment_id}{Stable identifier used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R) (text)}
 #'   \item{adjustment_type}{use or decay or coverage_threshold or episode_duration or mortality_rate_conversion or or_to_rr or paf_counterfactual or exposure_ladder (text)}
@@ -55,6 +56,7 @@
 #'   \item{locator}{Table or section of the source (text)}
 #'   \item{valid_from}{Date from which this row is the current value (date)}
 #'   \item{notes}{Caveats and judgement calls (text)}
+#'   \item{superseded_by}{Empty for the current row. When a value is replaced the new row keeps the same identifier with a later valid_from and this field on the old row holds that date; superseded rows stay in the table for the record and are never retrieved (text)}
 #' }
 #' @source See the `source_citation`, `source` and `url` columns of each row.
 "adjustments"
@@ -63,9 +65,9 @@
 #'
 #' One row per output type an enterprise can report, with the exposure change, the effect rule, the adjustment rows that apply, the outcomes reported and the starting confidence label.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/pathways.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/pathways.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
-#' @format A tibble with 13 rows and 14 columns:
+#' @format A tibble with 13 rows and 15 columns:
 #' \describe{
 #'   \item{pathway_id}{Stable identifier used by the estimation chain in the washhealth package (R/estimate.R) (text)}
 #'   \item{output_type}{Enterprise output type as a funder would name it (text)}
@@ -81,6 +83,7 @@
 #'   \item{confidence_default}{Starting confidence label before the downgrade rules in label_confidence() (text)}
 #'   \item{evidence_gap_flag}{yes when the pathway rests on a proxy or has no pooled estimate; the flag is printed in every output (text)}
 #'   \item{notes}{Caveats (text)}
+#'   \item{superseded_by}{Empty for the current row. When a value is replaced the new row keeps the same identifier with a later valid_from and this field on the old row holds that date; superseded rows stay in the table for the record and are never retrieved (text)}
 #' }
 #' @source See the `source_citation`, `source` and `url` columns of each row.
 "pathways"
@@ -89,7 +92,7 @@
 #'
 #' Per country (and WHO region as fallback): WHO 2019 attributable burden, attributable fractions, death and DALY rates, DHS two-week diarrhoea prevalence, household size, under-five share and mortality, derived population and rates.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/baseline-disease.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/baseline-disease.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
 #' @format A tibble with 346 rows and 15 columns:
 #' \describe{
@@ -116,7 +119,7 @@
 #'
 #' Share of the population at each water, sanitation and hygiene service level, national, urban and rural, from the JMP 2025 release (via the openwashdata jmpdata package) and the WHO Global Health Observatory.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/baseline-exposure.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/baseline-exposure.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
 #' @format A tibble with 520 rows and 12 columns:
 #' \describe{
@@ -140,9 +143,9 @@
 #'
 #' The data dictionary: one row per column of the effects, adjustments, pathways, baseline-disease and baseline-exposure tables.
 #'
-#' Licence CC BY 4.0. Factor table version `2026-10-23-9ab53d4` (see [factors_version()]). The canonical file is `data/factors/factors-schema.csv` in the tool repository; a copy ships in `inst/extdata/`.
+#' Licence CC BY 4.0. Factor table version `2026-10-23-55eb4cc` (see [factors_version()]). The canonical file is `data/factors/factors-schema.csv` in the tool repository; a copy ships in `inst/extdata/`.
 #'
-#' @format A tibble with 76 rows and 4 columns:
+#' @format A tibble with 79 rows and 4 columns:
 #' \describe{
 #'   \item{table}{Name of the factor table the row belongs to (text)}
 #'   \item{column}{Column name (text)}

@@ -5,7 +5,7 @@
 \alias{pathways}
 \title{Pathways: enterprise output types and their rules}
 \format{
-A tibble with 13 rows and 14 columns:
+A tibble with 13 rows and 15 columns:
 \describe{
 \item{pathway_id}{Stable identifier used by the estimation chain in the washhealth package (R/estimate.R) (text)}
 \item{output_type}{Enterprise output type as a funder would name it (text)}
@@ -21,6 +21,7 @@ A tibble with 13 rows and 14 columns:
 \item{confidence_default}{Starting confidence label before the downgrade rules in label_confidence() (text)}
 \item{evidence_gap_flag}{yes when the pathway rests on a proxy or has no pooled estimate; the flag is printed in every output (text)}
 \item{notes}{Caveats (text)}
+\item{superseded_by}{Empty for the current row. When a value is replaced the new row keeps the same identifier with a later valid_from and this field on the old row holds that date; superseded rows stay in the table for the record and are never retrieved (text)}
 }
 }
 \source{
@@ -33,6 +34,6 @@ pathways
 One row per output type an enterprise can report, with the exposure change, the effect rule, the adjustment rows that apply, the outcomes reported and the starting confidence label.
 }
 \details{
-Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/pathways.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-55eb4cc} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/pathways.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

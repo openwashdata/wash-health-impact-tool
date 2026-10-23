@@ -69,14 +69,44 @@ countries <- function(tables = factor_tables()) {
 #' @rdname countries
 #' @export
 output_types <- function(tables = factor_tables()) {
-  p <- tables$pathways
+  p <- current_rows(tables$pathways)
   tibble::tibble(pathway_id = p$pathway_id, output_type = p$output_type,
                  unit_of_output = p$unit_of_output, confidence_default = p$confidence_default)
 }
 
+#' Current rows of a curated factor table
+#'
+#' The effects, adjustments and pathways tables keep superseded rows for the
+#' record: a replaced value gets a new row with the same identifier and a
+#' later `valid_from`, and the old row's `superseded_by` holds that date.
+#' `current_rows()` drops the superseded rows. The retrieval functions use it,
+#' so a superseded row is never retrieved.
+#'
+#' @param x One of the curated tables (a data frame with a `superseded_by`
+#'   column); a table without the column is returned as it is.
+#' @return The rows whose `superseded_by` is empty.
+#' @export
+#' @examples
+#' nrow(current_rows(effects)) == nrow(effects)
+current_rows <- function(x) {
+  if (!"superseded_by" %in% names(x)) return(x)
+  s <- x$superseded_by
+  x[is.na(s) | !nzchar(trimws(s)), , drop = FALSE]
+}
+
+# One current row for an identifier, with clear errors for none or several.
+one_current <- function(x, id_col, id, what) {
+  rows <- x[x[[id_col]] == id, , drop = FALSE]
+  if (nrow(rows) == 0) stop(what, " row not found: ", id, call. = FALSE)
+  cur <- current_rows(rows)
+  if (nrow(cur) == 0) stop(what, " row ", id, " exists only as superseded rows; add the current row", call. = FALSE)
+  if (nrow(cur) > 1) stop(what, " row ", id, " has ", nrow(cur), " current rows; set superseded_by on the older ones", call. = FALSE)
+  cur
+}
+
 # Turn a pathway id or an output type label into the pathway id.
 resolve_pathway <- function(x, tables = factor_tables()) {
-  p <- tables$pathways
+  p <- current_rows(tables$pathways)
   if (is_blank(x)) stop("output_type is empty; choose one of: ", paste(p$output_type, collapse = "; "), call. = FALSE)
   key <- tolower(trimws(as.character(x)))
   i <- match(key, tolower(p$pathway_id))
@@ -115,25 +145,19 @@ resolve_pathway <- function(x, tables = factor_tables()) {
 #' get_baseline("Kenya", "household_size")$value
 #' get_exposure("Cambodia", "sanitation", "at least basic", "rural")
 get_effect <- function(factor_id, tables = factor_tables()) {
-  row <- tables$effects[tables$effects$factor_id == factor_id, , drop = FALSE]
-  if (nrow(row) != 1) stop("effect row not found: ", factor_id, call. = FALSE)
-  row
+  one_current(tables$effects, "factor_id", factor_id, "effect")
 }
 
 #' @rdname get_effect
 #' @export
 get_adjustment <- function(adjustment_id, tables = factor_tables()) {
-  row <- tables$adjustments[tables$adjustments$adjustment_id == adjustment_id, , drop = FALSE]
-  if (nrow(row) != 1) stop("adjustment row not found: ", adjustment_id, call. = FALSE)
-  row
+  one_current(tables$adjustments, "adjustment_id", adjustment_id, "adjustment")
 }
 
 #' @rdname get_effect
 #' @export
 get_pathway <- function(pathway_id, tables = factor_tables()) {
-  row <- tables$pathways[tables$pathways$pathway_id == pathway_id, , drop = FALSE]
-  if (nrow(row) != 1) stop("pathway not found: ", pathway_id, call. = FALSE)
-  row
+  one_current(tables$pathways, "pathway_id", pathway_id, "pathway")
 }
 
 #' @rdname get_effect

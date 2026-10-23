@@ -5,7 +5,7 @@
 \alias{effects}
 \title{Effect rows: pooled relative risks and odds ratios}
 \format{
-A tibble with 24 rows and 20 columns:
+A tibble with 24 rows and 21 columns:
 \describe{
 \item{factor_id}{Stable identifier of the conversion factor row used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R) (text)}
 \item{effect_id}{Row in data/effect-sizes.csv the factor was selected from (stage 1 extraction) (text)}
@@ -27,6 +27,7 @@ A tibble with 24 rows and 20 columns:
 \item{locator}{Table or section of the source the value was read from (text)}
 \item{valid_from}{Date (YYYY-MM-DD) from which this row is the current value; superseded rows keep their date and get a note (date)}
 \item{notes}{Caveats and judgement calls (text)}
+\item{superseded_by}{Empty for the current row. When a value is replaced the new row keeps the same identifier with a later valid_from and this field on the old row holds that date; superseded rows stay in the table for the record and are never retrieved (text)}
 }
 }
 \source{
@@ -39,6 +40,6 @@ effects
 One row per conversion factor (relative risk or odds ratio) selected in stage 2 from the stage 1 effect size extraction. The chain picks a row by the pathway rule and the user's inputs.
 }
 \details{
-Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/effects.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-55eb4cc} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/effects.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

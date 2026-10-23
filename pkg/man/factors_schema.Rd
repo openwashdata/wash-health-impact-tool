@@ -5,7 +5,7 @@
 \alias{factors_schema}
 \title{Column definitions of the five factor tables}
 \format{
-A tibble with 76 rows and 4 columns:
+A tibble with 79 rows and 4 columns:
 \describe{
 \item{table}{Name of the factor table the row belongs to (text)}
 \item{column}{Column name (text)}
@@ -23,6 +23,6 @@ factors_schema
 The data dictionary: one row per column of the effects, adjustments, pathways, baseline-disease and baseline-exposure tables.
 }
 \details{
-Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/factors-schema.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-55eb4cc} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/factors-schema.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

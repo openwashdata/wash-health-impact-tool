@@ -31,6 +31,6 @@ baseline_exposure
 Share of the population at each water, sanitation and hygiene service level, national, urban and rural, from the JMP 2025 release (via the openwashdata jmpdata package) and the WHO Global Health Observatory.
 }
 \details{
-Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/baseline-exposure.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-55eb4cc} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/baseline-exposure.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}
