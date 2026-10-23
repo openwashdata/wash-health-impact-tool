@@ -6,3 +6,7 @@
 ^.*\.Rcheck$
 ^.*\.tar\.gz$
 ^README\.Rmd$
+^_brand\.yml$
+^logos$
+^_pkgdown\.yml$
+^docs$

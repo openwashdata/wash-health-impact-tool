@@ -1,0 +1,9 @@
+url: ~
+template:
+  bootstrap: 5
+  bslib:
+    brand: _brand.yml
+
+home:
+  title: washhealth
+  description: Water and sanitation outputs to health estimates for outcome-based finance

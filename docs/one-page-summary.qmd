@@ -3,7 +3,10 @@ title: "Estimating health outcomes from verified water and sanitation outputs"
 subtitle: "An open prototype built in one afternoon to test the evidence questions in Aqua for All's call (October 2026)"
 date: 2026-10-23
 format:
-  typst:
+  owd-typst:
+    cover: false
+    logo-width: 28mm
+    footer-text: washhealth, CC BY 4.0 and MIT
     papersize: a4
     margin:
       x: 1.6cm
