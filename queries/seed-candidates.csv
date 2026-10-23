@@ -1,6 +1,7 @@
 seed_key,author_year,doi_guess,title_query,role,chain,url_fallback
 wolf2022,Wolf J et al. 2022 Lancet 400,10.1016/S0140-6736(22)00937-0,Effectiveness of interventions to improve drinking water sanitation and handwashing with soap on risk of diarrhoeal disease in children in low-income and middle-income settings,meta-analysis,yes,
-wolf2022erratum,Wolf J et al. 2023 Lancet erratum,,Department of Error Effectiveness of interventions to improve drinking water sanitation and handwashing with soap,erratum,no,https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(22)00937-0/fulltext
+wolf2022erratum1,Wolf J et al. 2022 Lancet 400:272 erratum (Crossref updates filter),10.1016/S0140-6736(22)01341-1,Department of Error,erratum,no,
+wolf2022erratum2,Wolf J et al. 2023 Lancet 401:2040 erratum (Crossref updates filter),10.1016/S0140-6736(23)01199-6,Department of Error,erratum,no,
 wolf2023,Wolf J et al. 2023 Lancet 401,10.1016/S0140-6736(23)00458-0,Burden of disease attributable to unsafe drinking water sanitation and hygiene in domestic use in 183 countries in 2019,burden,yes,
 who2023,WHO 2023 burden of disease 2019 update,,Burden of disease attributable to unsafe drinking-water sanitation and hygiene 2019 update,burden,yes,https://www.who.int/publications/i/item/9789240075610
 pruss2019,Prüss-Ustün A et al. 2019 IJHEH,10.1016/j.ijheh.2019.05.004,Burden of disease from inadequate water sanitation and hygiene for selected adverse health outcomes an updated analysis with a focus on low- and middle-income countries,burden,yes,

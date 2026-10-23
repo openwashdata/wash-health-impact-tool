@@ -1,0 +1,128 @@
+{
+ "n_candidates": 10577,
+ "by_source": {
+  "seed": 35,
+  "author": 1367,
+  "cited_by": 8910,
+  "reference": 1187
+ },
+ "per_seed": {
+  "wolf2022": {
+   "citing": 364,
+   "references_total": 98,
+   "references_2005_on": 72
+  },
+  "wolf2023": {
+   "citing": 331,
+   "references_total": 53,
+   "references_2005_on": 45
+  },
+  "pruss2019": {
+   "citing": 1285,
+   "references_total": 64,
+   "references_2005_on": 57
+  },
+  "pruss2014": {
+   "citing": 1169,
+   "references_total": 50,
+   "references_2005_on": 35
+  },
+  "wolf2014": {
+   "citing": 452,
+   "references_total": 84,
+   "references_2005_on": 63
+  },
+  "wolf2018": {
+   "citing": 382,
+   "references_total": 68,
+   "references_2005_on": 59
+  },
+  "clasen2015": {
+   "citing": 480,
+   "references_total": 252,
+   "references_2005_on": 144
+  },
+  "ejemot2021": {
+   "citing": 106,
+   "references_total": 147,
+   "references_2005_on": 100
+  },
+  "freeman2017": {
+   "citing": 351,
+   "references_total": 78,
+   "references_2005_on": 64
+  },
+  "freeman2014": {
+   "citing": 506,
+   "references_total": 58,
+   "references_2005_on": 47
+  },
+  "strunz2014": {
+   "citing": 784,
+   "references_total": 191,
+   "references_2005_on": 143
+  },
+  "garn2022": {
+   "citing": 39,
+   "references_total": 176,
+   "references_2005_on": 125
+  },
+  "garn2017": {
+   "citing": 258,
+   "references_total": 77,
+   "references_2005_on": 69
+  },
+  "hutton2016": {
+   "citing": 312,
+   "references_total": 131,
+   "references_2005_on": 113
+  },
+  "dangour2013": {
+   "citing": 375,
+   "references_total": 85,
+   "references_2005_on": 35
+  },
+  "rabie2006": {
+   "citing": 543,
+   "references_total": 62,
+   "references_2005_on": 1
+  },
+  "waddington2009": {
+   "citing": 227,
+   "references_total": 186,
+   "references_2005_on": 151
+  },
+  "fewtrell2005": {
+   "citing": 1666,
+   "references_total": 70,
+   "references_2005_on": 1
+  },
+  "bain2014": {
+   "citing": 611,
+   "references_total": 329,
+   "references_2005_on": 238
+  },
+  "cairncross2010": {
+   "citing": 659,
+   "references_total": 43,
+   "references_2005_on": 18
+  },
+  "clasen2010": {
+   "citing": 190,
+   "references_total": 91,
+   "references_2005_on": 23
+  },
+  "arnold2007": {
+   "citing": 388,
+   "references_total": 59,
+   "references_2005_on": 6
+  },
+  "curtis2003": {
+   "citing": 1167,
+   "references_total": 65,
+   "references_2005_on": 0
+  }
+ },
+ "requests_this_run": 157,
+ "mode": "keyed"
+}
