@@ -67,6 +67,7 @@ output_panel <- function(id) {
     uiOutput(ns("message")),
     h4("Estimated outcomes"),
     tableOutput(ns("results")),
+    p(class = "text-muted small", "Rows without a range are counts taken from the verified outputs (units times persons per unit, and the under-five share). Ranges start where an effect size with a confidence interval enters the chain."),
     h4("Confidence label and its reasons"),
     uiOutput(ns("label")),
     h4("Factor rows used (the ledger)"),
@@ -93,7 +94,7 @@ ante_intro <- "Ex-ante: planned outputs and a target use rate give the expected 
 post_intro <- "Ex-post: verified outputs from the verifier's report give the estimated health outcomes achieved, in total and for the incentive-attributable share, for reporting."
 
 ui <- if (has_bslib) {
-  bslib::page_navbar(title = shiny::tags$span(shiny::tags$img(src = "owd-logos/OWD-logo-05.png", height = "32", alt = "openwashdata", style = "margin-right: 0.6em; vertical-align: middle;"), "washhealth: water and sanitation health impact estimates"), theme = app_theme,
+  bslib::page_navbar(title = shiny::tags$span(shiny::tags$img(src = "owd-logos/OWD-logo-01.png", height = "32", alt = "openwashdata", style = "margin-right: 0.6em; vertical-align: middle;"), "washhealth: water and sanitation health impact estimates"), theme = app_theme,
                      bslib::nav_panel("Ex-ante (planning)", tab_body("ante", "ex-ante", ante_intro)),
                      bslib::nav_panel("Ex-post (reporting)", tab_body("post", "ex-post", post_intro)))
 } else {
@@ -145,8 +146,12 @@ serve_tab <- function(input, output, id, mode) {
   output[[ns("results")]] <- renderTable({
     r <- state(); req(r, !inherits(r, "error"))
     d <- r$results[!grepl("per household-year", r$results$outcome), ]
-    data.frame(Scope = d$scope, Outcome = d$outcome, Group = d$population_group, Low = format_number(d$low),
-               Central = format_number(d$central), High = format_number(d$high), Unit = d$result_unit, check.names = FALSE)
+    # A count has no range: show it once, in Central, and leave Low and High blank.
+    is_count <- !is.na(d$low) & !is.na(d$high) & d$low == d$central & d$high == d$central
+    data.frame(Scope = d$scope, Outcome = d$outcome, Group = d$population_group,
+               Low = ifelse(is_count, "", format_number(d$low)),
+               Central = format_number(d$central),
+               High = ifelse(is_count, "", format_number(d$high)), Unit = d$result_unit, check.names = FALSE)
   }, striped = TRUE)
   output[[ns("label")]] <- renderUI({
     r <- state(); req(r, !inherits(r, "error"))
