@@ -15,9 +15,8 @@ execute:
 
 ```{r setup}
 suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr) })
-root <- normalizePath(file.path(getwd(), ".."))
-source(file.path(root, "R", "estimate.R"))
-tables <- load_factors(file.path(root, "data", "factors"))
+library(washhealth)
+tables <- factor_tables()
 ```
 
 ::: {.callout-note}
@@ -73,8 +72,8 @@ Additionality is about more than reach. The ILF metrics also reward depth (low-i
 Run `estimate_output()` twice with the same country, setting, baseline source and use inputs: once with the verified units and once with the baseline trajectory units. The incentive-attributable health outcome is the difference. Because the chain is linear in units, this equals running it once with the attributable units. Report both the total (all verified outputs) and the attributable part, each with its low, central and high values:
 
 ```{r example-additionality}
-tot <- estimate_output(tables, "P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
-base <- estimate_output(tables, "P_CONN_HH", units = 1000, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
+tot <- estimate_output("P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
+base <- estimate_output("P_CONN_HH", units = 1000, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
 pick <- function(x, o, g) x$summary %>% filter(outcome == o, population_group == g)
 rows <- bind_rows(
   tibble(what = "Verified outputs (2500 connections)", pick(tot, "diarrhoea cases averted", "under five")[, c("low", "central", "high")]),
@@ -133,7 +132,7 @@ Downgrade flags: use not verified; regional substitute; decay proxy or missing (
 6. Reach is reported as such, in the same table, for every pathway that has no health conversion (institutional connections, emptying services, MHH). Reach is not a health outcome and is not added to health outcomes.
 7. Evidence gap flags are printed in every output where they apply (FSM, kiosks, in-line chlorination, safely managed on-site sanitation).
 8. Additionality statements name the baseline trajectory method and its data.
-9. Keep the factor table tag (for example `factors-v2026.10`) in every published number so that it can be reproduced.
+9. Keep the factor table version stamp (for example `2026-10-23-9ab53d4`, from `factors_version()`) in every published number so that it can be reproduced.
 
 # Ex-ante procedure
 

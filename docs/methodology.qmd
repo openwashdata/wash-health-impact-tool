@@ -16,9 +16,8 @@ execute:
 
 ```{r setup}
 suppressPackageStartupMessages({ library(dplyr); library(readr); library(knitr); library(tidyr) })
-root <- normalizePath(file.path(getwd(), ".."))
-source(file.path(root, "R", "estimate.R"))
-tables <- load_factors(file.path(root, "data", "factors"))
+library(washhealth)
+tables <- factor_tables()
 fmt <- function(x, d = 2) ifelse(is.na(x), "", formatC(x, digits = d, format = "f"))
 ```
 
@@ -89,7 +88,7 @@ The mortality odds ratios used for the sensitivity band and the soil-transmitted
 
 # The estimation chain step by step
 
-The chain is implemented in `R/estimate.R` (`estimate_output()`). For one enterprise output it runs these steps.
+The chain is implemented in the washhealth package (`pkg/R/estimate.R`, function `estimate_output()`). For one enterprise output it runs these steps.
 
 ## Step 1: people reached
 
@@ -135,15 +134,15 @@ Low and high values again come from the effect row's interval; the uncertainty o
 
 ## Step 6: the WHO scenario comparison
 
-`estimate_scenario_difference()` repeats WHO's own calculation at country scale: it takes the JMP service ladder shares of the country (national, rural or urban), moves the enterprise's customers from one level to another, recomputes the weighted average and reports the change in attributable deaths and DALYs. It also returns the PAF as re-implemented here next to WHO's published value as a check.
+`compare_who_scenario()` repeats WHO's own calculation at country scale: it takes the JMP service ladder shares of the country (national, rural or urban), moves the enterprise's customers from one level to another, recomputes the weighted average and reports the change in attributable deaths and DALYs. It also returns the PAF as re-implemented here next to WHO's published value as a check.
 
 ```{r paf-check}
 chk <- lapply(c("Bangladesh", "Cambodia", "Ghana", "India", "Kenya", "Madagascar", "Malawi", "Rwanda", "Senegal", "South Africa", "Uganda"), function(cty) {
   out <- lapply(c("water", "sanitation", "hygiene"), function(s) {
-    d <- tryCatch(exposure_distribution(tables, cty, s, "national"), error = function(e) NULL)
+    d <- tryCatch(exposure_distribution(cty, s, "national"), error = function(e) NULL)
     if (is.null(d)) return(tibble(country = cty, service = s, reimplemented = NA_real_, who = NA_real_))
-    cf <- get_adjustment(tables, paste0("ADJ_PAF_CF_", c(water = "WATER", sanitation = "SAN", hygiene = "HYG")[[s]]))$value
-    tibble(country = cty, service = s, reimplemented = 1 - cf / d$sum_p_rr, who = get_baseline(tables, cty, paste0("paf_diarr_", s))$value)
+    cf <- get_adjustment(paste0("ADJ_PAF_CF_", c(water = "WATER", sanitation = "SAN", hygiene = "HYG")[[s]]))$value
+    tibble(country = cty, service = s, reimplemented = 1 - cf / d$sum_p_rr, who = get_baseline(cty, paste0("paf_diarr_", s))$value)
   })
   bind_rows(out)
 })
@@ -234,7 +233,7 @@ No pooled estimate links menstrual products or services to a health outcome, and
 # Versioning and update rules for the factor tables
 
 1. Every table row has a `valid_from` date. A changed value gets a new row with a new date; the old row keeps its date and gets a note naming the new row. Nothing is deleted.
-2. Each release of the tables is tagged in git (`factors-vYYYY.MM`) and the tool prints the tag with every result.
+2. Each build of the package copy carries a version stamp (the date and short git hash of the last commit that changed `data/factors/`, returned by `factors_version()`); every result, export and report prints it. The update rules are in `docs/factor-table-governance.md`.
 3. Sources to check at each update: WHO GHO WSH series (burden update beyond 2019), JMP annual release (ladder shares), new DHS surveys, Cochrane and Lancet updates of the pooled estimates (Wolf 2022, Cochrane sanitation 2023, Garn 2022), the Kremer et al. revision (18 trials, OR 0.76).
 4. A new effect row needs: the source DOI, the table or section it was read from, the review's GRADE rating or "not graded", the confidence interval and a use rule in plain words.
 5. Derived rows (rates, regional shares) state their arithmetic in the `derivation` column and are rebuilt by `scripts/10_build_baseline_tables.R`, never edited by hand.
