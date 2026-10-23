@@ -1,0 +1,57 @@
+---
+title: "Estimating health outcomes from verified water and sanitation outputs"
+subtitle: "An open prototype built in one afternoon to test the evidence questions in Aqua for All's call (October 2026)"
+date: 2026-10-23
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 1.6cm
+      y: 1.3cm
+    fontsize: 8.6pt
+    toc: false
+    number-sections: false
+    fig-format: png
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({ library(dplyr); library(knitr) })
+library(washhealth)
+eff <- factor_tables()$effects
+fmt <- function(x, d = 2) formatC(x, digits = d, format = "f")
+kwsh <- estimate_output("P_CONN_HH", units = 2500, country = "Cambodia", residence = "rural", baseline_source = "unimproved", verified_use = 1)
+ack <- estimate_output("P_POU_FILTER", units = 1000, country = "Kenya", residence = "rural", baseline_source = "unimproved", verified_use = 0.93)
+cases <- function(e) { s <- e$summary[e$summary$outcome == "diarrhoea cases averted", ]; sprintf("%s (range %s to %s)", round(s$central), round(s$low), round(s$high)) }
+```
+
+**Purpose.** Outcome funders pay water and sanitation enterprises for verified outputs (connections, filters, toilets, hygiene products) and want to say what those outputs mean for health. Measuring health at the level of one transaction is costly and slow. This prototype estimates health outcomes from the outputs with published evidence and says how much to trust each estimate. It was built on 2026-10-23 by an AI agent under Lars Schöbitz's decisions, to test whether the evidence questions in the terms of reference can be answered. No person has reviewed the factor rows yet.
+
+**What the tool does.** One rule: retrieve, do not compute. Every number that enters a calculation is a row in a versioned table with a citation and a locator. From an output (units, country, setting, period, verified use, the customers' baseline water source) it returns people reached, diarrhoea cases averted in children under five, deaths and DALYs averted, each with a low, central and high value, a confidence label with its reasons, and the ledger of every row used. It runs ex-post from a verifier's report and ex-ante from planned outputs with a baseline trajectory for the incentive-attributable share. It ships as an R package (`washhealth`) with a transaction report, a small app and a flat export of the tables for Airtable, mWater or Excel.
+
+**The evidence.** Pooled relative risks for diarrhoea in children under five, from the newest meta-analysis whose categories follow the JMP service ladder (Wolf et al. 2022, Lancet) and the Cochrane reviews. Certainty is the source review's GRADE rating.
+
+```{r evidence-table}
+eff %>% filter(factor_id %in% c("F_POU_FILTER_FROM_UNIMP", "F_POU_CHLOR_FROM_UNIMP", "F_POU_SODIS_FROM_UNIMP", "F_HYG_HW_PROMOTION", "F_SAN_BASIC_FROM_UNIMP", "F_SAN_SEWER_FROM_UNIMP", "F_WAT_PREM_FROM_UNIMP", "F_WAT_IMPNP_FROM_UNIMP")) %>%
+  mutate(order = match(factor_id, c("F_POU_FILTER_FROM_UNIMP", "F_POU_CHLOR_FROM_UNIMP", "F_POU_SODIS_FROM_UNIMP", "F_HYG_HW_PROMOTION", "F_SAN_BASIC_FROM_UNIMP", "F_SAN_SEWER_FROM_UNIMP", "F_WAT_PREM_FROM_UNIMP", "F_WAT_IMPNP_FROM_UNIMP"))) %>% arrange(order) %>%
+  transmute(Intervention = c("Point-of-use filtration", "Point-of-use chlorination", "Solar disinfection", "Handwashing promotion", "Basic sanitation, no sewer", "Sewered sanitation", "Piped water on premises", "Improved source off premises"),
+            `RR (95% CI), against an unimproved baseline` = paste0(fmt(central), " (", fmt(low), " to ", fmt(high), ")"),
+            Studies = ifelse(grepl("^[0-9]+$", n_studies), n_studies, ""),
+            Certainty = ifelse(high >= 1, paste(certainty, "(interval includes no effect)"), certainty)) %>%
+  kable()
+```
+
+No pooled estimate exists for faecal sludge management services, water kiosks, safely managed on-site sanitation, in-line chlorination as a service, institutional connections, or a move between two improved water sources (RR 0.97). Deaths and DALYs use WHO's 2019 attributable fractions by country (0.61 to 0.76 for diarrhoea in the eleven ILF countries) with the pooled mortality trials as a sensitivity band. Soil-transmitted helminths are a secondary outcome (Cochrane 2022, OR 0.86, 0.74 to 1.01) and need a local prevalence. Respiratory infection, stunting and menstrual health are mapped, not modelled; menstrual health products are reported as reach.
+
+**Confidence labels.** The label starts at the certainty of the effect row and drops one step for each missing input: use not verified, baseline source assumed, a regional substitute for a country value, a decay proxy for later years, sanitation coverage below the threshold, an evidence gap on the pathway. It cannot rise above the evidence. *Moderate*: pooled randomised evidence, use verified, country baseline, year one. *Low*: one step down. *Very low*: water supply or sewerage evidence, or two downgrades, or an evidence gap. *Not estimable*: no conversion factor; reach only.
+
+**Two examples** (inputs from Aqua for All's public ILF for WASH knowledge report; one year of service; all health numbers are estimates). 2 500 piped household connections in rural Cambodia (KWSH), baseline source assumed unimproved: `r round(kwsh$people)` people reached, `r cases(kwsh)` diarrhoea cases averted in children under five, label **`r kwsh$confidence`**, because the water supply evidence is rated very low and its interval includes no effect. 1 000 household filters in rural Kenya (Aqua Clara; count illustrative), 93 percent verified in use: `r round(ack$people)` people reached, `r cases(ack)` cases averted, label **`r ack$confidence`**. Same arithmetic, different evidence; deaths per transaction-year are fractions and are reported only at portfolio scale.
+
+**What is missing.** Human review of every factor row and of a sample of the 1 626 abstract decisions (one screener, one pass). No valuation step. No STH baselines. No all-ages incidence (cases are for children under five). Baselines for eleven countries only; others fall back to WHO regional rows with a flag. Uncertainty from the effect interval only. Real transaction data in place of the illustrative counts, and one hygiene and one MHH case. The February 2026 revision of the water treatment mortality meta-analysis was not read.
+
+**Licences and status.** Factor tables, methodology and documents CC BY 4.0; code MIT. WHO's attributable fraction method is re-implemented from the published description, not redistributed; DHS aggregates only; JMP data through the openwashdata jmpdata package. Factor table version `r factors_version()`. Independent work; no institution has endorsed it.
+
+**Contact.** CONTACT PLACEHOLDER. Repository: REPOSITORY URL.

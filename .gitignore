@@ -15,3 +15,8 @@ docs/*.html
 docs/reports/
 *.Rcheck/
 *.tar.gz
+
+# rendered one-page summary (typst PDF) and the local pkgdown site
+docs/*.pdf
+/pkg/docs/
+/scripts/__pycache__/

@@ -1,0 +1,58 @@
+# Citation metadata for the repository (Citation File Format 1.2.0).
+# Draft of 2026-10-23. Placeholders to fill before publication: affiliation,
+# ORCID, repository URL, release date. Validate with cffconvert or the
+# GitHub citation widget after the first push.
+cff-version: 1.2.0
+message: "If you use the method, the factor tables or the package, please cite this repository and the source reviews listed in the factor tables."
+title: "wash-health-impact-tool: estimating health outcomes from verified water and sanitation outputs for outcome-based finance"
+type: software
+version: 0.1.0
+date-released: "2026-10-23"  # placeholder: set to the public release date
+license:
+  - MIT
+  - CC-BY-4.0
+repository-code: "https://github.com/ORGANISATION/wash-health-impact-tool"  # placeholder
+authors:
+  - family-names: "Schöbitz"
+    given-names: "Lars"
+    affiliation: "AFFILIATION"  # placeholder: pick one of the two affiliations, or none
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # placeholder
+keywords:
+  - water
+  - sanitation
+  - hygiene
+  - health impact estimation
+  - diarrhoea
+  - outcome-based finance
+  - SIINC
+  - R package
+abstract: >-
+  An evidence review, a set of versioned conversion factor tables, a
+  methodology, additionality guidance and an R package (washhealth) that turn
+  verified water, sanitation and hygiene outputs of enterprises into estimated
+  health outcomes (diarrhoea cases, deaths and DALYs averted, people reached)
+  with ranges, a confidence label and a ledger of every published number used.
+  Built on 2026-10-23 as a scratch reproduction of the Aqua for All assignment
+  "Developing a water and sanitation - health impact estimation tool for
+  outcome-based finance". The search, screening, extraction, code, tests and
+  documents were produced by an AI agent (Claude, Anthropic) working under
+  Lars Schöbitz's decisions and instructions; the human review of the factor
+  rows and of the screening decisions is recorded in data/factors/CHANGELOG.md.
+  Code is MIT licensed; factor tables and documents are CC BY 4.0.
+references:
+  - type: article
+    title: "Effectiveness of interventions to improve drinking water, sanitation, and handwashing with soap on risk of diarrhoeal disease in children in low-income and middle-income settings: a systematic review and meta-analysis"
+    authors:
+      - family-names: "Wolf"
+        given-names: "Jennyfer"
+      - name: "and colleagues"
+    journal: "The Lancet"
+    volume: 400
+    year: 2022
+    doi: "10.1016/s0140-6736(22)00937-0"
+  - type: report
+    title: "Burden of disease attributable to unsafe drinking-water, sanitation and hygiene: 2019 update"
+    authors:
+      - name: "World Health Organization"
+    year: 2023
+    url: "https://www.who.int/publications/i/item/9789240075610"
