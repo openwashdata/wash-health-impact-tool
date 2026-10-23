@@ -7,7 +7,10 @@
 \format{
 A tibble with 76 rows and 4 columns:
 \describe{
-\item{}{ ()}
+\item{table}{Name of the factor table the row belongs to (text)}
+\item{column}{Column name (text)}
+\item{type}{text, number, integer or date (text)}
+\item{description}{What the column holds and how the chain uses it (text)}
 }
 }
 \source{
@@ -20,6 +23,6 @@ factors_schema
 The data dictionary: one row per column of the effects, adjustments, pathways, baseline-disease and baseline-exposure tables.
 }
 \details{
-Licence CC BY 4.0. Factor table version \code{2026-10-23-b6df8b7} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/factors-schema.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/factors-schema.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

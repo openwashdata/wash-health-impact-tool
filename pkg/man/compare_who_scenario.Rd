@@ -32,6 +32,9 @@ rows used for the JMP coverage fallback and the WHO scenario comparison.}
 \item{to_rr}{Optional relative risk of the destination (overrides the ladder
 value, for example the effect row for a connection on premises).}
 
+\item{who_region}{\code{"AFR"}, \code{"SEAR"} or \code{"WPR"} for a country outside the
+baseline table.}
+
 \item{tables}{The factor tables, see \code{\link[=factor_tables]{factor_tables()}}.}
 }
 \value{

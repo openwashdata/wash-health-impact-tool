@@ -449,6 +449,7 @@ exposure_distribution <- function(country, service, residence = "national", tabl
 #' [estimate_output()], not a replacement.
 #'
 #' @inheritParams ladder_rr
+#' @inheritParams estimate_output
 #' @param from_level,to_level Level names as in [ladder_rr()].
 #' @param people Number of people moved.
 #' @param to_rr Optional relative risk of the destination (overrides the ladder

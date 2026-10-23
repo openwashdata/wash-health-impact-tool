@@ -34,6 +34,6 @@ baseline_disease
 Per country (and WHO region as fallback): WHO 2019 attributable burden, attributable fractions, death and DALY rates, DHS two-week diarrhoea prevalence, household size, under-five share and mortality, derived population and rates.
 }
 \details{
-Licence CC BY 4.0. Factor table version \code{2026-10-23-b6df8b7} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/baseline-disease.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/baseline-disease.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

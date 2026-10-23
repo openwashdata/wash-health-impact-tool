@@ -7,7 +7,7 @@
 \format{
 A tibble with 20 rows and 15 columns:
 \describe{
-\item{adjustment_id}{Stable identifier used by pathways.csv and R/estimate.R (text)}
+\item{adjustment_id}{Stable identifier used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R) (text)}
 \item{adjustment_type}{use or decay or coverage_threshold or episode_duration or mortality_rate_conversion or or_to_rr or paf_counterfactual or exposure_ladder (text)}
 \item{applies_to}{Pathways or intervention categories the row applies to (text)}
 \item{parameter}{What the value is (text)}
@@ -34,6 +34,6 @@ adjustments
 Use reference values, follow-up decay, the sanitation coverage threshold, the episode duration, the mortality rate conversion, the odds ratio to relative risk formula, the PAF counterfactual relative risks and the service ladder relative risks.
 }
 \details{
-Licence CC BY 4.0. Factor table version \code{2026-10-23-b6df8b7} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/adjustments.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/adjustments.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

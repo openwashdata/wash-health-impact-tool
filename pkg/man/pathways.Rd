@@ -7,14 +7,14 @@
 \format{
 A tibble with 13 rows and 14 columns:
 \describe{
-\item{pathway_id}{Stable identifier used by R/estimate.R (text)}
+\item{pathway_id}{Stable identifier used by the estimation chain in the washhealth package (R/estimate.R) (text)}
 \item{output_type}{Enterprise output type as a funder would name it (text)}
 \item{unit_of_output}{What one unit of the output is (text)}
 \item{description}{Plain description (text)}
 \item{exposure_from_input}{Baseline situations the user can choose from (separated by a vertical bar) (text)}
 \item{exposure_to}{Situation after the output (text)}
 \item{paf_component}{water or sanitation or hygiene or none; selects the WHO attributable fraction used in the PAF route (text)}
-\item{effect_rule}{Which effect row applies under which input (plain words; implemented in R/estimate.R) (text)}
+\item{effect_rule}{Which effect row applies under which input (plain words; implemented in the washhealth package (R/estimate.R)) (text)}
 \item{adjustment_ids}{Adjustment rows the pathway applies (separated by semicolons); ADJ_HH_SIZE and ADJ_U5_SHARE point to the country rows in baseline-disease.csv (text)}
 \item{outcomes_reported}{Outputs the chain returns for this pathway (text)}
 \item{people_per_unit_rule}{How people reached are counted (text)}
@@ -33,6 +33,6 @@ pathways
 One row per output type an enterprise can report, with the exposure change, the effect rule, the adjustment rows that apply, the outcomes reported and the starting confidence label.
 }
 \details{
-Licence CC BY 4.0. Factor table version \code{2026-10-23-b6df8b7} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/pathways.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/pathways.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}

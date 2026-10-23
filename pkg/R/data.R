@@ -144,7 +144,10 @@
 #'
 #' @format A tibble with 76 rows and 4 columns:
 #' \describe{
-#'   \item{}{ ()}
+#'   \item{table}{Name of the factor table the row belongs to (text)}
+#'   \item{column}{Column name (text)}
+#'   \item{type}{text, number, integer or date (text)}
+#'   \item{description}{What the column holds and how the chain uses it (text)}
 #' }
 #' @source See the `source_citation`, `source` and `url` columns of each row.
 "factors_schema"

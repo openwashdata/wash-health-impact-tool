@@ -7,7 +7,7 @@
 \format{
 A tibble with 24 rows and 20 columns:
 \describe{
-\item{factor_id}{Stable identifier of the conversion factor row used by pathways.csv and R/estimate.R (text)}
+\item{factor_id}{Stable identifier of the conversion factor row used by pathways.csv and the estimation chain in the washhealth package (R/estimate.R) (text)}
 \item{effect_id}{Row in data/effect-sizes.csv the factor was selected from (stage 1 extraction) (text)}
 \item{intervention_category}{Intervention category as named in the source review (text)}
 \item{exposure_from}{Service level or situation the customer had before the output (the comparison group of the estimate) (text)}
@@ -39,6 +39,6 @@ effects
 One row per conversion factor (relative risk or odds ratio) selected in stage 2 from the stage 1 effect size extraction. The chain picks a row by the pathway rule and the user's inputs.
 }
 \details{
-Licence CC BY 4.0. Factor table version \code{2026-10-23-b6df8b7} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/effects.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
+Licence CC BY 4.0. Factor table version \verb{2026-10-23-9ab53d4} (see \code{\link[=factors_version]{factors_version()}}). The canonical file is \code{data/factors/effects.csv} in the tool repository; a copy ships in \verb{inst/extdata/}.
 }
 \keyword{datasets}
