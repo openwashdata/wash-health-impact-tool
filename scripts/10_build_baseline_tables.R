@@ -39,9 +39,15 @@ countries <- tibble::tribble(
   "Uganda", "UGA", "AFR", "Africa"
 )
 
-latest <- function(code, dim_pattern = NULL) {
+latest <- function(code, dim_pattern = NULL, prefer = NULL) {
+  # prefer: ordered vector of "by=" labels for DHS rows; the first label present in the latest survey wins
   x <- cb %>% filter(indicator_code == code)
   if (!is.null(dim_pattern)) x <- x %>% filter(str_detect(dimension, dim_pattern))
+  x <- x %>% group_by(iso3) %>% filter(year == max(year)) %>% ungroup()
+  if (!is.null(prefer)) {
+    x <- x %>% mutate(by = str_replace(str_extract(dimension, "by=.*$"), "by=", ""), rank = match(by, prefer)) %>%
+      filter(!is.na(rank)) %>% group_by(iso3) %>% slice_min(rank, n = 1, with_ties = FALSE) %>% ungroup() %>% select(-by, -rank)
+  }
   x %>% group_by(iso3) %>% slice_max(year, n = 1, with_ties = FALSE) %>% ungroup()
 }
 
@@ -71,10 +77,11 @@ rows$u5mr        <- mk(latest("MDG_0000000007"), "u5mr", "under five", "per 1000
 
 # DHS survey values
 dhs_flag <- function(x, extra) paste0("country value; ", str_remove(x$dimension, "survey="), "; ", extra)
-d1 <- latest("DHS_CH_DIAR_C_DIA"); rows$prev <- mk(d1, "diarr_prev2w_u5", "under five", "percent", dhs_flag(d1, "caregiver-reported two-week recall"))
-d2 <- latest("DHS_HC_MEMB_H_MNM"); rows$hh <- mk(d2, "household_size", "all ages", "persons", dhs_flag(d2, "mean number of usual members"))
-d3 <- latest("DHS_HC_AGEG_P_004"); rows$u5s <- mk(d3, "u5_share", "all ages", "percent", dhs_flag(d3, "de facto household population aged 0 to 4"))
-d4 <- latest("DHS_CM_ECMR_C_U5M"); rows$u5mr_dhs <- mk(d4, "u5mr_dhs", "under five", "per 1000 live births", dhs_flag(d4, "ten years before the survey"))
+d1 <- latest("DHS_CH_DIAR_C_DIA", prefer = c("Five years preceding the survey", "Three years preceding the survey", ""))
+rows$prev <- mk(d1, "diarr_prev2w_u5", "under five", "percent", dhs_flag(d1, "caregiver-reported two-week recall"))
+d2 <- latest("DHS_HC_MEMB_H_MNM", prefer = c("")); rows$hh <- mk(d2, "household_size", "all ages", "persons", dhs_flag(d2, "mean number of usual members"))
+d3 <- latest("DHS_HC_AGEG_P_004", prefer = c("Total")); rows$u5s <- mk(d3, "u5_share", "all ages", "percent", dhs_flag(d3, "de facto household population aged 0 to 4"))
+d4 <- latest("DHS_CM_ECMR_C_U5M", prefer = c("Ten years preceding the survey", "Five years preceding the survey")); rows$u5mr_dhs <- mk(d4, "u5mr_dhs", "under five", "per 1000 live births", dhs_flag(d4, "ten years before the survey"))
 
 retrieved <- bind_rows(rows)
 

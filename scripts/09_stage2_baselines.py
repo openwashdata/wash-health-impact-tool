@@ -147,7 +147,7 @@ def dhs_rows():
             iso3 = DHS_COUNTRIES[cc]
             rows.append({
                 "country": COUNTRIES[iso3], "iso3": iso3, "indicator_code": "DHS_" + code, "indicator": name,
-                "dimension": "survey=%s %s" % (d.get("SurveyType", ""), d.get("SurveyYearLabel", "")),
+                "dimension": "survey=%s %s; by=%s" % (d.get("SurveyType", ""), d.get("SurveyYearLabel", ""), d.get("ByVariableLabel", "") or ""),
                 "year": d.get("SurveyYear"), "value": d.get("Value"), "value_display": d.get("Value"), "low": d.get("CILow", ""), "high": d.get("CIHigh", ""),
                 "unit": unit, "source": "DHS Program STATcompiler API",
                 "url": "https://api.dhsprogram.com/rest/dhs/data?indicatorIds=%s&countryIds=%s" % (code, cc),
