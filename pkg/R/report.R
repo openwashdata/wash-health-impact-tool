@@ -93,12 +93,17 @@ render_transaction_report <- function(transactions, output_dir = ".", mode = c("
   # Quarto resolves --output against the working directory, so render from inside the work folder.
   old_wd <- setwd(work)
   on.exit(setwd(old_wd), add = TRUE)
+  # With quiet = TRUE the log goes to a file, so a failure can still show its cause.
+  log <- file.path(work, "quarto.log")
   status <- system2(bin, c("render", "transaction-report.qmd", "--to", "html", "--execute-params", "params.yml", "--output", shQuote(file)),
-                    stdout = if (quiet) FALSE else "", stderr = if (quiet) FALSE else "")
+                    stdout = if (quiet) log else "", stderr = if (quiet) log else "")
   setwd(old_wd)
   out <- file.path(work, file)
   if (!identical(status, 0L) || !file.exists(out)) {
-    stop("Quarto failed to render the report (exit status ", status, "); run with quiet = FALSE to see the log", call. = FALSE)
+    tail_log <- if (quiet && file.exists(log)) utils::tail(readLines(log, warn = FALSE), 25) else character(0)
+    stop("Quarto failed to render the report (exit status ", status, ")",
+         if (length(tail_log)) paste0("; last lines of the log:\n", paste(tail_log, collapse = "\n")) else "; run with quiet = FALSE to see the log",
+         call. = FALSE)
   }
   dest <- file.path(output_dir, file)
   file.copy(out, dest, overwrite = TRUE)

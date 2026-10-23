@@ -12,6 +12,8 @@ test_that("the transaction report renders for one enterprise", {
   skip_on_cran()
   skip_if_not(installed, "washhealth is not installed in a library")
   skip_if_not(nzchar(quarto_bin()), "Quarto not found")
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
   tx <- example_transactions()
   out_dir <- file.path(tempdir(), "report-test")
   f <- render_transaction_report(tx[tx$enterprise == "Aqua Clara Kenya", ], output_dir = out_dir, file = "test-report.html")

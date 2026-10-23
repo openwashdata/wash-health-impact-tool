@@ -25,6 +25,8 @@ Imports:
 Suggests:
     brand.yml,
     bslib,
+    knitr,
+    rmarkdown,
     shiny,
     testthat (>= 3.0.0),
     writexl
