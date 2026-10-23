@@ -1,6 +1,6 @@
 # full texts, raw API dumps and secrets never enter git
-papers/
-data-raw/
+/papers/
+/data-raw/
 .env
 .Renviron
 .Rproj.user/
