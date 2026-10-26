@@ -57,4 +57,4 @@ No pooled estimate exists for faecal sludge management services, water kiosks, s
 
 **Licences and status.** Factor tables, methodology and documents CC BY 4.0; code MIT. WHO's attributable fraction method is re-implemented from the published description, not redistributed; DHS aggregates only; JMP data through the openwashdata jmpdata package. Factor table version `r factors_version()`. Independent work; no institution has endorsed it.
 
-**Contact.** CONTACT PLACEHOLDER. Repository: REPOSITORY URL.
+**Contact.** Lars Schöbitz, Global Health Engineering, ETH Zurich (lars@lse.de). Repository: https://github.com/openwashdata/wash-health-impact-tool.

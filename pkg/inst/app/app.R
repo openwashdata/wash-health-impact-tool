@@ -93,12 +93,21 @@ tab_body <- function(id, mode, intro) {
 ante_intro <- "Ex-ante: planned outputs and a target use rate give the expected health outcomes of a transaction, in total and for the share attributable to the incentive. Use it for structuring, targets and expected health additionality."
 post_intro <- "Ex-post: verified outputs from the verifier's report give the estimated health outcomes achieved, in total and for the incentive-attributable share, for reporting."
 
+repo_url <- "https://github.com/openwashdata/wash-health-impact-tool"
+# Shown above every tab: the tool is an experiment and its tables are not fully reviewed.
+experimental_banner <- div(class = "alert alert-warning", role = "alert", style = "margin: 1em 1em 0;",
+  strong("Experimental. "),
+  "Built by an AI agent (Claude, Anthropic) under the instruction and supervision of Lars Sch\u00f6bitz. ",
+  "The evidence review and the factor tables are not fully reviewed, so do not use the numbers for funding decisions. ",
+  tags$a(href = paste0(repo_url, "#how-this-was-made-and-what-has-been-reviewed"), target = "_blank", "How this was made"))
+
 ui <- if (has_bslib) {
   bslib::page_navbar(title = shiny::tags$span(shiny::tags$img(src = "owd-logos/OWD-logo-01.png", height = "32", alt = "openwashdata", style = "margin-right: 0.6em; vertical-align: middle;"), "washhealth: water and sanitation health impact estimates"), theme = app_theme,
+                     header = experimental_banner,
                      bslib::nav_panel("Ex-ante (planning)", tab_body("ante", "ex-ante", ante_intro)),
                      bslib::nav_panel("Ex-post (reporting)", tab_body("post", "ex-post", post_intro)))
 } else {
-  navbarPage("washhealth: water and sanitation health impact estimates",
+  navbarPage("washhealth: water and sanitation health impact estimates", header = experimental_banner,
              tabPanel("Ex-ante (planning)", tab_body("ante", "ex-ante", ante_intro)),
              tabPanel("Ex-post (reporting)", tab_body("post", "ex-post", post_intro)))
 }

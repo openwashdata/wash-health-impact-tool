@@ -1,24 +1,30 @@
 # wash-health-impact-tool
 
-Scratch build of the Aqua for All assignment "Developing a water and sanitation - health impact estimation tool for outcome-based finance" (ToR of October 2026). Local repository, no remote. Built in the background by an agent for Lars Schöbitz; nothing here has been reviewed or shared.
+Estimate health outcomes from verified water and sanitation outputs, for outcome-based finance. An evidence review, versioned conversion factor tables, a methodology, additionality guidance and an R package (`washhealth`) with a transaction report template, a small Shiny app and flat exports for Airtable, mWater or Excel.
 
-Decisions of 2026-10-23: outcomes modelled are diarrhoeal disease (cases, deaths, DALYs) and soil-transmitted helminth infection; respiratory infection and stunting are mapped in the evidence review but not modelled. Country baselines cover Aqua for All's geographies only. Methodology and factor tables under CC BY 4.0, code under MIT.
+Status: **experimental.** This is an experiment to show what AI support can do when building a tool like this. It was built by an AI agent (Claude, Anthropic) under the instruction and supervision of Lars Schöbitz, and the evidence review and the factor tables are not fully reviewed. Read the next section before using any number.
 
-## Layout
+Try the app: APP URL
 
-- `queries/` every OpenAlex and other API query as it was run, with date and counts
-- `data/` screening logs, the effect size table, country baselines (tracked)
-- `data/factors/` the canonical versioned factor tables the tool retrieves from: schema, effects, baselines (disease and exposure), adjustments, pathways; `CHANGELOG.md` records every change
-- `data-raw/` raw API responses and downloaded datasets (ignored)
-- `papers/` open access full texts (ignored)
-- `pkg/` the `washhealth` R package: the estimation chain, the transaction input schema, ex-post and ex-ante runners, flat exports, the Quarto transaction report template and the Shiny app; carries a stamped copy of the factor tables
-- `scripts/` the data pulls and builds (Python 3 standard library and R); `09_stage2_baselines.py` and `10_build_baseline_tables.R` rebuild the baseline tables
-- `docs/` stage reports (`stage1-report.md` to `stage4-report.md`), `evidence-review.qmd`, `methodology.qmd`, `additionality-guidance.qmd`, `worked-examples.qmd`, `user-guide.qmd`, `factor-table-governance.md`, and the stage 4 demo kit: `demo-script.md`, `publication-checklist.md`, `draft-email-aqua-for-all.md`, `one-page-summary.qmd` (typst, A4); rendered HTML and PDF, `docs/reports/` (rendered transaction reports) and the local pkgdown site in `pkg/docs/` are ignored
-- `CITATION.cff` and `README-public.md` are drafts for a possible publication, with placeholders; nothing is published
+## How this was made, and what has been reviewed
 
-## Running the tool
+In October 2026 Aqua for All published terms of reference for a consultancy to develop a water and sanitation health impact estimation tool for its Social Impact Incentives (SIINC) transactions. Lars Schöbitz did not bid. Instead, to test whether the three evidence questions in the terms of reference can be answered from the literature, he had an AI agent (Claude, Anthropic) run the assignment as a scratch build on 2026-10-23: the literature search, the screening, the extraction of effect sizes, the country baselines, the methodology, the factor tables, the package, its tests and the documents. The decisions (which outcomes, which countries, which counterfactual, which licences) were his and are listed at the top of each stage report; the work between the decisions was the agent's, in about one afternoon. This repository is independent of Aqua for All and of any institution; nobody has endorsed it.
 
-Install the package once from the repository root, then use it:
+What this means for a reader:
+
+- Every screening decision (10 577 records, one reader, one pass), every extracted number (77 effect size rows) and every factor row (24 effects, 20 adjustments, 13 pathways) was produced by the agent. The human review of the factor rows is recorded in `data/factors/CHANGELOG.md`; where an entry says "Reviewer: none", the row is unreviewed.
+- Every number is traceable: each factor row carries a DOI, a locator (table, figure or section), the source review's certainty rating and a use rule. Each result carries the ledger of rows it used. Checking a row takes minutes; please do, and open an issue when a value is wrong.
+- The tool refuses to guess. Where no pooled evidence exists (faecal sludge management services, water kiosks, safely managed on-site sanitation, institutional connections, menstrual health products) it reports reach and says "not estimable" or carries an evidence gap flag.
+
+## What the tool does
+
+You give it the outputs an enterprise delivered or plans to deliver (household connections, filters, toilets, hygiene products; country, period, verified use, baseline water source of the customers). It returns people reached, diarrhoea cases averted in children under five, deaths and DALYs averted, each with a low, central and high value, a confidence label (moderate, low, very low, not estimable) with the reasons, and the ledger of every published number used. One rule: retrieve, do not compute.
+
+Two uses: ex-post from a verifier's report, ex-ante from planned outputs with a baseline trajectory for the incentive-attributable share.
+
+## Install and use
+
+Needs R 4.1 or newer. From the repository root:
 
 ```sh
 R CMD INSTALL pkg
@@ -26,37 +32,37 @@ R CMD INSTALL pkg
 
 ```r
 library(washhealth)
-
-# ex-post: verified outputs in the template format (transaction_template_path())
-tx <- read_transactions("transactions.csv")
-res <- estimate_transaction(tx)
-res$results        # totals and incentive-attributable rows with low, central, high and the label
-res$ledger         # every factor row used, with citation
-summarise_portfolio(res)
-export_results(res, "results-export")                 # or format = "xlsx"
-render_transaction_report(tx, output_dir = "docs/reports")
-
-# ex-ante: planned outputs and a baseline trajectory
-plan <- new_transaction("PLAN-1", "Example Co", "Kenya", "household water filter", 2000,
-                        "2027-01-01", "2027-12-31", use_rate = 0.9, baseline_quantity = 1200)
-estimate_scenario(plan)
-
-# one output through the engine
-estimate_output("household water filter", units = 1000, country = "Kenya", residence = "rural",
-                baseline_source = "unimproved", verified_use = 0.93)
-
-# flat factor tables for Airtable, mWater or Excel, and the app
-export_factors("factors-export")                      # or export_factors("factors.xlsx", format = "xlsx")
-run_app()
+tx <- read_transactions("transactions.csv")         # template: transaction_template_path()
+res <- estimate_transaction(tx)                      # ex-post
+res$results; res$ledger; summarise_portfolio(res)
+render_transaction_report(tx, output_dir = "reports")
+export_factors("factors-export")                     # flat tables for Airtable, mWater or Excel
+run_app()                                            # Shiny app, ex-ante and ex-post
 ```
 
-Tests: `Rscript -e 'devtools::test("pkg")'`. Check: `Rscript -e 'devtools::check("pkg")'`. Documents: `quarto render docs/methodology.qmd` (same for the other Quarto documents; they need the package installed; `one-page-summary.qmd` renders to PDF with typst).
+The user guide is `docs/user-guide.qmd`; the methodology, the additionality guidance, the worked examples and the evidence review are in `docs/` as well. Render them with Quarto after installing the package.
 
-After a reviewed change to `data/factors/` (see `docs/factor-table-governance.md`), rebuild the package copy with `Rscript pkg/data-raw/factors.R` and reinstall.
+## Layout
 
-## Stages
+- `data/factors/` the versioned factor tables and their changelog (CC BY 4.0)
+- `data/` the screening logs, the effect size table, the landscape tables, the country baselines and the reference list
+- `queries/` every API query as it was run, with date and counts
+- `scripts/` the data pulls and builds (Python 3 standard library and R)
+- `pkg/` the `washhealth` R package (MIT), with a stamped copy of the tables
+- `docs/` the evidence review, methodology, additionality guidance, worked examples, user guide, governance rules and the stage reports
 
-1. Evidence and tool mapping
-2. Methodology and additionality guidance
-3. Tool: R package, Quarto template, Shiny app, flat factor export
-4. Write-up and demo kit: evidence review, user guide, demo script, publication checklist, email drafts, one-page summary (all four stages done on 2026-10-23; nothing reviewed, nothing published)
+Full texts and raw API responses are not in the repository.
+
+## Licences
+
+Code: MIT. Methodology, factor tables and documents: Creative Commons Attribution 4.0 International (CC BY 4.0). Source data keep their own terms: WHO Global Health Observatory (open use with attribution), DHS Program indicator data (aggregates, citation required), WHO/UNICEF JMP data via the openwashdata jmpdata package (CC BY 4.0), the WHO 2023 burden report (values cited, the report and its workbook not redistributed; the attributable fraction method is re-implemented from the published description).
+
+## Cite
+
+See `CITATION.cff`. Please also cite the source reviews behind any factor you use; they are named in the factor table rows and in the evidence review's reference list.
+
+## Contribute or review
+
+Open an issue for a wrong value, a missing source or a method question. To propose a change to a factor row, follow `docs/factor-table-governance.md`: a new row with a new `valid_from` date, the old row marked `superseded_by`, a changelog entry, and a second person's review. An agent may draft a change; a person merges it.
+
+Contact: open an issue, or write to Lars Schöbitz, Global Health Engineering, ETH Zurich (lars@lse.de).

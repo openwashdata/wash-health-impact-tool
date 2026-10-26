@@ -8,6 +8,12 @@ test_that("the report template and the app folder ship with the package", {
   expect_true(is.character(quarto_bin()))
 })
 
+test_that("the app shows the experimental banner above the tabs", {
+  app <- paste(readLines(file.path(system.file("app", package = "washhealth"), "app.R"), warn = FALSE), collapse = "\n")
+  expect_match(app, "header = experimental_banner", fixed = TRUE)
+  expect_match(app, "not fully reviewed", fixed = TRUE)
+})
+
 test_that("the transaction report renders for one enterprise", {
   skip_on_cran()
   skip_if_not(installed, "washhealth is not installed in a library")
