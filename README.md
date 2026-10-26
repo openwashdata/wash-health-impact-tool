@@ -4,7 +4,7 @@ Estimate health outcomes from verified water and sanitation outputs, for outcome
 
 Status: **experimental.** This is an experiment to show what AI support can do when building a tool like this. It was built by an AI agent (Claude, Anthropic) under the instruction and supervision of Lars Schöbitz, and the evidence review and the factor tables are not fully reviewed. Read the next section before using any number.
 
-Try the app: APP URL
+Try the app: <https://01a177c9-4ba9-e00a-6fbb-323b3b5c687a.share.connect.posit.cloud/>
 
 ## How this was made, and what has been reviewed
 
